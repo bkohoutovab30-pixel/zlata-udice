@@ -94,15 +94,36 @@
       padding: 6px 12px;
       font-size: 14px;
       font-weight: bold;
-      margin-bottom: 10px;
+      margin-bottom: 15px;
+    }
+
+    .name-area {
+      min-height: 100px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .show-name {
+      border: none;
+      background: #17324d;
+      color: white;
+      padding: 14px 22px;
+      border-radius: 14px;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
     }
 
     .fish-name {
+      display: none;
       font-size: 30px;
-      margin: 5px 0 18px;
+      margin: 5px 0 15px;
     }
 
     .sound-button {
+      display: none;
       border: none;
       background: #e6f2f7;
       color: #17324d;
@@ -117,6 +138,7 @@
     }
 
     .sound-note {
+      display: none;
       color: #789;
       font-size: 13px;
       margin-top: 8px;
@@ -194,14 +216,25 @@
 
     <div class="fish-number" id="fishNumber"></div>
 
-    <h2 class="fish-name" id="fishName"></h2>
+    <div class="name-area">
 
-    <button class="sound-button" disabled>
-      🔊 Přehrát název
-    </button>
+      <button
+        class="show-name"
+        id="showNameButton"
+        onclick="showName()">
+        👁️ Zobrazit název
+      </button>
 
-    <div class="sound-note">
-      Zvuk doplníme později
+      <h2 class="fish-name" id="fishName"></h2>
+
+      <button class="sound-button" id="soundButton" disabled>
+        🔊 Přehrát název
+      </button>
+
+      <div class="sound-note" id="soundNote">
+        Zvuk doplníme později
+      </div>
+
     </div>
 
   </div>
@@ -225,7 +258,15 @@
   </div>
 
   <div class="jump">
-    <select id="fishSelect" onchange="jumpToFish()"></select>
+
+    <select id="fishSelect" onchange="jumpToFish()">
+
+      <option value="" selected disabled>
+        Vybrat rybu…
+      </option>
+
+    </select>
+
   </div>
 
 </main>
@@ -238,14 +279,12 @@ const fish = [
   {card:"3", name:"Bolen dravý"},
   {card:"4", name:"Candát obecný"},
   {card:"5", name:"Candát východní"},
-
   {card:"8", name:"Cejn velký"},
   {card:"9", name:"Cejnek malý"},
   {card:"10", name:"Drsek menší"},
   {card:"11", name:"Hlavačka mramorovaná"},
   {card:"12", name:"Hlavatka obecná"},
   {card:"13", name:"Hořavka duhová"},
-
   {card:"17", name:"Hrouzek obecný"},
   {card:"18", name:"Jelec jesen"},
   {card:"19", name:"Jelec proudník"},
@@ -277,7 +316,6 @@ const fish = [
   {card:"45", name:"Pstruh duhový"},
   {card:"46", name:"Pstruh obecný - f. mořská"},
   {card:"47", name:"Pstruh obecný - f. potoční"},
-
   {card:"50", name:"Siven americký"},
   {card:"51", name:"Síh severní - maréna"},
   {card:"52", name:"Síh peleď"},
@@ -289,7 +327,6 @@ const fish = [
   {card:"58", name:"Sumeček americký"},
   {card:"59", name:"Štika obecná"},
   {card:"60", name:"Tolstolobik bílý"},
-
   {card:"62", name:"Úhoř říční"},
   {card:"63", name:"Vranka obecná"},
   {card:"64", name:"Vranka pruhoploutvá"}
@@ -303,6 +340,10 @@ const counter = document.getElementById("counter");
 const previousButton = document.getElementById("previousButton");
 const nextButton = document.getElementById("nextButton");
 const fishSelect = document.getElementById("fishSelect");
+const showNameButton = document.getElementById("showNameButton");
+const soundButton = document.getElementById("soundButton");
+const soundNote = document.getElementById("soundNote");
+
 
 function createFishSelect() {
 
@@ -319,54 +360,107 @@ function createFishSelect() {
 
 }
 
+
+function hideName() {
+
+  fishName.style.display = "none";
+  soundButton.style.display = "none";
+  soundNote.style.display = "none";
+
+  showNameButton.style.display = "inline-block";
+
+}
+
+
+function showName() {
+
+  fishName.style.display = "block";
+  soundButton.style.display = "inline-block";
+  soundNote.style.display = "block";
+
+  showNameButton.style.display = "none";
+
+}
+
+
 function showFish() {
 
   const item = fish[currentFish];
 
   fishName.textContent = item.name;
-  fishNumber.textContent = "Karta č. " + item.card;
+
+  fishNumber.textContent =
+    "Karta č. " + item.card;
 
   counter.textContent =
     (currentFish + 1) + " / " + fish.length;
 
-  fishSelect.value = currentFish;
+  previousButton.disabled =
+    currentFish === 0;
 
-  previousButton.disabled = currentFish === 0;
-  nextButton.disabled = currentFish === fish.length - 1;
+  nextButton.disabled =
+    currentFish === fish.length - 1;
+
+  /*
+    Po přechodu na jinou rybu se název
+    znovu automaticky schová.
+  */
+  hideName();
+
+  /*
+    Rolovací seznam se po změně ryby
+    vrátí na neutrální první řádek.
+  */
+  fishSelect.value = "";
 
 }
+
 
 function nextFish() {
 
   if (currentFish < fish.length - 1) {
+
     currentFish++;
+
     showFish();
 
     window.scrollTo({
       top: 0,
       behavior: "smooth"
     });
+
   }
 
 }
+
 
 function previousFish() {
 
   if (currentFish > 0) {
+
     currentFish--;
+
     showFish();
 
     window.scrollTo({
       top: 0,
       behavior: "smooth"
     });
+
   }
 
 }
 
+
 function jumpToFish() {
 
-  currentFish = Number(fishSelect.value);
+  if (fishSelect.value === "") {
+    return;
+  }
+
+  currentFish =
+    Number(fishSelect.value);
+
   showFish();
 
   window.scrollTo({
@@ -375,6 +469,7 @@ function jumpToFish() {
   });
 
 }
+
 
 createFishSelect();
 showFish();
