@@ -1214,7 +1214,7 @@ function renderQuestion() {
   */
 
   current.answers.forEach(
-    answer => {
+    shuffle(current.answers).forEach(
 
       const row =
         document.createElement(
