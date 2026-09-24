@@ -135,7 +135,23 @@
 
     .fish-name {
       font-size: 30px;
-      margin: 5px 0 20px;
+      margin: 5px 0 14px;
+    }
+
+    .sound-button {
+      border: none;
+      background: #e6f2f7;
+      color: #17324d;
+      padding: 11px 17px;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-bottom: 22px;
+    }
+
+    .sound-button:active {
+      transform: scale(0.97);
     }
 
     .answer-question {
@@ -227,7 +243,6 @@
 
   </div>
 
-
   <div class="header">
 
     <div class="header-icon">❤️🐟</div>
@@ -239,7 +254,6 @@
     </p>
 
   </div>
-
 
   <div
     class="mistake-count"
@@ -253,7 +267,6 @@
 
   </div>
 
-
   <!-- PROCVIČOVÁNÍ PROBLÉMOVÝCH RYB -->
 
   <div id="practiceArea">
@@ -262,7 +275,9 @@
 
       <div class="photo">
 
-        <div class="photo-icon">🖼️</div>
+        <div class="photo-icon">
+          🖼️
+        </div>
 
         <strong>
           Fotografii doplníme
@@ -274,6 +289,7 @@
 
       </div>
 
+      <!-- HÁDÁNÍ -->
 
       <div id="questionArea">
 
@@ -291,6 +307,7 @@
 
       </div>
 
+      <!-- ODPOVĚĎ -->
 
       <div
         class="answer"
@@ -301,10 +318,17 @@
           id="fishName">
         </h2>
 
+        <button
+          class="sound-button"
+          onclick="playName()">
+
+          🔊 Přehrát název
+
+        </button>
+
         <div class="answer-question">
           Jak to tentokrát dopadlo?
         </div>
-
 
         <div class="answer-buttons">
 
@@ -315,7 +339,6 @@
             ❌ Ještě nevím
 
           </button>
-
 
           <button
             class="answer-button correct"
@@ -331,16 +354,12 @@
 
     </div>
 
-
     <div class="info">
-
       Po kliknutí na „Už umím“ se ryba
       z problémových ryb tohoto hráče odstraní.
-
     </div>
 
   </div>
-
 
   <!-- VŠECHNO ZVLÁDNUTO -->
 
@@ -448,19 +467,14 @@ else {
 }
 
 
-/*
-  Každý hráč má vlastní seznam
-  problémových ryb.
-*/
+/* =========================
+   DATA HRÁČE
+========================= */
 
 const mistakesKey =
   "zlataUdiceFishMistakes_" +
   activeProfileId;
 
-
-/* =========================
-   PROMĚNNÉ
-========================= */
 
 let mistakes = [];
 
@@ -511,7 +525,7 @@ const fishName =
 
 
 /* =========================
-   NAČTENÍ CHYB HRÁČE
+   NAČTENÍ CHYB
 ========================= */
 
 function loadMistakes() {
@@ -533,8 +547,13 @@ function loadMistakes() {
 
   try {
 
-    mistakes =
+    const parsed =
       JSON.parse(saved);
+
+    mistakes =
+      Array.isArray(parsed)
+        ? parsed
+        : [];
 
   }
   catch {
@@ -574,10 +593,6 @@ function updateCount() {
     count;
 
 
-  /*
-    Trochu hezčí čeština :-)
-  */
-
   if (count === 1) {
 
     mistakeCountText.textContent =
@@ -609,12 +624,15 @@ function updateCount() {
 
 function chooseFish() {
 
+  /*
+    Zastavíme případný předchozí zvuk.
+  */
+
+  window.speechSynthesis.cancel();
+
+
   updateCount();
 
-
-  /*
-    Hráč nemá žádné chyby.
-  */
 
   if (mistakes.length === 0) {
 
@@ -656,8 +674,8 @@ function chooseFish() {
 
 
   /*
-    Pokud je ryb více,
-    neopakujeme hned tu stejnou.
+    Pokud máme více ryb,
+    neopakujeme okamžitě stejnou.
   */
 
   if (
@@ -668,7 +686,8 @@ function chooseFish() {
     const filtered =
       mistakes.filter(
         item =>
-          item.card !== previousCard
+          item.card !==
+          previousCard
       );
 
 
@@ -726,13 +745,73 @@ function showAnswer() {
 
 
 /* =========================
+   PŘEHRÁNÍ NÁZVU
+========================= */
+
+function playName() {
+
+  if (!currentFish) {
+    return;
+  }
+
+
+  window.speechSynthesis.cancel();
+
+
+  const speech =
+    new SpeechSynthesisUtterance(
+      currentFish.name
+    );
+
+
+  speech.lang =
+    "cs-CZ";
+
+  speech.rate =
+    0.85;
+
+  speech.pitch =
+    1;
+
+
+  const voices =
+    window.speechSynthesis.getVoices();
+
+
+  const czechVoice =
+    voices.find(
+      voice =>
+        voice.lang
+          .toLowerCase()
+          .startsWith("cs")
+    );
+
+
+  if (czechVoice) {
+
+    speech.voice =
+      czechVoice;
+
+  }
+
+
+  window.speechSynthesis.speak(
+    speech
+  );
+
+}
+
+
+/* =========================
    JEŠTĚ NEVÍM
 ========================= */
 
 function stillDontKnow() {
 
+  window.speechSynthesis.cancel();
+
   /*
-    Rybu necháme v seznamu.
+    Ryba zůstává v problémových.
   */
 
   chooseFish();
@@ -751,9 +830,12 @@ function nowIKnow() {
   }
 
 
+  window.speechSynthesis.cancel();
+
+
   /*
-    Odstraníme pouze z problémových
-    ryb AKTUÁLNÍHO hráče.
+    Rybu odstraníme pouze
+    aktuálnímu hráči.
   */
 
   mistakes =
