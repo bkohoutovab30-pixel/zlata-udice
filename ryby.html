@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+
+  <title>Ryby | Zlatá udice</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #eef7fb;
+      color: #17324d;
+    }
+
+    .app {
+      max-width: 600px;
+      margin: auto;
+      min-height: 100vh;
+      padding: 25px 20px 40px;
+    }
+
+    .back {
+      display: inline-block;
+      margin-bottom: 20px;
+      color: #567;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .fish-icon {
+      font-size: 55px;
+      margin-bottom: 5px;
+    }
+
+    .header h1 {
+      margin: 0 0 8px;
+      font-size: 34px;
+    }
+
+    .header p {
+      margin: 0;
+      color: #567;
+      font-size: 17px;
+    }
+
+    .menu {
+      display: grid;
+      gap: 15px;
+    }
+
+    .card {
+      display: block;
+      background: white;
+      border-radius: 18px;
+      padding: 22px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      text-decoration: none;
+      color: #17324d;
+      transition: 0.2s;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+    }
+
+    .icon {
+      font-size: 36px;
+      margin-bottom: 8px;
+    }
+
+    .card h2 {
+      margin: 0 0 6px;
+      font-size: 22px;
+    }
+
+    .card p {
+      margin: 0;
+      color: #678;
+      line-height: 1.4;
+    }
+
+    .practice {
+      background: #17324d;
+      color: white;
+    }
+
+    .practice p {
+      color: #dce8f2;
+    }
+
+    .progress-box {
+      margin-top: 25px;
+      background: #dfeef5;
+      border-radius: 18px;
+      padding: 18px;
+      text-align: center;
+    }
+
+    .progress-box strong {
+      font-size: 18px;
+    }
+
+    .progress-box p {
+      margin: 6px 0 0;
+      color: #567;
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="app">
+
+    <a class="back" href="index.html">← Zpět</a>
+
+    <div class="header">
+      <div class="fish-icon">🐟</div>
+      <h1>Ryby</h1>
+      <p>Poznávání ryb našich vod</p>
+    </div>
+
+    <div class="menu">
+
+      <a class="card" href="ryby-uceni.html">
+        <div class="icon">📖</div>
+        <h2>Učení</h2>
+        <p>Procházej ryby jednu po druhé a nauč se jejich názvy.</p>
+      </a>
+
+      <a class="card practice" href="ryby-procvicovani.html">
+        <div class="icon">🎯</div>
+        <h2>Procvičování</h2>
+        <p>Poznávej ryby podle obrázků a kontroluj své odpovědi.</p>
+      </a>
+
+      <a class="card" href="ryby-chyby.html">
+        <div class="icon">❤️</div>
+        <h2>Co mi nejde</h2>
+        <p>Procvičuj hlavně ryby, které ti dělají problémy.</p>
+      </a>
+
+    </div>
+
+    <div class="progress-box">
+      <strong>🐟 64 ryb</strong>
+      <p>Tvůj pokrok se zde později zobrazí automaticky.</p>
+    </div>
+
+  </main>
+
+</body>
+</html>
