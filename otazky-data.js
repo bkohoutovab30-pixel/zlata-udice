@@ -1738,618 +1738,619 @@ answers:[
 ],
 correct:["c"]
 },
+
 {
-category:"III. Zákon o rybářství",
+category:"III. ZákON O RYBÁŘSTVÍ",
 number:1,
-question:"Lov ryb udicí v rybářském revíru může provádět:",
+question:"Jak rozdělujeme naše revíry z hlediska zákona o rybářství:",
 answers:[
-{id:"a",text:"každý občan České republiky"},
-{id:"b",text:"osoba, která je držitelem platného rybářského lístku a platné povolenky k lovu"},
-{id:"c",text:"pouze člen Českého rybářského svazu"}
+{id:"a",text:"pstruhové a mimopstruhové"},
+{id:"b",text:"tekoucí a stojaté"},
+{id:"c",text:"svazové a státního rybářství"}
 ],
-correct:["b"]
+correct:["a"]
 },
 
 {
-category:"III. Zákon o rybářství",
+category:"III. ZÁKON O RYBÁŘSTVÍ",
 number:2,
 question:"Rybářský lístek vydává:",
 answers:[
-{id:"a",text:"Český rybářský svaz"},
+{id:"a",text:"místní organizace Českého rybářského svazu"},
 {id:"b",text:"obecní úřad obce s rozšířenou působností"},
-{id:"c",text:"obecní úřad obce s pověřeným obecním úřadem"}
+{id:"c",text:"ministerstvo zemědělství"}
 ],
-correct:["c"]
+correct:["b"]
 },
 
 {
-category:"III. Zákon o rybářství",
+category:"III. ZÁKON O RYBÁŘSTVÍ",
 number:3,
-question:"Rybářský lístek se vydává:",
+question:"Která z uvedených ryb je hájena v měsíci září:",
 answers:[
-{id:"a",text:"na dobu 30 dní, 10 let nebo na dobu neurčitou"},
-{id:"b",text:"na dobu 1 roku, 3 let nebo 10 let"},
-{id:"c",text:"pouze na jeden kalendářní rok"}
-],
-correct:["a"]
-},
-
-{
-category:"III. Zákon o rybářství",
-number:4,
-question:"Povolenku k lovu ryb v rybářském revíru vydává:",
-answers:[
-{id:"a",text:"uživatel rybářského revíru"},
-{id:"b",text:"obecní úřad"},
-{id:"c",text:"Ministerstvo zemědělství"}
-],
-correct:["a"]
-},
-
-{
-category:"III. Zákon o rybářství",
-number:5,
-question:"Při lovu ryb je lovící povinen mít u sebe:",
-answers:[
-{id:"a",text:"pouze občanský průkaz"},
-{id:"b",text:"rybářský lístek a povolenku k lovu"},
-{id:"c",text:"pouze členský průkaz Českého rybářského svazu"}
-],
-correct:["b"]
-},
-
-{
-category:"III. Zákon o rybářství",
-number:6,
-question:"Osoba provádějící lov ryb je povinna na požádání předložit rybářský lístek a povolenku k lovu:",
-answers:[
-{id:"a",text:"pouze Policii České republiky"},
-{id:"b",text:"pouze hospodáři rybářského revíru"},
-{id:"c",text:"rybářské stráži, rybářskému hospodáři nebo jeho zástupci a orgánům Policie České republiky"}
+{id:"a",text:"štika obecná"},
+{id:"b",text:"siven americký"},
+{id:"c",text:"pstruh obecný"}
 ],
 correct:["c"]
 },
 
 {
-category:"III. Zákon o rybářství",
+category:"III. ZÁKON O RYBÁŘSTVÍ",
+number:4,
+question:"Co udělám s ulovenou štikou obecnou na pstruhovém revíru 30. 5.:",
+answers:[
+{id:"a",text:"nesmím ji vrátit zpět do pstruhového revíru"},
+{id:"b",text:"vrátím ji zpět do revíru"},
+{id:"c",text:"mohu si ji ponechat, pokud má lovnou míru"}
+],
+correct:["a"]
+},
+
+{
+category:"III. ZÁKON O RYBÁŘSTVÍ",
+number:5,
+question:"Která z níže uvedených ryb má stanovenou nejmenší lovnou míru:",
+answers:[
+{id:"a",text:"lín obecný"},
+{id:"b",text:"pstruh obecný"},
+{id:"c",text:"jelec jesen"}
+],
+correct:["a"]
+},
+
+{
+category:"III. ZÁKON O RYBÁŘSTVÍ",
+number:6,
+question:"Která z uvedených ryb má největší stanovenou lovnou míru na mimopstruhovém revíru:",
+answers:[
+{id:"a",text:"amur bílý"},
+{id:"b",text:"hlavatka podunajská"},
+{id:"c",text:"sumec velký"}
+],
+correct:["c"]
+},
+
+{
+category:"III. ZÁKON O RYBÁŘSTVÍ",
 number:7,
-question:"Rybářská stráž se při výkonu své funkce prokazuje:",
+question:"Je možné na mimopstruhovém revíru použít pstruha obecného jako nástražní rybičku:",
 answers:[
-{id:"a",text:"služebním odznakem a průkazem rybářské stráže"},
-{id:"b",text:"pouze občanským průkazem"},
-{id:"c",text:"členským průkazem Českého rybářského svazu"}
+{id:"a",text:"ano"},
+{id:"b",text:"pokud má lovnou míru"},
+{id:"c",text:"ne"}
 ],
-correct:["a"]
+correct:["c"]
 },
 
 {
-category:"III. Zákon o rybářství",
+category:"III. ZÁKON O RYBÁŘSTVÍ",
 number:8,
-question:"Rybářská stráž je oprávněna:",
+question:"Které nástrahy můžeš použít 30. 9. na pstruhové vodě:",
 answers:[
-{id:"a",text:"kontrolovat osoby lovící ryby, jejich rybářské nářadí, úlovky a rybářské doklady"},
-{id:"b",text:"kontrolovat pouze rybářské doklady"},
-{id:"c",text:"kontrolovat pouze množství ulovených ryb"}
+{id:"a",text:"mrtvou vláčenou rybku"},
+{id:"b",text:"rousnici"},
+{id:"c",text:"umělou mušku"}
 ],
-correct:["a"]
+correct:["c"]
 },
 
 {
-category:"III. Zákon o rybářství",
+category:"III. ZÁKON O RYBÁŘSTVÍ",
 number:9,
-question:"Rybářská stráž může zadržet povolenku k lovu:",
+question:"Mohu si ponechat pstruha obecného, jenž byl chycen na pstruhové vodě 16. 9.:",
 answers:[
-{id:"a",text:"nikdy"},
-{id:"b",text:"při porušení povinností stanovených zákonem o rybářství"},
-{id:"c",text:"pouze se souhlasem Policie České republiky"}
+{id:"a",text:"ne"},
+{id:"b",text:"ano"},
+{id:"c",text:"pokud má lovnou míru"}
 ],
-correct:["b"]
+correct:["a"]
 },
 
 {
-category:"III. Zákon o rybářství",
+category:"III. ZÁKON O RYBÁŘSTVÍ",
 number:10,
-question:"Lov ryb pomocí výbušnin je:",
+question:"Mohu si ponechat pstruha duhového, kterého jsem ulovil 1. 11. na mimopstruhovém revíru:",
 answers:[
-{id:"a",text:"povolen pouze uživateli revíru"},
-{id:"b",text:"zakázán"},
-{id:"c",text:"povolen v mimopstruhových revírech"}
+{id:"a",text:"ano, pokud má lovnou míru"},
+{id:"b",text:"ne"},
+{id:"c",text:"mlíčáka"}
 ],
-correct:["b"]
+correct:["a"]
 },
 
 {
-category:"III. Zákon o rybářství",
+category:"III. ZÁKON O RYBÁŘSTVÍ",
 number:11,
-question:"Lov ryb pomocí elektrického proudu:",
+question:"Kolik kusů karase stříbřitého si mohu ponechat v jednom dni na mimopstruhovém revíru 30. 9.:",
 answers:[
-{id:"a",text:"je vždy zakázán bez výjimky"},
-{id:"b",text:"může být prováděn pouze za podmínek stanovených právními předpisy a oprávněnými osobami"},
-{id:"c",text:"může provádět každý držitel rybářského lístku"}
+{id:"a",text:"2"},
+{id:"b",text:"4"},
+{id:"c",text:"neomezeně"}
 ],
-correct:["b"]
+correct:["c"]
 },
 
 {
-category:"III. Zákon o rybářství",
+category:"III. ZÁKON O RYBÁŘSTVÍ",
 number:12,
-question:"Při lovu ryb udicí v rybářském revíru je zakázáno:",
+question:"V měsíci dubnu můžeme chytat na mimopstruhových revírech:",
 answers:[
-{id:"a",text:"používat podběrák"},
-{id:"b",text:"používat prostředků výbušných, otravných nebo omamných"},
-{id:"c",text:"používat splávek"}
+{id:"a",text:"5:00 – 22:00 hodin"},
+{id:"b",text:"4:00 – 24:00 hodin"},
+{id:"c",text:"6:00 – 20:00 hodin"}
 ],
 correct:["b"]
 },
 
 {
-category:"III. Zákon o rybářství",
+category:"III. ZÁKON O RYBÁŘSTVÍ",
 number:13,
-question:"Lov ryb na udici lze provádět:",
+question:"Mohu si ponechat lipana podhorního, chyceného na mimopstruhovém revíru 15. 6.:",
 answers:[
-{id:"a",text:"pouze v denní době lovu stanovené právním předpisem"},
-{id:"b",text:"kdykoliv během dne i noci"},
-{id:"c",text:"pouze od východu do západu slunce"}
+{id:"a",text:"ano, pokud má lovnou míru"},
+{id:"b",text:"ne"},
+{id:"c",text:"ano"}
 ],
-correct:["a"]
+correct:["b"]
 },
 
 {
-category:"III. Zákon o rybářství",
+category:"III. ZÁKON O RYBÁŘSTVÍ",
 number:14,
-question:"Při lovu ryb na položenou nebo plavanou smí oprávněný k lovu používat:",
+question:"Mohu si ponechat 2 kusy sumce velkého (8 kg a 16,5 kg), ulovené v jednom dni na mimopstruhovém revíru:",
 answers:[
-{id:"a",text:"nejvýše 1 udici"},
-{id:"b",text:"nejvýše 2 udice"},
-{id:"c",text:"libovolný počet udic"}
+{id:"a",text:"ne"},
+{id:"b",text:"ano"},
+{id:"c",text:"ano, byl-li lehčí kus chycen jako první"}
 ],
-correct:["b"]
+correct:["a"]
 },
 
 {
-category:"III. Zákon o rybářství",
+category:"III. ZÁKON O RYBÁŘSTVÍ",
 number:15,
-question:"Při lovu přívlačí smí oprávněný k lovu používat:",
+question:"Mohu chytat nástražní rybičky do čeřenu na pstruhovém revíru před 15. dubnem:",
 answers:[
-{id:"a",text:"1 udici"},
-{id:"b",text:"2 udice"},
-{id:"c",text:"3 udice"}
+{id:"a",text:"ano"},
+{id:"b",text:"jen do hmotnosti 7 kg"},
+{id:"c",text:"ne"}
 ],
-correct:["a"]
+correct:["c"]
 },
 
 {
-category:"III. Zákon o rybářství",
+category:"III. ZÁKON O RYBÁŘSTVÍ",
 number:16,
-question:"Při lovu na umělou mušku smí oprávněný k lovu používat:",
+question:"Jako nástražní rybky nemohou být použity:",
 answers:[
-{id:"a",text:"jednu udici"},
-{id:"b",text:"dvě udice současně"},
-{id:"c",text:"libovolný počet udic"}
+{id:"a",text:"ryby, které dosahují své lovné míry a větší"},
+{id:"b",text:"ryby lososovité a lipan podhorní, druhy chráněné a nedosahující nejmenší lovnou míru"},
+{id:"c",text:"mohou být použity všechny druhy ryb"}
 ],
-correct:["a"]
+correct:["b"]
 },
 
 {
-category:"III. Zákon o rybářství",
+category:"III. ZÁKON O RYBÁŘSTVÍ",
 number:17,
-question:"Při lovu ryb udicí musí být lovící u nastražených udic:",
+question:"Ve kterém měsíci je na mimopstruhových revírech nejdelší doba lovu:",
 answers:[
-{id:"a",text:"přítomen tak, aby s nimi mohl bez prodlení manipulovat"},
-{id:"b",text:"nejvýše 100 metrů od nich"},
-{id:"c",text:"pouze na dohled"}
+{id:"a",text:"v říjnu"},
+{id:"b",text:"v lednu"},
+{id:"c",text:"v květnu"}
 ],
-correct:["a"]
+correct:["c"]
 },
 
 {
-category:"III. Zákon o rybářství",
+category:"III. ZÁKON O RYBÁŘSTVÍ",
 number:18,
-question:"Lovící je povinen při lovu ryb zachovávat mezi sebou vzdálenost:",
+question:"Ve kterém měsíci je na mimopstruhových revírech nejkratší doba lovu:",
 answers:[
-{id:"a",text:"nejméně 3 metry, pokud se nedohodnou na menší vzdálenosti"},
-{id:"b",text:"vždy nejméně 10 metrů"},
-{id:"c",text:"žádná vzdálenost není stanovena"}
+{id:"a",text:"v lednu"},
+{id:"b",text:"v dubnu"},
+{id:"c",text:"v květnu"}
 ],
 correct:["a"]
 },
 
 {
-category:"III. Zákon o rybářství",
+category:"III. ZÁKON O RYBÁŘSTVÍ",
 number:19,
-question:"Místo k lovu ryb:",
+question:"Jakou lovnou míru má štika obecná na pstruhových revírech:",
 answers:[
-{id:"a",text:"smí být předem rezervováno položením rybářského náčiní"},
-{id:"b",text:"nesmí být předem vyhrazováno nebo rezervováno"},
-{id:"c",text:"může rezervovat pouze člen místní organizace"}
+{id:"a",text:"50 cm"},
+{id:"b",text:"40 cm"},
+{id:"c",text:"nemá míru"}
 ],
-correct:["b"]
+correct:["c"]
 },
 
 {
-category:"III. Zákon o rybářství",
+category:"III. ZÁKON O RYBÁŘSTVÍ",
 number:20,
-question:"Při lovu ryb je lovící povinen mít:",
+question:"Ulovené ryby, které si můžeme ponechat, uchováváme:",
 answers:[
-{id:"a",text:"vyprošťovač háčků a míru pro zjištění délky ryb"},
-{id:"b",text:"pouze podběrák"},
-{id:"c",text:"pouze vezírek"}
+{id:"a",text:"živé ve vezírcích"},
+{id:"b",text:"uvázané za skřele provazem"},
+{id:"c",text:"zabité a naporcované"}
 ],
 correct:["a"]
 },
 
 {
-category:"III. Zákon o rybářství",
+category:"III. ZÁKON O RYBÁŘSTVÍ",
 number:21,
-question:"Délka ulovené ryby se měří:",
+question:"Při lovu udicí na položenou musí být lovící u prutů přítomen tak, aby:",
 answers:[
-{id:"a",text:"od špičky rypce po konec nejdelších paprsků ocasní ploutve"},
-{id:"b",text:"od oka po začátek ocasní ploutve"},
-{id:"c",text:"od skřelí po konec ocasní ploutve"}
+{id:"a",text:"je měl v dohledu"},
+{id:"b",text:"jimi mohl manipulovat"},
+{id:"c",text:"je měl minimálně 2 metry od rukou"}
 ],
-correct:["a"]
+correct:["b"]
 },
 
 {
-category:"III. Zákon o rybářství",
+category:"III. ZÁKON O RYBÁŘSTVÍ",
 number:22,
-question:"Ryba, která nedosahuje nejmenší lovné míry:",
+question:"Lov ryb z loďky je dovolen:",
 answers:[
-{id:"a",text:"může být ponechána, pokud je poraněná"},
-{id:"b",text:"musí být šetrně vrácena zpět do vody"},
-{id:"c",text:"může být použita jako nástražní rybka"}
+{id:"a",text:"pouze na údolních nádržích"},
+{id:"b",text:"tam, kde to určí uživatel revíru"},
+{id:"c",text:"pouze některým členům MO ČRS"}
 ],
 correct:["b"]
 },
 
 {
-category:"III. Zákon o rybářství",
+category:"III. ZÁKON O RYBÁŘSTVÍ",
 number:23,
-question:"Ryba ulovená v době jejího hájení:",
+question:"Lov ryb v blízkosti přehradních hrází je povolen ve vzdálenosti:",
 answers:[
-{id:"a",text:"musí být šetrně vrácena zpět do vody"},
-{id:"b",text:"může být ponechána, pokud dosahuje lovné míry"},
-{id:"c",text:"může být ponechána pouze v mimopstruhovém revíru"}
+{id:"a",text:"10 metrů od hrázového tělesa"},
+{id:"b",text:"50 metrů od hrázového tělesa"},
+{id:"c",text:"100 metrů od hrázového tělesa"}
 ],
-correct:["a"]
+correct:["c"]
 },
 
 {
-category:"III. Zákon o rybářství",
+category:"III. ZÁKON O RYBÁŘSTVÍ",
 number:24,
-question:"Přisvojenou rybu zapisuje lovící do přehledu o úlovcích:",
+question:"Rybář nesmí lovit ryby v místě:",
 answers:[
-{id:"a",text:"až po skončení lovu"},
-{id:"b",text:"podle pravidel stanovených pro vedení evidence docházky a úlovků"},
-{id:"c",text:"pouze tehdy, pokud váží více než 1 kg"}
+{id:"a",text:"kde došlo k nahromadění ryb z důvodu velmi nízkého stavu vody"},
+{id:"b",text:"kde vede v blízkosti řeky železniční trať"},
+{id:"c",text:"kde ústí do toku městská kanalizace"}
 ],
-correct:["b"]
+correct:["a"]
 },
 
 {
-category:"III. Zákon o rybářství",
+category:"III. ZÁKON O RYBÁŘSTVÍ",
 number:25,
-question:"Před zahájením lovu je lovící povinen:",
+question:"Povinností rybáře, který zjistí hromadné hynutí ryb, je:",
 answers:[
-{id:"a",text:"zapsat nesmazatelným způsobem datum lovu a číslo rybářského revíru do povolenky k lovu"},
-{id:"b",text:"zapsat pouze datum lovu"},
-{id:"c",text:"nic zapisovat nemusí"}
+{id:"a",text:"ihned přerušit lov a odejít od vody"},
+{id:"b",text:"pokračovat v lovu a hynutí hlásit po skončení lovu MO ČRS"},
+{id:"c",text:"ihned přerušit lov a hynutí hlásit Policii ČR a uživateli revíru"}
 ],
-correct:["a"]
+correct:["c"]
 },
 
 {
-category:"III. Zákon o rybářství",
+category:"III. ZÁKON O RYBÁŘSTVÍ",
 number:26,
-question:"Pokud si lovící nepřisvojí žádnou ulovenou rybu:",
+question:"Jak se měří délka ryb:",
 answers:[
-{id:"a",text:"docházku k vodě neuvádí"},
-{id:"b",text:"záznam o docházce se řídí pravidly evidence uvedenými v povolence k lovu"},
-{id:"c",text:"musí zapsat jednu rybu s nulovou hmotností"}
+{id:"a",text:"od hlavy k vykrojení ocasní ploutve"},
+{id:"b",text:"od vrcholu rypce po konec nejdelších paprsků ocasní ploutve"},
+{id:"c",text:"od žaberního oblouku k nejzazšímu konci ocasní ploutve"}
 ],
 correct:["b"]
 },
 
 {
-category:"III. Zákon o rybářství",
+category:"III. ZÁKON O RYBÁŘSTVÍ",
 number:27,
-question:"Lovící je povinen po skončení platnosti povolenky k lovu:",
+question:"Co uděláte s ulovenou rybou, která je v hájení nebo nedosahuje nejmenší lovné míry:",
 answers:[
-{id:"a",text:"povolenku si ponechat"},
-{id:"b",text:"vrátit povolenku s řádně vyplněným přehledem o úlovcích a docházce podle stanovených pravidel"},
-{id:"c",text:"odevzdat pouze rybářský lístek"}
+{id:"a",text:"uložím ji do vezírku"},
+{id:"b",text:"opatrně jí vyndám háček a šetrně pustím zpět do vody v rybářském revíru, v němž byla ulovena"},
+{id:"c",text:"ponechám si ji, protože by stejně uhynula"}
 ],
 correct:["b"]
 },
 
 {
-category:"III. Zákon o rybářství",
+category:"III. ZÁKON O RYBÁŘSTVÍ",
 number:28,
-question:"Lov ryb z loděk:",
+question:"Který z rybářů lovil nepovoleným způsobem lovu:",
 answers:[
-{id:"a",text:"je povolen automaticky na všech revírech"},
-{id:"b",text:"je možný pouze tam, kde jej podmínky výkonu rybářského práva dovolují"},
-{id:"c",text:"je vždy zakázán"}
+{id:"a",text:"při lovu měl jeden prut nastražen na položenou, druhý na plavanou"},
+{id:"b",text:"dva pruty měl nastraženy na položenou, na každém měl dva návazce s jednoháčkem"},
+{id:"c",text:"jeden prut měl nastražen na položenou, druhým lovil přívlačí"}
 ],
-correct:["b"]
+correct:["c"]
 },
 
 {
-category:"III. Zákon o rybářství",
+category:"III. ZÁKON O RYBÁŘSTVÍ",
 number:29,
-question:"Zavážení nástrah a návnad:",
+question:"V sobotu 16. 4. jsem v 15:20 hodin chytil na pstruhovém revíru štiku obecnou 43 cm:",
 answers:[
-{id:"a",text:"je vždy povoleno"},
-{id:"b",text:"se řídí bližšími podmínkami výkonu rybářského práva pro daný revír"},
-{id:"c",text:"je vždy zakázáno"}
+{id:"a",text:"musím ji vrátit zpět"},
+{id:"b",text:"nesmím ji vrátit zpět do pstruhového revíru"},
+{id:"c",text:"nesmím si ji ponechat"}
 ],
 correct:["b"]
 },
 
 {
-category:"III. Zákon o rybářství",
+category:"III. ZÁKON O RYBÁŘSTVÍ",
 number:30,
-question:"Při lovu ryb je zakázáno:",
+question:"Kolik kusů candáta obecného si mohu ponechat 14. 6. na pstruhovém revíru:",
 answers:[
-{id:"a",text:"znečišťovat místo lovu a jeho okolí"},
-{id:"b",text:"používat podběrák"},
-{id:"c",text:"používat rybářskou stoličku"}
+{id:"a",text:"žádného"},
+{id:"b",text:"pouze dva"},
+{id:"c",text:"neomezeně"}
 ],
-correct:["a"]
+correct:["c"]
 },
 
 {
-category:"III. Zákon o rybářství",
+category:"III. ZÁKON O RYBÁŘSTVÍ",
 number:31,
-question:"Lovící je povinen po skončení lovu:",
+question:"Na revíru pstruhovém mohu lovit na umělou mušku:",
 answers:[
-{id:"a",text:"zanechat místo lovu v pořádku a bez odpadků"},
-{id:"b",text:"ponechat návnadu na břehu"},
-{id:"c",text:"označit místo svým jménem"}
+{id:"a",text:"jen ty dny, kdy lovím ryby lososovité"},
+{id:"b",text:"tři dny v týdnu"},
+{id:"c",text:"celý týden"}
 ],
-correct:["a"]
+correct:["c"]
 },
 
 {
-category:"III. Zákon o rybářství",
+category:"III. ZÁKON O RYBÁŘSTVÍ",
 number:32,
-question:"Používání živých nástražních ryb:",
+question:"Kterou z těchto ryb při rybolovu na revírech pstruhových nesmíme vrátit zpět do vody:",
 answers:[
-{id:"a",text:"se řídí platnými pravidly rybolovu a případnými bližšími podmínkami daného revíru"},
-{id:"b",text:"je vždy zakázáno"},
-{id:"c",text:"je vždy povoleno bez omezení"}
+{id:"a",text:"síh severní maréna"},
+{id:"b",text:"okoun říční"},
+{id:"c",text:"lipan podhorní"}
 ],
-correct:["a"]
+correct:["b"]
 },
 
 {
-category:"III. Zákon o rybářství",
+category:"III. ZÁKON O RYBÁŘSTVÍ",
 number:33,
-question:"Jako nástražní rybu:",
+question:"Kolik kusů kapra obecného, štiky obecné, candáta obecného, bolena dravého, sumce velkého, amura bílého nebo jejich kombinace, typických pro mimopstruhové revíry, si může rybář ponechat v jednom dni na revírech mimopstruhových:",
 answers:[
-{id:"a",text:"lze použít jakýkoliv druh ryby bez omezení"},
-{id:"b",text:"nelze používat druhy, jejichž použití zakazují platné právní předpisy nebo bližší podmínky výkonu rybářského práva"},
-{id:"c",text:"lze použít pouze kapra obecného"}
+{id:"a",text:"3 ks"},
+{id:"b",text:"max. 2 kusy kapra obecného, štiky obecné, candáta obecného, bolena dravého, sumce velkého, amura bílého nebo jejich kombinace, pokud při ulovení prvního kusu nebyla již překročena hmotnost 7 kg"},
+{id:"c",text:"neomezeně"}
 ],
 correct:["b"]
 },
 
 {
-category:"III. Zákon o rybářství",
+category:"III. ZÁKON O RYBÁŘSTVÍ",
 number:34,
-question:"Při zacházení s ulovenou rybou, kterou chceme vrátit do vody:",
+question:"Kolik lososovitých ryb si rybář může ponechat v jednom dni na revírech mimopstruhových:",
 answers:[
-{id:"a",text:"postupujeme šetrně a omezíme její poškození na minimum"},
-{id:"b",text:"rybu můžeme ponechat dlouho na suchu"},
-{id:"c",text:"není nutná žádná zvláštní opatrnost"}
+{id:"a",text:"2 ks"},
+{id:"b",text:"4 ks"},
+{id:"c",text:"3 ks"}
 ],
-correct:["a"]
+correct:["c"]
 },
 
 {
-category:"III. Zákon o rybářství",
+category:"III. ZÁKON O RYBÁŘSTVÍ",
 number:35,
-question:"Ryby uchovávané živé ve vezírku:",
+question:"Musí mít rybář při lovu u sebe vyprošťovač háčků:",
 answers:[
-{id:"a",text:"musí mít zajištěny podmínky, které minimalizují jejich poškození"},
-{id:"b",text:"mohou být uloženy libovolným způsobem"},
-{id:"c",text:"musí být vždy jednotlivě uvázány provázkem"}
+{id:"a",text:"ne"},
+{id:"b",text:"pouze na údolních nádržích"},
+{id:"c",text:"ano"}
 ],
-correct:["a"]
+correct:["c"]
 },
 
 {
-category:"III. Zákon o rybářství",
+category:"III. ZÁKON O RYBÁŘSTVÍ",
 number:36,
-question:"Přisvojenou rybu:",
+question:"Kolik kusů cejna velkého si mohu ponechat na mimopstruhovém revíru:",
 answers:[
-{id:"a",text:"lze po zapsání vyměnit za později ulovenou větší rybu"},
-{id:"b",text:"nelze po přisvojení a zapsání nahrazovat jinou ulovenou rybou podle vlastní volby"},
-{id:"c",text:"není třeba zapisovat"}
+{id:"a",text:"žádný"},
+{id:"b",text:"3 kusy"},
+{id:"c",text:"libovolně do 7 kg celkového úlovku"}
+],
+correct:["c"]
+},
+
+{
+category:"III. ZÁKON O RYBÁŘSTVÍ",
+number:37,
+question:"Loví rybář nepovoleným způsobem lovu, jestliže chytá na dva pruty, jedním na položenou, druhým zároveň muškaří:",
+answers:[
+{id:"a",text:"ne - na revíru mimopstruhovém i na revíru pstruhovém"},
+{id:"b",text:"ne - jen na revíru mimopstruhovém"},
+{id:"c",text:"ano - na revíru mimopstruhovém i pstruhovém"}
+],
+correct:["c"]
+},
+
+{
+category:"III. ZÁKON O RYBÁŘSTVÍ",
+number:38,
+question:"Která z těchto ryb se nesmí vrátit zpět do pstruhového revíru:",
+answers:[
+{id:"a",text:"plotice obecná"},
+{id:"b",text:"bolen dravý"},
+{id:"c",text:"ouklejka pruhovaná"}
 ],
 correct:["b"]
 },
 
 {
-category:"III. Zákon o rybářství",
-number:37,
-question:"Nejmenší lovná míra ryby znamená:",
-answers:[
-{id:"a",text:"nejmenší délku ryby, kterou si lze při splnění ostatních podmínek přisvojit"},
-{id:"b",text:"největší délku ryby, kterou lze ulovit"},
-{id:"c",text:"doporučenou délku nástražní rybky"}
-],
-correct:["a"]
-},
-
-{
-category:"III. Zákon o rybářství",
-number:38,
-question:"Doba hájení ryb slouží především:",
-answers:[
-{id:"a",text:"k ochraně ryb v určitém období, zejména v souvislosti s jejich rozmnožováním"},
-{id:"b",text:"k omezení počtu rybářů u vody"},
-{id:"c",text:"k ochraně rybářského náčiní"}
-],
-correct:["a"]
-},
-
-{
-category:"III. Zákon o rybářství",
+category:"III. ZÁKON O RYBÁŘSTVÍ",
 number:39,
-question:"Bližší podmínky výkonu rybářského práva:",
+question:"Mohu si ponechat 3 kusy candáta obecného, chycené v jednom dni na revíru mimopstruhovém:",
 answers:[
-{id:"a",text:"mohou pro konkrétní revír stanovit další podmínky lovu v mezích právních předpisů"},
-{id:"b",text:"nemají pro lovícího žádný význam"},
-{id:"c",text:"nahrazují rybářský lístek"}
+{id:"a",text:"ano"},
+{id:"b",text:"ano - ale jen do hmotnosti 7 kg"},
+{id:"c",text:"ne"}
 ],
-correct:["a"]
+correct:["c"]
 },
 
 {
-category:"III. Zákon o rybářství",
+category:"III. ZÁKON O RYBÁŘSTVÍ",
 number:40,
-question:"Před zahájením lovu na neznámém revíru je vhodné:",
+question:"Kolik kusů perlína ostrobřichého si smíš ponechat v jednom dni na revíru mimopstruhovém:",
 answers:[
-{id:"a",text:"seznámit se s popisem revíru a jeho bližšími podmínkami"},
-{id:"b",text:"řídit se pouze pravidly z jiného revíru"},
-{id:"c",text:"žádné podmínky nezjišťovat"}
+{id:"a",text:"3 ks"},
+{id:"b",text:"4 ks"},
+{id:"c",text:"libovolně do 7 kg celkového úlovku"}
 ],
-correct:["a"]
+correct:["c"]
 },
 
 {
-category:"III. Zákon o rybářství",
+category:"III. ZÁKON O RYBÁŘSTVÍ",
 number:41,
-question:"Rybářský revír je:",
+question:"Můžeš si ponechat kapra obecného uloveného do čeřínku na mimopstruhovém revíru:",
 answers:[
-{id:"a",text:"část vodního útvaru, v němž lze vykonávat rybářské právo za podmínek stanovených zákonem"},
-{id:"b",text:"jakákoliv vodní plocha"},
-{id:"c",text:"pouze soukromý rybník"}
+{id:"a",text:"ne"},
+{id:"b",text:"pokud má lovnou míru - ano"},
+{id:"c",text:"ano"}
 ],
-correct:["a"]
+correct:["b"]
 },
 
 {
-category:"III. Zákon o rybářství",
+category:"III. ZÁKON O RYBÁŘSTVÍ",
 number:42,
-question:"Výkon rybářského práva zahrnuje mimo jiné:",
+question:"Co učiníte s jelcem tlouštěm, který byl uloven na revíru pstruhovém a má háček zaseknutý hluboko v jícnu:",
 answers:[
-{id:"a",text:"chov, ochranu a lov ryb v rybářském revíru za podmínek stanovených právními předpisy"},
-{id:"b",text:"pouze prodej rybářských potřeb"},
-{id:"c",text:"pouze sportovní soutěže"}
+{id:"a",text:"ustřihneme vlasec a vrátíme ho zpět do vody"},
+{id:"b",text:"ponecháme si ho, pokud má lovnou míru"},
+{id:"c",text:"nesmíme ho vrátit zpět do pstruhového revíru"}
 ],
-correct:["a"]
+correct:["c"]
 },
 
 {
-category:"III. Zákon o rybářství",
+category:"III. ZÁKON O RYBÁŘSTVÍ",
 number:43,
-question:"Uživatel rybářského revíru:",
+question:"Dopoledne jsem ulovil a odnesl si 7 kg řádně zapsaných ryb. Mohu jít odpoledne opět na ryby (chytám pouze na revíru mimopstruhovém):",
 answers:[
-{id:"a",text:"zajišťuje hospodaření v revíru a plnění povinností spojených s výkonem rybářského práva"},
-{id:"b",text:"nemá žádné povinnosti vůči rybí obsádce"},
-{id:"c",text:"pouze prodává rybářské lístky"}
+{id:"a",text:"ano"},
+{id:"b",text:"ano, budu-li chytat jen nástražní ryby"},
+{id:"c",text:"ne"}
 ],
-correct:["a"]
+correct:["c"]
 },
 
 {
-category:"III. Zákon o rybářství",
+category:"III. ZÁKON O RYBÁŘSTVÍ",
 number:44,
-question:"Rybářský hospodář:",
+question:"V jaké vzdálenosti od sebe musí být rybáři při lovu na položenou:",
 answers:[
-{id:"a",text:"zajišťuje odborné hospodaření v rybářském revíru v rozsahu stanoveném právními předpisy"},
-{id:"b",text:"je každý člen Českého rybářského svazu"},
-{id:"c",text:"je pouze prodejce povolenek"}
+{id:"a",text:"alespoň 3 m, pokud se nedohodnou jinak"},
+{id:"b",text:"alespoň 5 m, pokud se nedohodnou jinak"},
+{id:"c",text:"8 m"}
 ],
 correct:["a"]
 },
 
 {
-category:"III. Zákon o rybářství",
+category:"III. ZÁKON O RYBÁŘSTVÍ",
 number:45,
-question:"Ochrana ryb a vodních organismů:",
+question:"V jaké vzdálenosti od sebe musí být rybáři při lovu přívlačí či lovu na umělou mušku:",
 answers:[
-{id:"a",text:"je součástí řádného výkonu rybářského práva"},
-{id:"b",text:"není s rybářstvím spojena"},
-{id:"c",text:"se týká pouze akvarijních ryb"}
+{id:"a",text:"alespoň 20 m, pokud se nedohodnou jinak"},
+{id:"b",text:"alespoň 25 m, pokud se nedohodnou jinak"},
+{id:"c",text:"30 m"}
 ],
 correct:["a"]
 },
 
 {
-category:"III. Zákon o rybářství",
+category:"III. ZÁKON O RYBÁŘSTVÍ",
 number:46,
-question:"Při zjištění hromadného úhynu ryb je správné:",
+question:"Kolik jednoduchých háčků může mít rybář na jedné udici při lovu ryb na položenou na těsto:",
 answers:[
-{id:"a",text:"událost bezodkladně oznámit příslušným osobám nebo orgánům podle okolností"},
-{id:"b",text:"uhynulé ryby si odnést"},
-{id:"c",text:"událost ignorovat"}
+{id:"a",text:"1"},
+{id:"b",text:"2"},
+{id:"c",text:"neomezeně"}
 ],
-correct:["a"]
+correct:["b"]
 },
 
 {
-category:"III. Zákon o rybářství",
+category:"III. ZÁKON O RYBÁŘSTVÍ",
 number:47,
-question:"Lovící musí respektovat:",
+question:"Musí mít rybář při lovu ryb zapsané datum a číslo revíru, na kterém loví, v povolence k lovu:",
 answers:[
-{id:"a",text:"zákon, prováděcí předpisy a bližší podmínky výkonu rybářského práva platné pro daný revír"},
-{id:"b",text:"pouze pokyny ostatních rybářů"},
-{id:"c",text:"pouze údaje uvedené na rybářském lístku"}
+{id:"a",text:"ne"},
+{id:"b",text:"jen když chytá velké ryby"},
+{id:"c",text:"ano"}
 ],
-correct:["a"]
+correct:["c"]
 },
 
 {
-category:"III. Zákon o rybářství",
+category:"III. ZÁKON O RYBÁŘSTVÍ",
 number:48,
-question:"Při kontrole rybářskou stráží je lovící povinen:",
+question:"Můžeme chytat na revíru pstruhovém nástražní rybičky do čeřínku:",
 answers:[
-{id:"a",text:"umožnit kontrolu v rozsahu oprávnění rybářské stráže"},
-{id:"b",text:"kontrolu vždy odmítnout"},
-{id:"c",text:"předložit pouze občanský průkaz"}
+{id:"a",text:"ano"},
+{id:"b",text:"ne"},
+{id:"c",text:"jen na zvláštní povolení"}
 ],
-correct:["a"]
+correct:["b"]
 },
 
 {
-category:"III. Zákon o rybářství",
+category:"III. ZÁKON O RYBÁŘSTVÍ",
 number:49,
-question:"Pokud rybářská stráž zjistí porušení pravidel:",
+question:"Kolikrát týdně můžeme lovit čeřínkem nástražní rybičky na mimopstruhovém revíru:",
 answers:[
-{id:"a",text:"může postupovat v rozsahu oprávnění, která jí stanoví právní předpisy"},
-{id:"b",text:"nemůže učinit žádné opatření"},
-{id:"c",text:"může pouze ústně upozornit a vždy musí odejít"}
+{id:"a",text:"3x"},
+{id:"b",text:"4x"},
+{id:"c",text:"neomezeně"}
 ],
-correct:["a"]
+correct:["c"]
 },
 
 {
-category:"III. Zákon o rybářství",
+category:"III. ZÁKON O RYBÁŘSTVÍ",
 number:50,
-question:"Pravidla uvedená v bližších podmínkách výkonu rybářského práva konkrétního revíru:",
+question:"Jak maximálně velký může být čeřínek:",
 answers:[
-{id:"a",text:"je lovící povinen dodržovat"},
-{id:"b",text:"jsou pouze doporučením"},
-{id:"c",text:"platí pouze pro rybářskou stráž"}
+{id:"a",text:"neomezeně velký"},
+{id:"b",text:"150 × 100 cm"},
+{id:"c",text:"100 × 100 cm"}
+],
+correct:["c"]
+},
+
+{
+category:"III. ZÁKON O RYBÁŘSTVÍ",
+number:51,
+question:"Povolenku k lovu je nutno odevzdat organizaci, která povolenku vydala:",
+answers:[
+{id:"a",text:"do 15 dnů od skončení platnosti povolenky"},
+{id:"b",text:"do 31. 12."},
+{id:"c",text:"do 15. 1. příštího roku"}
 ],
 correct:["a"]
 },
 
-{
-category:"III. Zákon o rybářství",
-number:51,
-question:"Při pochybnosti o pravidlech lovu na konkrétním revíru je správné:",
-answers:[
-{id:"a",text:"řídit se aktuálními právními předpisy, povolenkou a bližšími podmínkami daného revíru"},
-{id:"b",text:"řídit se pouze tím, co platilo v minulém roce"},
-{id:"c",text:"pravidla si určit podle vlastního uvážení"}
-],
-correct:["a"]
-},
-{
 category:"IV. Stanovy ČRS",
 number:1,
 question:"Poslání ČRS je zejména:",
