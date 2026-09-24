@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+
+  <title>Učení rostlin | Zlatá udice</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #eef7fb;
+      color: #17324d;
+    }
+
+    .app {
+      max-width: 600px;
+      margin: auto;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .back {
+      color: #567;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .counter {
+      color: #678;
+      font-weight: bold;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .header-icon {
+      font-size: 42px;
+    }
+
+    .header h1 {
+      margin: 5px 0;
+      font-size: 28px;
+    }
+
+    .header p {
+      margin: 0;
+      color: #678;
+    }
+
+    .plant-card {
+      background: white;
+      border-radius: 22px;
+      padding: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      text-align: center;
+    }
+
+    .photo {
+      width: 100%;
+      min-height: 280px;
+      background: #f3f7f9;
+      border: 2px dashed #c7d8e2;
+      border-radius: 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: #789;
+      padding: 20px;
+      margin-bottom: 22px;
+      overflow: hidden;
+    }
+
+    .photo img {
+      display: block;
+      width: 100%;
+      max-height: 350px;
+      object-fit: contain;
+      border-radius: 14px;
+    }
+
+    .photo-icon {
+      font-size: 60px;
+      margin-bottom: 10px;
+    }
+
+    .plant-number {
+      display: inline-block;
+      background: #dfeef5;
+      border-radius: 20px;
+      padding: 6px 12px;
+      font-size: 14px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .plant-name {
+      font-size: 30px;
+      margin: 5px 0 14px;
+    }
+
+    .sound-button {
+      border: none;
+      background: #e6f2f7;
+      color: #17324d;
+      padding: 12px 18px;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .sound-button:active {
+      transform: scale(0.97);
+    }
+
+    .sound-note {
+      color: #789;
+      font-size: 13px;
+      margin-top: 8px;
+    }
+
+    .navigation {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .nav-button {
+      border: none;
+      border-radius: 14px;
+      padding: 16px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .previous {
+      background: white;
+      color: #17324d;
+    }
+
+    .next {
+      background: #17324d;
+      color: white;
+    }
+
+    .nav-button:disabled {
+      opacity: 0.4;
+      cursor: default;
+    }
+
+    .jump {
+      margin-top: 20px;
+    }
+
+    select {
+      width: 100%;
+      padding: 13px;
+      border-radius: 12px;
+      border: 1px solid #c7d8e2;
+      background: white;
+      color: #17324d;
+      font-size: 16px;
+    }
+  </style>
+</head>
+
+<body>
+
+<main class="app">
+
+  <div class="topbar">
+
+    <a class="back" href="rostliny.html">
+      ← Rostliny
+    </a>
+
+    <span
+      class="counter"
+      id="counter">
+    </span>
+
+  </div>
+
+
+  <div class="header">
+
+    <div class="header-icon">
+      📖🌿
+    </div>
+
+    <h1>Učení</h1>
+
+    <p>
+      Procházej rostliny jednu po druhé
+    </p>
+
+  </div>
+
+
+  <div class="plant-card">
+
+    <!-- FOTOGRAFIE -->
+
+    <div
+      class="photo"
+      id="photoArea">
+    </div>
+
+
+    <!-- ČÍSLO KARTY -->
+
+    <div
+      class="plant-number"
+      id="plantNumber">
+    </div>
+
+
+    <!-- NÁZEV -->
+
+    <h2
+      class="plant-name"
+      id="plantName">
+    </h2>
+
+
+    <!-- ZVUK -->
+
+    <button
+      class="sound-button"
+      onclick="playName()">
+
+      🔊 Přehrát název
+
+    </button>
+
+    <div class="sound-note">
+      Klepni a poslechni si název
+    </div>
+
+  </div>
+
+
+  <!-- PŘEPÍNÁNÍ -->
+
+  <div class="navigation">
+
+    <button
+      class="nav-button previous"
+      id="previousButton"
+      onclick="previousPlant()">
+
+      ← Předchozí
+
+    </button>
+
+
+    <button
+      class="nav-button next"
+      id="nextButton"
+      onclick="nextPlant()">
+
+      Další →
+
+    </button>
+
+  </div>
+
+
+  <!-- VÝBĚR ROSTLINY -->
+
+  <div class="jump">
+
+    <select
+      id="plantSelect"
+      onchange="jumpToPlant()">
+
+      <option
+        value=""
+        selected
+        disabled>
+
+        Vybrat rostlinu…
+
+      </option>
+
+    </select>
+
+  </div>
+
+</main>
+
+
+<!--
+  SPOLEČNÝ SEZNAM ROSTLIN
+-->
+
+<script src="rostliny-data.js"></script>
+
+
+<script>
+
+/* =========================
+   AKTUÁLNÍ ROSTLINA
+========================= */
+
+let currentPlant = 0;
+
+
+const plantName =
+  document.getElementById(
+    "plantName"
+  );
+
+const plantNumber =
+  document.getElementById(
+    "plantNumber"
+  );
+
+const counter =
+  document.getElementById(
+    "counter"
+  );
+
+const previousButton =
+  document.getElementById(
+    "previousButton"
+  );
+
+const nextButton =
+  document.getElementById(
+    "nextButton"
+  );
+
+const plantSelect =
+  document.getElementById(
+    "plantSelect"
+  );
+
+const photoArea =
+  document.getElementById(
+    "photoArea"
+  );
+
+
+/* =========================
+   ROZBALOVACÍ SEZNAM
+========================= */
+
+function createPlantSelect() {
+
+  plants.forEach(
+    (item, index) => {
+
+      const option =
+        document.createElement(
+          "option"
+        );
+
+
+      option.value =
+        index;
+
+
+      /*
+        Pokud má rostlina číslo karty,
+        zobrazíme ho.
+
+        U neočíslovaných zobrazíme
+        pouze název.
+      */
+
+      if (item.card) {
+
+        option.textContent =
+          item.card +
+          ". " +
+          item.name;
+
+      }
+      else {
+
+        option.textContent =
+          item.name;
+
+      }
+
+
+      plantSelect.appendChild(
+        option
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================
+   FOTOGRAFIE
+========================= */
+
+function showPhoto(item) {
+
+  /*
+    Fotografie zatím nemáme.
+
+    Až ji později doplníme do
+    rostliny-data.js, zobrazí se
+    automaticky.
+  */
+
+  if (item.image) {
+
+    photoArea.innerHTML =
+      '<img src="' +
+      item.image +
+      '" alt="' +
+      item.name +
+      '">';
+
+  }
+  else {
+
+    photoArea.innerHTML =
+      '<div class="photo-icon">🖼️</div>' +
+      '<strong>Fotografii doplníme</strong>' +
+      '<span>Pro tuto rostlinu je připravené místo.</span>';
+
+  }
+
+}
+
+
+/* =========================
+   ZOBRAZENÍ ROSTLINY
+========================= */
+
+function showPlant() {
+
+  const item =
+    plants[currentPlant];
+
+
+  plantName.textContent =
+    item.name;
+
+
+  /*
+    Číslo karty zobrazíme pouze
+    u očíslovaných rostlin.
+  */
+
+  if (item.card) {
+
+    plantNumber.style.display =
+      "inline-block";
+
+    plantNumber.textContent =
+      "Karta č. " +
+      item.card;
+
+  }
+  else {
+
+    plantNumber.style.display =
+      "none";
+
+  }
+
+
+  counter.textContent =
+    (currentPlant + 1) +
+    " / " +
+    plants.length;
+
+
+  previousButton.disabled =
+    currentPlant === 0;
+
+
+  nextButton.disabled =
+    currentPlant ===
+    plants.length - 1;
+
+
+  plantSelect.value =
+    "";
+
+
+  showPhoto(item);
+
+}
+
+
+/* =========================
+   ZVUK
+========================= */
+
+function playName() {
+
+  window.speechSynthesis.cancel();
+
+
+  const item =
+    plants[currentPlant];
+
+
+  const speech =
+    new SpeechSynthesisUtterance(
+      item.name
+    );
+
+
+  speech.lang =
+    "cs-CZ";
+
+  speech.rate =
+    0.85;
+
+  speech.pitch =
+    1;
+
+
+  const voices =
+    window.speechSynthesis.getVoices();
+
+
+  const czechVoice =
+    voices.find(
+      voice =>
+        voice.lang
+          .toLowerCase()
+          .startsWith("cs")
+    );
+
+
+  if (czechVoice) {
+
+    speech.voice =
+      czechVoice;
+
+  }
+
+
+  window.speechSynthesis.speak(
+    speech
+  );
+
+}
+
+
+/* =========================
+   DALŠÍ
+========================= */
+
+function nextPlant() {
+
+  window.speechSynthesis.cancel();
+
+
+  if (
+    currentPlant <
+    plants.length - 1
+  ) {
+
+    currentPlant++;
+
+    showPlant();
+
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+
+  }
+
+}
+
+
+/* =========================
+   PŘEDCHOZÍ
+========================= */
+
+function previousPlant() {
+
+  window.speechSynthesis.cancel();
+
+
+  if (currentPlant > 0) {
+
+    currentPlant--;
+
+    showPlant();
+
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+
+  }
+
+}
+
+
+/* =========================
+   SKOK NA ROSTLINU
+========================= */
+
+function jumpToPlant() {
+
+  if (
+    plantSelect.value === ""
+  ) {
+    return;
+  }
+
+
+  window.speechSynthesis.cancel();
+
+
+  currentPlant =
+    Number(
+      plantSelect.value
+    );
+
+
+  showPlant();
+
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+
+}
+
+
+/* =========================
+   START
+========================= */
+
+createPlantSelect();
+
+showPlant();
+
+</script>
+
+</body>
+</html>
