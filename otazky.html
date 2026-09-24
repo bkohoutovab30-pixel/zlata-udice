@@ -297,7 +297,6 @@ body {
 }
 
 @media(max-width:520px) {
-
   .stats {
     grid-template-columns: repeat(2,1fr);
   }
@@ -334,7 +333,6 @@ body {
 
 </div>
 
-
 <div class="header">
 
   <div class="header-icon">
@@ -348,7 +346,6 @@ body {
   </p>
 
 </div>
-
 
 <!-- VÝBĚR OBLASTI -->
 
@@ -370,7 +367,6 @@ body {
 
   </div>
 
-
   <div class="mode-row">
 
     <button
@@ -381,7 +377,6 @@ body {
       🎯 Všechny otázky
 
     </button>
-
 
     <button
       class="mode-btn"
@@ -396,71 +391,37 @@ body {
 
 </div>
 
-
 <!-- STATISTIKY -->
 
 <div class="stats">
 
   <div class="stat">
-
-    <strong id="totalStat">
-      0
-    </strong>
-
-    <span>
-      Odpovězeno
-    </span>
-
+    <strong id="totalStat">0</strong>
+    <span>Odpovězeno</span>
   </div>
 
-
   <div class="stat">
-
-    <strong id="correctStat">
-      0
-    </strong>
-
-    <span>
-      Správně
-    </span>
-
+    <strong id="correctStat">0</strong>
+    <span>Správně</span>
   </div>
 
-
   <div class="stat">
-
-    <strong id="wrongStat">
-      0
-    </strong>
-
-    <span>
-      Chybně
-    </span>
-
+    <strong id="wrongStat">0</strong>
+    <span>Chybně</span>
   </div>
 
-
   <div class="stat">
-
-    <strong id="mistakeStat">
-      0
-    </strong>
-
-    <span>
-      Co mi nejde
-    </span>
-
+    <strong id="mistakeStat">0</strong>
+    <span>Co mi nejde</span>
   </div>
 
 </div>
-
 
 <!-- OTÁZKA -->
 
 <div
   id="quizArea"
   class="question-card">
-
 
   <div class="meta">
 
@@ -474,7 +435,6 @@ body {
 
   </div>
 
-
   <!-- TEXT OTÁZKY + ZVUK -->
 
   <div class="question-row">
@@ -483,7 +443,6 @@ body {
       class="question-text"
       id="questionText">
     </div>
-
 
     <button
       class="sound"
@@ -496,7 +455,6 @@ body {
 
   </div>
 
-
   <!-- ODPOVĚDI -->
 
   <div
@@ -504,14 +462,12 @@ body {
     id="answers">
   </div>
 
-
   <!-- VÝSLEDEK -->
 
   <div
     class="feedback"
     id="feedback">
   </div>
-
 
   <!-- TLAČÍTKA -->
 
@@ -526,7 +482,6 @@ body {
 
     </button>
 
-
     <button
       class="next"
       id="nextBtn"
@@ -539,7 +494,6 @@ body {
   </div>
 
 </div>
-
 
 <!-- KDYŽ UŽ NIC NENÍ -->
 
@@ -561,7 +515,6 @@ body {
 
 </div>
 
-
 <div class="small-note">
   🔊 Otázku a každou odpověď můžeš poslouchat zvlášť.
   Reproduktor odpověď nezaškrtne.
@@ -569,9 +522,7 @@ body {
 
 </main>
 
-
 <script src="otazky-data.js"></script>
-
 
 <script>
 
@@ -580,44 +531,32 @@ body {
 ========================================= */
 
 function getProfiles() {
-
   try {
-
     return JSON.parse(
       localStorage.getItem(
         "zlataUdiceProfiles"
       ) || "[]"
     );
-
   }
   catch {
-
     return [];
-
   }
-
 }
-
 
 const activeProfileId =
   localStorage.getItem(
     "zlataUdiceActiveProfile"
   );
 
-
 if (!activeProfileId) {
-
   location.href =
     "profily.html";
-
 }
-
 
 const activePlayer =
   getProfiles().find(
     p => p.id === activeProfileId
   );
-
 
 if (!activePlayer) {
 
@@ -640,7 +579,6 @@ else {
 
 }
 
-
 /* =========================================
    DATA HRÁČE
 ========================================= */
@@ -649,31 +587,19 @@ const progressKey =
   "zlataUdiceQuestionProgress_" +
   activeProfileId;
 
-
 const mistakesKey =
   "zlataUdiceQuestionMistakes_" +
   activeProfileId;
 
+let mode = "all";
 
-let mode =
-  "all";
+let deck = [];
 
+let position = 0;
 
-let deck =
-  [];
+let current = null;
 
-
-let position =
-  0;
-
-
-let current =
-  null;
-
-
-let evaluated =
-  false;
-
+let evaluated = false;
 
 /* =========================================
    OBLASTI
@@ -684,16 +610,13 @@ const categorySelect =
     "categorySelect"
   );
 
-
-const categories =
-  [
-    ...new Set(
-      questions.map(
-        q => q.category
-      )
+const categories = [
+  ...new Set(
+    questions.map(
+      q => q.category
     )
-  ];
-
+  )
+];
 
 categories.forEach(
   category => {
@@ -716,12 +639,10 @@ categories.forEach(
   }
 );
 
-
 categorySelect.addEventListener(
   "change",
   resetDeck
 );
-
 
 /* =========================================
    IDENTIFIKACE OTÁZKY
@@ -736,7 +657,6 @@ function qKey(q) {
   );
 
 }
-
 
 /* =========================================
    STATISTIKY
@@ -775,7 +695,6 @@ function getProgress() {
 
 }
 
-
 function saveProgress(progress) {
 
   localStorage.setItem(
@@ -784,7 +703,6 @@ function saveProgress(progress) {
   );
 
 }
-
 
 /* =========================================
    CO MI NEJDE
@@ -801,7 +719,6 @@ function getMistakes() {
         ) || "[]"
       );
 
-
     return Array.isArray(mistakes)
       ? mistakes
       : [];
@@ -815,7 +732,6 @@ function getMistakes() {
 
 }
 
-
 function saveMistakes(mistakes) {
 
   localStorage.setItem(
@@ -825,12 +741,10 @@ function saveMistakes(mistakes) {
 
 }
 
-
 function addMistake(question) {
 
   const mistakes =
     getMistakes();
-
 
   if (
     !mistakes.includes(
@@ -850,7 +764,6 @@ function addMistake(question) {
 
 }
 
-
 function removeMistake(question) {
 
   saveMistakes(
@@ -865,7 +778,6 @@ function removeMistake(question) {
 
 }
 
-
 /* =========================================
    ZOBRAZENÍ STATISTIK
 ========================================= */
@@ -875,24 +787,20 @@ function updateStats() {
   const progress =
     getProgress();
 
-
   document.getElementById(
     "totalStat"
   ).textContent =
     progress.total;
-
 
   document.getElementById(
     "correctStat"
   ).textContent =
     progress.correct;
 
-
   document.getElementById(
     "wrongStat"
   ).textContent =
     progress.wrong;
-
 
   document.getElementById(
     "mistakeStat"
@@ -900,7 +808,6 @@ function updateStats() {
     getMistakes().length;
 
 }
-
 
 /* =========================================
    ZAMÍCHÁNÍ
@@ -910,7 +817,6 @@ function shuffle(array) {
 
   const copy =
     [...array];
-
 
   for (
     let i = copy.length - 1;
@@ -924,7 +830,6 @@ function shuffle(array) {
         (i + 1)
       );
 
-
     [
       copy[i],
       copy[j]
@@ -936,11 +841,9 @@ function shuffle(array) {
 
   }
 
-
   return copy;
 
 }
-
 
 /* =========================================
    VÝBĚR OTÁZEK
@@ -950,7 +853,6 @@ function sourceQuestions() {
 
   let source =
     questions;
-
 
   /*
     Vybraná oblast.
@@ -970,7 +872,6 @@ function sourceQuestions() {
 
   }
 
-
   /*
     Jen otázky z Co mi nejde.
   */
@@ -985,7 +886,6 @@ function sourceQuestions() {
         getMistakes()
       );
 
-
     source =
       source.filter(
         q =>
@@ -996,11 +896,9 @@ function sourceQuestions() {
 
   }
 
-
   return source;
 
 }
-
 
 /* =========================================
    NOVÉ KOLO
@@ -1008,23 +906,20 @@ function sourceQuestions() {
 
 function resetDeck() {
 
-  speechSynthesis.cancel();
-
+  if ("speechSynthesis" in window) {
+    speechSynthesis.cancel();
+  }
 
   deck =
     shuffle(
       sourceQuestions()
     );
 
-
-  position =
-    0;
-
+  position = 0;
 
   showNextFromDeck();
 
 }
-
 
 /* =========================================
    REŽIM
@@ -1035,14 +930,12 @@ function setMode(newMode) {
   mode =
     newMode;
 
-
   document.getElementById(
     "allMode"
   ).classList.toggle(
     "active",
     newMode === "all"
   );
-
 
   document.getElementById(
     "mistakeMode"
@@ -1051,11 +944,9 @@ function setMode(newMode) {
     newMode === "mistakes"
   );
 
-
   resetDeck();
 
 }
-
 
 /* =========================================
    DALŠÍ OTÁZKA Z BALÍČKU
@@ -1068,12 +959,10 @@ function showNextFromDeck() {
       "quizArea"
     );
 
-
   const empty =
     document.getElementById(
       "emptyArea"
     );
-
 
   /*
     Nic k procvičování.
@@ -1086,10 +975,8 @@ function showNextFromDeck() {
     quiz.style.display =
       "none";
 
-
     empty.style.display =
       "block";
-
 
     document.getElementById(
       "emptyText"
@@ -1101,13 +988,11 @@ function showNextFromDeck() {
 
       : "V této oblasti nejsou žádné otázky.";
 
-
     updateStats();
 
     return;
 
   }
-
 
   /*
     Dokončeno celé kolo.
@@ -1124,10 +1009,7 @@ function showNextFromDeck() {
         sourceQuestions()
       );
 
-
-    position =
-      0;
-
+    position = 0;
 
     if (
       deck.length === 0
@@ -1141,93 +1023,77 @@ function showNextFromDeck() {
 
   }
 
-
   quiz.style.display =
     "block";
-
 
   empty.style.display =
     "none";
 
-
   current =
     deck[position];
 
-
   position++;
-
 
   renderQuestion();
 
 }
 
-
 /* =========================================
+   TADY NAVAZUJE ČÁST 2/2
    VYKRESLENÍ OTÁZKY
 ========================================= */
+  function renderQuestion() {
 
-function renderQuestion() {
+  if ("speechSynthesis" in window) {
+    speechSynthesis.cancel();
+  }
 
-  speechSynthesis.cancel();
-
-
-  evaluated =
-    false;
-
+  evaluated = false;
 
   document.getElementById(
     "categoryLabel"
   ).textContent =
-
     current.category +
     " • " +
     current.number;
 
-
   document.getElementById(
     "roundInfo"
   ).textContent =
-
     position +
     " / " +
     deck.length;
-
 
   document.getElementById(
     "questionText"
   ).textContent =
     current.question;
 
-
   const box =
     document.getElementById(
       "answers"
     );
 
-
-  box.innerHTML =
-    "";
-
+  box.innerHTML = "";
 
   /*
     ODPOVĚDI
+    Vytvoříme kopii a náhodně ji zamícháme.
   */
 
-  shuffle(current.answers).forEach(
+  shuffle([...current.answers]).forEach(
+    answer => {
 
       const row =
         document.createElement(
           "div"
         );
 
-
       row.className =
         "answer";
 
-
       row.dataset.id =
         answer.id;
-
 
       /*
         ZAŠKRTÁVACÍ OKÉNKO
@@ -1238,19 +1104,15 @@ function renderQuestion() {
           "input"
         );
 
-
       checkbox.type =
         "checkbox";
-
 
       checkbox.id =
         "answer_" +
         answer.id;
 
-
       checkbox.value =
         answer.id;
-
 
       /*
         TEXT ODPOVĚDI
@@ -1261,23 +1123,16 @@ function renderQuestion() {
           "label"
         );
 
-
       label.htmlFor =
         checkbox.id;
 
-
       label.innerHTML =
-
         '<span class="answer-letter">' +
-
         answer.id.toUpperCase() +
-
         ')</span> ' +
-
         escapeHtml(
           answer.text
         );
-
 
       /*
         SAMOSTATNÝ ZVUK ODPOVĚDI
@@ -1288,18 +1143,14 @@ function renderQuestion() {
           "button"
         );
 
-
       sound.className =
         "sound";
-
 
       sound.type =
         "button";
 
-
       sound.textContent =
         "🔊";
-
 
       sound.setAttribute(
         "aria-label",
@@ -1307,31 +1158,24 @@ function renderQuestion() {
         answer.id.toUpperCase()
       );
 
-
       sound.onclick =
         event => {
 
           /*
-            Zabráníme tomu,
-            aby reproduktor zaškrtl
-            odpověď.
+            Reproduktor nesmí
+            zaškrtnout odpověď.
           */
 
           event.preventDefault();
-
           event.stopPropagation();
 
-
           speak(
-
             answer.id.toUpperCase() +
             ". " +
             answer.text
-
           );
 
         };
-
 
       row.append(
         checkbox,
@@ -1339,14 +1183,12 @@ function renderQuestion() {
         sound
       );
 
-
       box.appendChild(
         row
       );
 
     }
   );
-
 
   /*
     VYČISTÍME STARÝ VÝSLEDEK
@@ -1357,20 +1199,16 @@ function renderQuestion() {
       "feedback"
     );
 
-
   feedback.className =
     "feedback";
 
-
   feedback.textContent =
     "";
-
 
   document.getElementById(
     "evaluateBtn"
   ).style.display =
     "block";
-
 
   document.getElementById(
     "nextBtn"
@@ -1379,14 +1217,13 @@ function renderQuestion() {
 
 }
 
-
 /* =========================================
    BEZPEČNÉ ZOBRAZENÍ TEXTU
 ========================================= */
 
 function escapeHtml(text) {
 
-  return text.replace(
+  return String(text).replace(
 
     /[&<>"]/g,
 
@@ -1405,12 +1242,15 @@ function escapeHtml(text) {
 
 }
 
-
 /* =========================================
    HLAS
 ========================================= */
 
 function speak(text) {
+
+  if (!("speechSynthesis" in window)) {
+    return;
+  }
 
   /*
     Zastaví předchozí čtení.
@@ -1418,24 +1258,19 @@ function speak(text) {
 
   speechSynthesis.cancel();
 
-
   const speech =
     new SpeechSynthesisUtterance(
       text
     );
 
-
   speech.lang =
     "cs-CZ";
-
 
   speech.rate =
     0.88;
 
-
   const voices =
     speechSynthesis.getVoices();
-
 
   const czechVoice =
     voices.find(
@@ -1446,7 +1281,6 @@ function speak(text) {
           .startsWith("cs")
     );
 
-
   if (
     czechVoice
   ) {
@@ -1456,13 +1290,11 @@ function speak(text) {
 
   }
 
-
   speechSynthesis.speak(
     speech
   );
 
 }
-
 
 /* =========================================
    PŘEČTENÍ OTÁZKY
@@ -1482,7 +1314,6 @@ function speakQuestion() {
 
 }
 
-
 /* =========================================
    VYHODNOCENÍ
 ========================================= */
@@ -1497,7 +1328,6 @@ function evaluateAnswer() {
     return;
 
   }
-
 
   /*
     Zjistíme zaškrtnuté odpovědi.
@@ -1515,7 +1345,6 @@ function evaluateAnswer() {
     )
     .sort();
 
-
   /*
     Nic není zaškrtnuté.
   */
@@ -1529,34 +1358,28 @@ function evaluateAnswer() {
         "feedback"
       );
 
-
     feedback.className =
       "feedback bad";
 
-
     feedback.textContent =
       "Nejdřív zaškrtni odpověď.";
-
 
     return;
 
   }
 
-
   evaluated =
     true;
-
 
   const correct =
     [
       ...current.correct
     ].sort();
 
-
   /*
     Porovnáme celé pole.
-    Funguje tedy i případ,
-    kdyby otázka měla více
+    Funguje i v případě,
+    kdy má otázka více
     správných odpovědí.
   */
 
@@ -1573,7 +1396,6 @@ function evaluateAnswer() {
         correct[index]
     );
 
-
   /*
     BAREVNÉ VYHODNOCENÍ
   */
@@ -1586,7 +1408,6 @@ function evaluateAnswer() {
 
       const id =
         row.dataset.id;
-
 
       if (
         correct.includes(id)
@@ -1607,7 +1428,6 @@ function evaluateAnswer() {
 
       }
 
-
       row.querySelector(
         "input"
       ).disabled =
@@ -1617,7 +1437,6 @@ function evaluateAnswer() {
 
   );
 
-
   /*
     STATISTIKY
   */
@@ -1625,9 +1444,7 @@ function evaluateAnswer() {
   const progress =
     getProgress();
 
-
   progress.total++;
-
 
   if (
     isCorrect
@@ -1660,14 +1477,11 @@ function evaluateAnswer() {
 
   }
 
-
   saveProgress(
     progress
   );
 
-
   updateStats();
-
 
   /*
     TEXT SPRÁVNÉ ODPOVĚDI
@@ -1686,32 +1500,25 @@ function evaluateAnswer() {
 
     .map(
       answer =>
-
         answer.id.toUpperCase() +
         ") " +
         answer.text
-
     )
 
     .join("; ");
-
 
   const feedback =
     document.getElementById(
       "feedback"
     );
 
-
   feedback.className =
-
     "feedback " +
-
     (
       isCorrect
         ? "ok"
         : "bad"
     );
-
 
   feedback.textContent =
 
@@ -1722,7 +1529,6 @@ function evaluateAnswer() {
     : "❌ Správná odpověď: " +
       correctTexts;
 
-
   /*
     TLAČÍTKA
   */
@@ -1732,7 +1538,6 @@ function evaluateAnswer() {
   ).style.display =
     "none";
 
-
   document.getElementById(
     "nextBtn"
   ).style.display =
@@ -1740,15 +1545,15 @@ function evaluateAnswer() {
 
 }
 
-
 /* =========================================
    DALŠÍ OTÁZKA
 ========================================= */
 
 function nextQuestion() {
 
-  speechSynthesis.cancel();
-
+  if ("speechSynthesis" in window) {
+    speechSynthesis.cancel();
+  }
 
   /*
     V režimu Co mi nejde
@@ -1764,23 +1569,24 @@ function nextQuestion() {
     "mistakes"
   ) {
 
+    const mistakeSet =
+      new Set(
+        getMistakes()
+      );
+
     deck =
       deck.filter(
-
         question =>
-          getMistakes().includes(
+          mistakeSet.has(
             qKey(question)
           )
-
       );
 
   }
 
-
   showNextFromDeck();
 
 }
-
 
 /* =========================================
    START
