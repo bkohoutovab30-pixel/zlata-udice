@@ -110,11 +110,11 @@
       border-radius: 12px;
       font-size: 16px;
       font-weight: bold;
+      cursor: pointer;
     }
 
-    .sound-button:disabled {
-      opacity: 0.55;
-      cursor: default;
+    .sound-button:active {
+      transform: scale(0.97);
     }
 
     .sound-note {
@@ -197,12 +197,14 @@
 
     <h2 class="fish-name" id="fishName"></h2>
 
-    <button class="sound-button" disabled>
+    <button
+      class="sound-button"
+      onclick="playName()">
       🔊 Přehrát název
     </button>
 
     <div class="sound-note">
-      Zvuk doplníme později
+      Klepni a poslechni si název
     </div>
 
   </div>
@@ -342,7 +344,8 @@ function createFishSelect() {
 
 function showFish() {
 
-  const item = fish[currentFish];
+  const item =
+    fish[currentFish];
 
   fishName.textContent =
     item.name;
@@ -361,18 +364,97 @@ function showFish() {
   nextButton.disabled =
     currentFish === fish.length - 1;
 
-  /*
-    V základním stavu zůstává
-    rolovací pole neutrální.
-  */
   fishSelect.value = "";
 
 }
 
 
+/* =========================
+   PŘEHRÁNÍ NÁZVU
+========================= */
+
+function playName() {
+
+  /*
+    Zastavíme případný předchozí hlas.
+  */
+
+  window.speechSynthesis.cancel();
+
+
+  const item =
+    fish[currentFish];
+
+
+  const speech =
+    new SpeechSynthesisUtterance(
+      item.name
+    );
+
+
+  /*
+    Chceme českou výslovnost.
+  */
+
+  speech.lang = "cs-CZ";
+
+
+  /*
+    Lehce pomalejší tempo je pro
+    učení názvů příjemnější.
+  */
+
+  speech.rate = 0.85;
+
+  speech.pitch = 1;
+
+
+  /*
+    Pokud zařízení nabízí český hlas,
+    pokusíme se ho použít.
+  */
+
+  const voices =
+    window.speechSynthesis.getVoices();
+
+
+  const czechVoice =
+    voices.find(
+      voice =>
+        voice.lang
+          .toLowerCase()
+          .startsWith("cs")
+    );
+
+
+  if (czechVoice) {
+
+    speech.voice =
+      czechVoice;
+
+  }
+
+
+  window.speechSynthesis.speak(
+    speech
+  );
+
+}
+
+
+/* =========================
+   DALŠÍ / PŘEDCHOZÍ
+========================= */
+
 function nextFish() {
 
-  if (currentFish < fish.length - 1) {
+  window.speechSynthesis.cancel();
+
+
+  if (
+    currentFish <
+    fish.length - 1
+  ) {
 
     currentFish++;
 
@@ -390,6 +472,9 @@ function nextFish() {
 
 function previousFish() {
 
+  window.speechSynthesis.cancel();
+
+
   if (currentFish > 0) {
 
     currentFish--;
@@ -406,16 +491,30 @@ function previousFish() {
 }
 
 
+/* =========================
+   VÝBĚR ZE SEZNAMU
+========================= */
+
 function jumpToFish() {
 
-  if (fishSelect.value === "") {
+  if (
+    fishSelect.value === ""
+  ) {
     return;
   }
 
+
+  window.speechSynthesis.cancel();
+
+
   currentFish =
-    Number(fishSelect.value);
+    Number(
+      fishSelect.value
+    );
+
 
   showFish();
+
 
   window.scrollTo({
     top: 0,
@@ -425,7 +524,12 @@ function jumpToFish() {
 }
 
 
+/* =========================
+   START
+========================= */
+
 createFishSelect();
+
 showFish();
 
 </script>
