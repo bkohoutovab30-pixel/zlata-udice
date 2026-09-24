@@ -67,9 +67,7 @@
       text-align: center;
     }
 
-    /* =========================
-       FOTOGRAFIE
-    ========================= */
+    /* FOTOGRAFIE */
 
     .photo {
       width: 100%;
@@ -146,9 +144,7 @@
       margin-top: 8px;
     }
 
-    /* =========================
-       NAVIGACE
-    ========================= */
+    /* NAVIGACE */
 
     .navigation {
       display: grid;
@@ -195,9 +191,7 @@
       font-size: 16px;
     }
 
-    /* =========================
-       MOBIL
-    ========================= */
+    /* MOBIL */
 
     @media (max-width: 520px) {
 
@@ -245,9 +239,7 @@
       📖🐟
     </div>
 
-    <h1>
-      Učení
-    </h1>
+    <h1>Učení</h1>
 
     <p>
       Procházej ryby jednu po druhé
@@ -296,9 +288,7 @@
       class="nav-button previous"
       id="previousButton"
       onclick="previousFish()">
-
       ← Předchozí
-
     </button>
 
 
@@ -306,9 +296,7 @@
       class="nav-button next"
       id="nextButton"
       onclick="nextFish()">
-
       Další →
-
     </button>
 
   </div>
@@ -324,9 +312,7 @@
         value=""
         selected
         disabled>
-
         Vybrat rybu…
-
       </option>
 
     </select>
@@ -454,16 +440,12 @@ const photoArea =
 
 
 /* =========================================
-   PŘEVOD NÁZVU RYBY NA NÁZEV SOUBORU
+   NÁZEV RYBY -> NÁZEV SOUBORU
 ========================================= */
 
 function createImageName(name) {
 
   return name
-
-    /*
-      Odstranění české diakritiky.
-    */
 
     .normalize("NFD")
 
@@ -472,37 +454,19 @@ function createImageName(name) {
       ""
     )
 
-    /*
-      Malá písmena.
-    */
-
     .toLowerCase()
 
-    /*
-      Speciální úprava názvů pstruha.
-      Fotka může být uložena jen jako
-      pstruh-obecny.webp.
-    */
+    /* obě formy pstruha hledáme jako pstruh-obecny */
 
     .replace(
       /\s*-\s*f\.\s*.*$/,
       ""
     )
 
-    /*
-      Vše kromě písmen a číslic
-      převedeme na pomlčku.
-    */
-
     .replace(
       /[^a-z0-9]+/g,
       "-"
     )
-
-    /*
-      Odstraníme pomlčky ze začátku
-      a konce.
-    */
 
     .replace(
       /^-+|-+$/g,
@@ -519,12 +483,10 @@ function createImageName(name) {
 function createFishSelect() {
 
   fish.forEach(
-    (item,index) => {
+    (item, index) => {
 
       const option =
-        document.createElement(
-          "option"
-        );
+        document.createElement("option");
 
       option.value =
         index;
@@ -574,23 +536,19 @@ function showPlaceholder() {
 
 
 /* =========================================
-   AUTOMATICKÉ HLEDÁNÍ FOTKY
+   FOTOGRAFIE
 ========================================= */
 
 function showPhoto(item) {
 
-  photoArea.innerHTML =
-    "";
-
   /*
-    Z názvu:
-
-    Amur bílý
-
-    vznikne:
-
-    amur-bily
+    Placeholder zobrazíme hned.
+    Jakmile najdeme skutečnou fotku,
+    nahradíme ho obrázkem.
   */
+
+  showPlaceholder();
+
 
   const baseName =
     createImageName(
@@ -599,10 +557,9 @@ function showPhoto(item) {
 
 
   /*
-    Zkusíme více možných variant.
+    Zkoušíme více variant.
 
     Například:
-
     amur-bily.webp
     amur-bily-2.webp
     amur-bily-3.webp
@@ -611,38 +568,30 @@ function showPhoto(item) {
   const possibleImages = [
 
     baseName + ".webp",
-
     baseName + "-2.webp",
-
     baseName + "-3.webp",
 
     baseName + ".jpg",
-
     baseName + "-2.jpg",
+    baseName + "-3.jpg",
 
     baseName + ".jpeg",
+    baseName + "-2.jpeg",
 
-    baseName + ".png"
+    baseName + ".png",
+    baseName + "-2.png"
 
   ];
 
 
-  let attempt =
-    0;
+  let attempt = 0;
 
 
   function tryNextImage() {
 
-    /*
-      Vyzkoušeli jsme všechny možnosti.
-    */
-
     if (
-      attempt >=
-      possibleImages.length
+      attempt >= possibleImages.length
     ) {
-
-      showPlaceholder();
 
       return;
 
@@ -650,68 +599,67 @@ function showPhoto(item) {
 
 
     const img =
-      document.createElement(
-        "img"
-      );
-
-
-    img.className =
-      "fish-photo";
-
-
-    img.alt =
-      item.name;
-
-
-    img.loading =
-      "lazy";
-
-
-    img.decoding =
-      "async";
+      new Image();
 
 
     /*
-      Aktuální pokus.
+      DŮLEŽITÉ:
+      onload a onerror nastavíme
+      PŘED nastavením src.
+    */
+
+    img.onload = function() {
+
+      /*
+        Pokud už uživatel mezitím
+        přešel na jinou rybu,
+        starou fotografii nevložíme.
+      */
+
+      if (
+        fish[currentFish].name
+        !== item.name
+      ) {
+
+        return;
+
+      }
+
+
+      img.className =
+        "fish-photo";
+
+
+      img.alt =
+        item.name;
+
+
+      photoArea.innerHTML =
+        "";
+
+
+      photoArea.appendChild(
+        img
+      );
+
+    };
+
+
+    img.onerror = function() {
+
+      attempt++;
+
+      tryNextImage();
+
+    };
+
+
+    /*
+      SRC nastavíme až úplně nakonec.
     */
 
     img.src =
-      possibleImages[
-        attempt
-      ];
-
-
-    /*
-      Obrázek existuje.
-    */
-
-    img.onload =
-      function() {
-
-        photoArea.innerHTML =
-          "";
-
-        photoArea.appendChild(
-          img
-        );
-
-      };
-
-
-    /*
-      Obrázek neexistuje.
-
-      Zkusíme další název.
-    */
-
-    img.onerror =
-      function() {
-
-        attempt++;
-
-        tryNextImage();
-
-      };
+      possibleImages[attempt];
 
   }
 
@@ -746,15 +694,6 @@ function showFish() {
     fish.length;
 
 
-  /*
-    Automaticky najdeme fotografii.
-  */
-
-  showPhoto(
-    item
-  );
-
-
   previousButton.disabled =
     currentFish === 0;
 
@@ -767,11 +706,16 @@ function showFish() {
   fishSelect.value =
     "";
 
+
+  showPhoto(
+    item
+  );
+
 }
 
 
 /* =========================================
-   HLAS
+   ZVUK
 ========================================= */
 
 function playName() {
@@ -827,9 +771,7 @@ function playName() {
     );
 
 
-  if (
-    czechVoice
-  ) {
+  if (czechVoice) {
 
     speech.voice =
       czechVoice;
@@ -867,16 +809,12 @@ function nextFish() {
 
     currentFish++;
 
-
     showFish();
 
 
     window.scrollTo({
-
       top: 0,
-
       behavior: "smooth"
-
     });
 
   }
@@ -906,16 +844,12 @@ function previousFish() {
 
     currentFish--;
 
-
     showFish();
 
 
     window.scrollTo({
-
       top: 0,
-
       behavior: "smooth"
-
     });
 
   }
@@ -958,11 +892,8 @@ function jumpToFish() {
 
 
   window.scrollTo({
-
     top: 0,
-
     behavior: "smooth"
-
   });
 
 }
