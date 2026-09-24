@@ -2351,6 +2351,7 @@ answers:[
 correct:["a"]
 },
 
+{ 
 category:"IV. Stanovy ČRS",
 number:1,
 question:"Poslání ČRS je zejména:",
