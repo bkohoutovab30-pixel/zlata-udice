@@ -71,28 +71,42 @@
       text-align: center;
     }
 
+    /* =========================
+       FOTOGRAFIE
+    ========================= */
+
     .photo {
       width: 100%;
       min-height: 280px;
       background: #f3f7f9;
+      border-radius: 18px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #789;
+      margin-bottom: 22px;
+      overflow: hidden;
+    }
+
+    .animal-photo {
+      display: block;
+      width: 100%;
+      height: auto;
+      max-height: 420px;
+      object-fit: contain;
+      border-radius: 18px;
+    }
+
+    .photo-placeholder {
+      width: 100%;
+      min-height: 280px;
       border: 2px dashed #c7d8e2;
       border-radius: 18px;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      color: #789;
       padding: 20px;
-      margin-bottom: 22px;
-      overflow: hidden;
-    }
-
-    .photo img {
-      display: block;
-      width: 100%;
-      max-height: 350px;
-      object-fit: contain;
-      border-radius: 14px;
     }
 
     .photo-icon {
@@ -135,6 +149,10 @@
       font-size: 13px;
       margin-top: 8px;
     }
+
+    /* =========================
+       NAVIGACE
+    ========================= */
 
     .navigation {
       display: grid;
@@ -180,14 +198,36 @@
       color: #17324d;
       font-size: 16px;
     }
+
+    /* =========================
+       MOBIL
+    ========================= */
+
+    @media (max-width: 520px) {
+
+      .app {
+        padding: 15px;
+      }
+
+      .photo,
+      .photo-placeholder {
+        min-height: 220px;
+      }
+
+      .animal-photo {
+        max-height: 340px;
+      }
+
+      .animal-name {
+        font-size: 26px;
+      }
+    }
   </style>
 </head>
 
 <body>
 
 <main class="app">
-
-  <!-- HORNÍ LIŠTA -->
 
   <div class="topbar">
 
@@ -203,15 +243,15 @@
   </div>
 
 
-  <!-- HLAVIČKA -->
-
   <div class="header">
 
     <div class="header-icon">
       📖 🦆
     </div>
 
-    <h1>Učení</h1>
+    <h1>
+      Učení
+    </h1>
 
     <p>
       Procházej živočichy jednoho po druhém
@@ -220,12 +260,7 @@
   </div>
 
 
-  <!-- KARTA ŽIVOČICHA -->
-
   <div class="animal-card">
-
-
-    <!-- FOTOGRAFIE -->
 
     <div
       class="photo"
@@ -233,23 +268,17 @@
     </div>
 
 
-    <!-- ČÍSLO KARTY -->
-
     <div
       class="animal-number"
       id="animalNumber">
     </div>
 
 
-    <!-- NÁZEV -->
-
     <h2
       class="animal-name"
       id="animalName">
     </h2>
 
-
-    <!-- ZVUK -->
 
     <button
       class="sound-button"
@@ -259,14 +288,13 @@
 
     </button>
 
+
     <div class="sound-note">
       Klepni a poslechni si název
     </div>
 
   </div>
 
-
-  <!-- PŘEPÍNÁNÍ -->
 
   <div class="navigation">
 
@@ -291,8 +319,6 @@
 
   </div>
 
-
-  <!-- VÝBĚR ŽIVOČICHA -->
 
   <div class="jump">
 
@@ -323,9 +349,9 @@
 
 <script>
 
-/* =========================
+/* =========================================
    AKTUÁLNÍ ŽIVOČICH
-========================= */
+========================================= */
 
 let currentAnimal = 0;
 
@@ -366,14 +392,66 @@ const photoArea =
   );
 
 
-/* =========================
+/* =========================================
+   PŘEVOD NÁZVU NA NÁZEV SOUBORU
+========================================= */
+
+function createImageName(name) {
+
+  return name
+
+    /*
+      Odstranění české diakritiky.
+
+      Ledňáček říční
+      ->
+      Lednacek ricni
+    */
+
+    .normalize("NFD")
+
+    .replace(
+      /[\u0300-\u036f]/g,
+      ""
+    )
+
+    /*
+      Malá písmena.
+    */
+
+    .toLowerCase()
+
+    /*
+      Mezery a ostatní znaky
+      převedeme na pomlčky.
+    */
+
+    .replace(
+      /[^a-z0-9]+/g,
+      "-"
+    )
+
+    /*
+      Odstraníme případnou pomlčku
+      ze začátku nebo konce.
+    */
+
+    .replace(
+      /^-+|-+$/g,
+      ""
+    );
+
+}
+
+
+/* =========================================
    ROZBALOVACÍ SEZNAM
-========================= */
+========================================= */
 
 function createAnimalSelect() {
 
   animals.forEach(
-    (item, index) => {
+    (item,index) => {
 
       const option =
         document.createElement(
@@ -384,14 +462,6 @@ function createAnimalSelect() {
       option.value =
         index;
 
-
-      /*
-        Pokud má živočich číslo karty,
-        zobrazíme ho.
-
-        U neočíslované mihule
-        zobrazíme jen název.
-      */
 
       if (item.card) {
 
@@ -419,43 +489,187 @@ function createAnimalSelect() {
 }
 
 
-/* =========================
-   FOTOGRAFIE
-========================= */
+/* =========================================
+   ZÁSTUPNÁ FOTOGRAFIE
+========================================= */
 
-function showPhoto(item) {
+function showPlaceholder() {
 
-  /*
-    Jakmile později doplníme cestu
-    k obrázku do zivocichove-data.js,
-    fotografie se zobrazí automaticky.
-  */
+  photoArea.innerHTML = `
 
-  if (item.image) {
+    <div class="photo-placeholder">
 
-    photoArea.innerHTML =
-      '<img src="' +
-      item.image +
-      '" alt="' +
-      item.name +
-      '">';
+      <div class="photo-icon">
+        🖼️
+      </div>
 
-  }
-  else {
+      <strong>
+        Fotografii doplníme
+      </strong>
 
-    photoArea.innerHTML =
-      '<div class="photo-icon">🖼️</div>' +
-      '<strong>Fotografii doplníme</strong>' +
-      '<span>Pro tohoto živočicha je připravené místo.</span>';
+      <span>
+        Pro tohoto živočicha zatím fotografii nemáme.
+      </span>
 
-  }
+    </div>
+
+  `;
 
 }
 
 
-/* =========================
+/* =========================================
+   AUTOMATICKÉ HLEDÁNÍ FOTOGRAFIE
+========================================= */
+
+function showPhoto(item) {
+
+  photoArea.innerHTML =
+    "";
+
+
+  /*
+    Například:
+
+    Ledňáček říční
+
+    se převede na:
+
+    lednacek-ricni
+  */
+
+  const baseName =
+    createImageName(
+      item.name
+    );
+
+
+  /*
+    Postupně vyzkoušíme možné
+    názvy souborů.
+
+    Díky tomu nemusíme zapisovat
+    obrázek ke každému živočichovi
+    zvlášť.
+  */
+
+  const possibleImages = [
+
+    baseName + ".webp",
+
+    baseName + "-2.webp",
+
+    baseName + "-3.webp",
+
+    baseName + ".jpg",
+
+    baseName + "-2.jpg",
+
+    baseName + "-3.jpg",
+
+    baseName + ".jpeg",
+
+    baseName + ".png"
+
+  ];
+
+
+  let attempt =
+    0;
+
+
+  function tryNextImage() {
+
+    /*
+      Žádný obrázek nebyl nalezen.
+    */
+
+    if (
+      attempt >=
+      possibleImages.length
+    ) {
+
+      showPlaceholder();
+
+      return;
+
+    }
+
+
+    const img =
+      document.createElement(
+        "img"
+      );
+
+
+    img.className =
+      "animal-photo";
+
+
+    img.alt =
+      item.name;
+
+
+    img.loading =
+      "lazy";
+
+
+    img.decoding =
+      "async";
+
+
+    /*
+      Zkusíme aktuální soubor.
+    */
+
+    img.src =
+      possibleImages[
+        attempt
+      ];
+
+
+    /*
+      Soubor existuje.
+    */
+
+    img.onload =
+      function() {
+
+        photoArea.innerHTML =
+          "";
+
+        photoArea.appendChild(
+          img
+        );
+
+      };
+
+
+    /*
+      Soubor neexistuje.
+      Zkusíme další variantu.
+    */
+
+    img.onerror =
+      function() {
+
+        attempt++;
+
+        tryNextImage();
+
+      };
+
+  }
+
+
+  tryNextImage();
+
+}
+
+
+/* =========================================
    ZOBRAZENÍ ŽIVOČICHA
-========================= */
+========================================= */
 
 function showAnimal() {
 
@@ -468,8 +682,8 @@ function showAnimal() {
 
 
   /*
-    Číslo karty zobrazíme pouze,
-    pokud ho živočich má.
+    Číslo karty zobrazíme pouze
+    tam, kde existuje.
   */
 
   if (item.card) {
@@ -490,11 +704,6 @@ function showAnimal() {
   }
 
 
-  /*
-    Počítadlo se počítá automaticky
-    podle skutečného seznamu.
-  */
-
   counter.textContent =
     (currentAnimal + 1) +
     " / " +
@@ -514,16 +723,39 @@ function showAnimal() {
     "";
 
 
-  showPhoto(item);
+  /*
+    Automaticky vyhledáme fotku.
+  */
+
+  showPhoto(
+    item
+  );
 
 }
 
 
-/* =========================
+/* =========================================
    ZVUK
-========================= */
+========================================= */
 
 function playName() {
+
+  /*
+    Pokud zařízení hlas nepodporuje,
+    nic dalšího se nestane.
+  */
+
+  if (
+    !(
+      "speechSynthesis"
+      in window
+    )
+  ) {
+
+    return;
+
+  }
+
 
   window.speechSynthesis.cancel();
 
@@ -541,8 +773,10 @@ function playName() {
   speech.lang =
     "cs-CZ";
 
+
   speech.rate =
     0.85;
+
 
   speech.pitch =
     1;
@@ -555,6 +789,7 @@ function playName() {
   const czechVoice =
     voices.find(
       voice =>
+        voice.lang &&
         voice.lang
           .toLowerCase()
           .startsWith("cs")
@@ -576,13 +811,20 @@ function playName() {
 }
 
 
-/* =========================
-   DALŠÍ
-========================= */
+/* =========================================
+   DALŠÍ ŽIVOČICH
+========================================= */
 
 function nextAnimal() {
 
-  window.speechSynthesis.cancel();
+  if (
+    "speechSynthesis"
+    in window
+  ) {
+
+    window.speechSynthesis.cancel();
+
+  }
 
 
   if (
@@ -592,12 +834,16 @@ function nextAnimal() {
 
     currentAnimal++;
 
+
     showAnimal();
 
 
     window.scrollTo({
+
       top: 0,
+
       behavior: "smooth"
+
     });
 
   }
@@ -605,25 +851,38 @@ function nextAnimal() {
 }
 
 
-/* =========================
-   PŘEDCHOZÍ
-========================= */
+/* =========================================
+   PŘEDCHOZÍ ŽIVOČICH
+========================================= */
 
 function previousAnimal() {
 
-  window.speechSynthesis.cancel();
+  if (
+    "speechSynthesis"
+    in window
+  ) {
+
+    window.speechSynthesis.cancel();
+
+  }
 
 
-  if (currentAnimal > 0) {
+  if (
+    currentAnimal > 0
+  ) {
 
     currentAnimal--;
+
 
     showAnimal();
 
 
     window.scrollTo({
+
       top: 0,
+
       behavior: "smooth"
+
     });
 
   }
@@ -631,20 +890,29 @@ function previousAnimal() {
 }
 
 
-/* =========================
+/* =========================================
    SKOK NA ŽIVOČICHA
-========================= */
+========================================= */
 
 function jumpToAnimal() {
 
   if (
     animalSelect.value === ""
   ) {
+
     return;
+
   }
 
 
-  window.speechSynthesis.cancel();
+  if (
+    "speechSynthesis"
+    in window
+  ) {
+
+    window.speechSynthesis.cancel();
+
+  }
 
 
   currentAnimal =
@@ -657,16 +925,19 @@ function jumpToAnimal() {
 
 
   window.scrollTo({
+
     top: 0,
+
     behavior: "smooth"
+
   });
 
 }
 
 
-/* =========================
+/* =========================================
    START
-========================= */
+========================================= */
 
 createAnimalSelect();
 
