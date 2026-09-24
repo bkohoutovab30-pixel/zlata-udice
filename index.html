@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Zlatá udice – trénink</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #eef7fb;
+      color: #17324d;
+    }
+
+    .app {
+      max-width: 600px;
+      margin: auto;
+      min-height: 100vh;
+      padding: 30px 20px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 35px;
+    }
+
+    .header h1 {
+      margin-bottom: 8px;
+      font-size: 34px;
+    }
+
+    .header p {
+      margin: 0;
+      color: #567;
+      font-size: 17px;
+    }
+
+    .menu {
+      display: grid;
+      gap: 15px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 18px;
+      padding: 22px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+    }
+
+    .icon {
+      font-size: 38px;
+      margin-bottom: 8px;
+    }
+
+    .card h2 {
+      margin: 0 0 5px 0;
+      font-size: 22px;
+    }
+
+    .card p {
+      margin: 0;
+      color: #678;
+    }
+
+    .test {
+      margin-top: 12px;
+      background: #17324d;
+      color: white;
+    }
+
+    .test p {
+      color: #dce8f2;
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="app">
+
+    <div class="header">
+      <h1>🎣 Zlatá udice</h1>
+      <p>Uč se, procvičuj a připrav se na soutěž</p>
+    </div>
+
+    <div class="menu">
+
+      <div class="card">
+        <div class="icon">🐟</div>
+        <h2>Ryby</h2>
+        <p>Poznávání ryb našich vod</p>
+      </div>
+
+      <div class="card">
+        <div class="icon">🌿</div>
+        <h2>Rostliny</h2>
+        <p>Poznávání rostlin kolem vody</p>
+      </div>
+
+      <div class="card">
+        <div class="icon">🦆</div>
+        <h2>Živočichové</h2>
+        <p>Poznávání živočichů kolem našich vod</p>
+      </div>
+
+      <div class="card test">
+        <div class="icon">📝</div>
+        <h2>Testové otázky</h2>
+        <p>Procvičuj otázky Zlaté udice 2026</p>
+      </div>
+
+    </div>
+
+  </main>
+
+</body>
+</html>
