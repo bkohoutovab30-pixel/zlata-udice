@@ -26,6 +26,8 @@
       padding: 20px;
     }
 
+    /* HRÁČ */
+
     .player-bar {
       display: flex;
       justify-content: space-between;
@@ -55,6 +57,8 @@
       font-weight: bold;
     }
 
+    /* HLAVIČKA */
+
     .header {
       text-align: center;
       margin-bottom: 35px;
@@ -70,6 +74,8 @@
       color: #567;
       font-size: 17px;
     }
+
+    /* MENU */
 
     .menu {
       display: grid;
@@ -92,6 +98,10 @@
       transform: translateY(-2px);
     }
 
+    .card:active {
+      transform: scale(0.99);
+    }
+
     .icon {
       font-size: 38px;
       margin-bottom: 8px;
@@ -105,7 +115,10 @@
     .card p {
       margin: 0;
       color: #678;
+      line-height: 1.4;
     }
+
+    /* TEST */
 
     .test {
       margin-top: 12px;
@@ -116,6 +129,7 @@
     .test p {
       color: #dce8f2;
     }
+
   </style>
 </head>
 
@@ -123,56 +137,124 @@
 
 <main class="app">
 
-  <!-- Přihlášený hráč -->
+  <!-- PŘIHLÁŠENÝ HRÁČ -->
 
   <div class="player-bar">
 
     <div class="player">
-      <span class="player-avatar" id="playerAvatar"></span>
+
+      <span
+        class="player-avatar"
+        id="playerAvatar">
+      </span>
+
       <span id="playerName"></span>
+
     </div>
 
-    <a class="change-player" href="profily.html">
+    <a
+      class="change-player"
+      href="profily.html">
+
       Změnit hráče
+
     </a>
 
   </div>
 
 
+  <!-- HLAVIČKA -->
+
   <div class="header">
+
     <h1>🎣 Zlatá udice</h1>
-    <p>Uč se, procvičuj a připrav se na soutěž</p>
+
+    <p>
+      Uč se, procvičuj a připrav se na soutěž
+    </p>
+
   </div>
 
+
+  <!-- HLAVNÍ MENU -->
 
   <div class="menu">
 
-    <a class="card" href="ryby.html">
-      <div class="icon">🐟</div>
+
+    <!-- RYBY -->
+
+    <a
+      class="card"
+      href="ryby.html">
+
+      <div class="icon">
+        🐟
+      </div>
+
       <h2>Ryby</h2>
-      <p>Poznávání ryb našich vod</p>
+
+      <p>
+        Poznávání ryb našich vod
+      </p>
+
     </a>
 
 
-    <div class="card">
-      <div class="icon">🌿</div>
+    <!-- ROSTLINY -->
+
+    <a
+      class="card"
+      href="rostliny.html">
+
+      <div class="icon">
+        🌿
+      </div>
+
       <h2>Rostliny</h2>
-      <p>Poznávání rostlin kolem vody</p>
-    </div>
+
+      <p>
+        Poznávání rostlin kolem vody
+      </p>
+
+    </a>
 
 
-    <div class="card">
-      <div class="icon">🦆</div>
+    <!-- ŽIVOČICHOVÉ -->
+
+    <a
+      class="card"
+      href="zivocichove.html">
+
+      <div class="icon">
+        🦆
+      </div>
+
       <h2>Živočichové</h2>
-      <p>Poznávání živočichů kolem našich vod</p>
-    </div>
+
+      <p>
+        Poznávání živočichů kolem našich vod
+      </p>
+
+    </a>
 
 
-    <div class="card test">
-      <div class="icon">📝</div>
+    <!-- TESTOVÉ OTÁZKY -->
+
+    <a
+      class="card test"
+      href="otazky.html">
+
+      <div class="icon">
+        📝
+      </div>
+
       <h2>Testové otázky</h2>
-      <p>Procvičuj otázky Zlaté udice 2026</p>
-    </div>
+
+      <p>
+        Procvičuj otázky Zlaté udice 2026
+      </p>
+
+    </a>
 
   </div>
 
@@ -181,10 +263,16 @@
 
 <script>
 
+/* =========================
+   PROFILY
+========================= */
+
 function getProfiles() {
 
   const saved =
-    localStorage.getItem("zlataUdiceProfiles");
+    localStorage.getItem(
+      "zlataUdiceProfiles"
+    );
 
   if (!saved) {
     return [];
@@ -200,6 +288,10 @@ function getProfiles() {
 }
 
 
+/* =========================
+   AKTIVNÍ HRÁČ
+========================= */
+
 function loadActivePlayer() {
 
   const activeId =
@@ -207,11 +299,6 @@ function loadActivePlayer() {
       "zlataUdiceActiveProfile"
     );
 
-
-  /*
-    Nikdo zatím není vybraný.
-    Pošleme uživatele na profily.
-  */
 
   if (!activeId) {
 
@@ -229,14 +316,10 @@ function loadActivePlayer() {
 
   const player =
     profiles.find(
-      profile => profile.id === activeId
+      profile =>
+        profile.id === activeId
     );
 
-
-  /*
-    ID existuje, ale profil už třeba
-    někdo smazal.
-  */
 
   if (!player) {
 
@@ -252,21 +335,23 @@ function loadActivePlayer() {
   }
 
 
-  /*
-    Zobrazíme aktivního hráče.
-  */
-
   document.getElementById(
     "playerName"
-  ).textContent = player.name;
+  ).textContent =
+    player.name;
 
 
   document.getElementById(
     "playerAvatar"
-  ).textContent = player.avatar;
+  ).textContent =
+    player.avatar;
 
 }
 
+
+/* =========================
+   START
+========================= */
 
 loadActivePlayer();
 
