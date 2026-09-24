@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+
+  <title>Vyber hráče | Zlatá udice</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #eef7fb;
+      color: #17324d;
+    }
+
+    .app {
+      max-width: 600px;
+      margin: auto;
+      min-height: 100vh;
+      padding: 30px 20px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .logo {
+      font-size: 55px;
+    }
+
+    .header h1 {
+      margin: 5px 0 8px;
+      font-size: 32px;
+    }
+
+    .header p {
+      margin: 0;
+      color: #678;
+      font-size: 17px;
+    }
+
+    .profiles {
+      display: grid;
+      gap: 12px;
+    }
+
+    .profile {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      width: 100%;
+      background: white;
+      border: none;
+      border-radius: 18px;
+      padding: 16px;
+      text-align: left;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.07);
+      cursor: pointer;
+      color: #17324d;
+    }
+
+    .profile-avatar {
+      width: 55px;
+      height: 55px;
+      border-radius: 50%;
+      background: #dfeef5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+      flex-shrink: 0;
+    }
+
+    .profile-name {
+      font-size: 21px;
+      font-weight: bold;
+    }
+
+    .profile-text {
+      color: #789;
+      font-size: 13px;
+      margin-top: 3px;
+    }
+
+    .delete {
+      position: absolute;
+      right: 12px;
+      top: 12px;
+      width: 30px;
+      height: 30px;
+      border: none;
+      border-radius: 50%;
+      background: #f4f4f4;
+      color: #999;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    .add-button {
+      width: 100%;
+      margin-top: 15px;
+      border: 2px dashed #9fb9c7;
+      background: transparent;
+      border-radius: 18px;
+      padding: 18px;
+      color: #456;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .new-profile {
+      display: none;
+      margin-top: 18px;
+      background: white;
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.07);
+    }
+
+    .new-profile h2 {
+      margin: 0 0 15px;
+      font-size: 21px;
+      text-align: center;
+    }
+
+    .name-input {
+      width: 100%;
+      border: 1px solid #c7d8e2;
+      border-radius: 12px;
+      padding: 14px;
+      font-size: 17px;
+      margin-bottom: 15px;
+    }
+
+    .avatar-title {
+      font-size: 14px;
+      color: #678;
+      margin-bottom: 8px;
+    }
+
+    .avatars {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 7px;
+      margin-bottom: 18px;
+    }
+
+    .avatar-option {
+      border: 2px solid transparent;
+      background: #eef7fb;
+      border-radius: 12px;
+      padding: 8px 2px;
+      font-size: 25px;
+      cursor: pointer;
+    }
+
+    .avatar-option.selected {
+      border-color: #17324d;
+      background: #dfeef5;
+    }
+
+    .form-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .form-button {
+      border: none;
+      border-radius: 12px;
+      padding: 14px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .cancel {
+      background: #eef1f3;
+      color: #567;
+    }
+
+    .save {
+      background: #17324d;
+      color: white;
+    }
+
+    .empty-message {
+      text-align: center;
+      background: white;
+      padding: 20px;
+      border-radius: 18px;
+      color: #678;
+      line-height: 1.5;
+    }
+
+    .note {
+      text-align: center;
+      color: #789;
+      font-size: 12px;
+      line-height: 1.5;
+      margin-top: 25px;
+    }
+  </style>
+</head>
+
+<body>
+
+<main class="app">
+
+  <div class="header">
+    <div class="logo">🎣</div>
+    <h1>Zlatá udice</h1>
+    <p>Kdo se dnes učí?</p>
+  </div>
+
+  <div class="profiles" id="profiles"></div>
+
+  <button class="add-button" id="addButton" onclick="showForm()">
+    ＋ Přidat hráče
+  </button>
+
+  <div class="new-profile" id="newProfile">
+
+    <h2>Nový hráč</h2>
+
+    <input
+      type="text"
+      class="name-input"
+      id="playerName"
+      maxlength="20"
+      placeholder="Napiš jméno nebo přezdívku"
+    >
+
+    <div class="avatar-title">
+      Vyber si obrázek:
+    </div>
+
+    <div class="avatars" id="avatars">
+
+      <button class="avatar-option selected" onclick="selectAvatar(this, '🐟')">🐟</button>
+      <button class="avatar-option" onclick="selectAvatar(this, '🎣')">🎣</button>
+      <button class="avatar-option" onclick="selectAvatar(this, '🐸')">🐸</button>
+      <button class="avatar-option" onclick="selectAvatar(this, '🦆')">🦆</button>
+      <button class="avatar-option" onclick="selectAvatar(this, '🦦')">🦦</button>
+      <button class="avatar-option" onclick="selectAvatar(this, '🐢')">🐢</button>
+
+    </div>
+
+    <div class="form-buttons">
+
+      <button class="form-button cancel" onclick="hideForm()">
+        Zrušit
+      </button>
+
+      <button class="form-button save" onclick="createProfile()">
+        Vytvořit
+      </button>
+
+    </div>
+
+  </div>
+
+  <div class="note">
+    Profily a výsledky jsou uložené pouze v tomto zařízení.
+    Není potřeba žádný účet ani e-mail.
+  </div>
+
+</main>
+
+
+<script>
+
+let selectedAvatar = "🐟";
+
+
+function getProfiles() {
+
+  const saved =
+    localStorage.getItem("zlataUdiceProfiles");
+
+  if (!saved) {
+    return [];
+  }
+
+  try {
+    return JSON.parse(saved);
+  }
+  catch {
+    return [];
+  }
+
+}
+
+
+function saveProfiles(profiles) {
+
+  localStorage.setItem(
+    "zlataUdiceProfiles",
+    JSON.stringify(profiles)
+  );
+
+}
+
+
+function generateId() {
+
+  return (
+    Date.now().toString() +
+    Math.random().toString(16).slice(2)
+  );
+
+}
+
+
+function renderProfiles() {
+
+  const profiles = getProfiles();
+
+  const container =
+    document.getElementById("profiles");
+
+  container.innerHTML = "";
+
+
+  if (profiles.length === 0) {
+
+    container.innerHTML = `
+      <div class="empty-message">
+        Zatím tu není žádný hráč.<br>
+        Vytvoř si svůj první profil. 👇
+      </div>
+    `;
+
+    return;
+
+  }
+
+
+  profiles.forEach(profile => {
+
+    const button =
+      document.createElement("button");
+
+    button.className = "profile";
+
+    button.onclick = function() {
+      selectProfile(profile.id);
+    };
+
+
+    const avatar =
+      document.createElement("div");
+
+    avatar.className = "profile-avatar";
+    avatar.textContent = profile.avatar;
+
+
+    const text =
+      document.createElement("div");
+
+    const name =
+      document.createElement("div");
+
+    name.className = "profile-name";
+    name.textContent = profile.name;
+
+
+    const description =
+      document.createElement("div");
+
+    description.className = "profile-text";
+    description.textContent = "Pokračovat v učení";
+
+
+    text.appendChild(name);
+    text.appendChild(description);
+
+
+    const deleteButton =
+      document.createElement("button");
+
+    deleteButton.className = "delete";
+    deleteButton.textContent = "✕";
+
+    deleteButton.onclick = function(event) {
+
+      event.stopPropagation();
+
+      deleteProfile(profile.id);
+
+    };
+
+
+    button.appendChild(avatar);
+    button.appendChild(text);
+    button.appendChild(deleteButton);
+
+    container.appendChild(button);
+
+  });
+
+}
+
+
+function showForm() {
+
+  document.getElementById("newProfile")
+    .style.display = "block";
+
+  document.getElementById("addButton")
+    .style.display = "none";
+
+  document.getElementById("playerName")
+    .focus();
+
+}
+
+
+function hideForm() {
+
+  document.getElementById("newProfile")
+    .style.display = "none";
+
+  document.getElementById("addButton")
+    .style.display = "block";
+
+  document.getElementById("playerName").value = "";
+
+}
+
+
+function selectAvatar(button, avatar) {
+
+  document
+    .querySelectorAll(".avatar-option")
+    .forEach(item => {
+      item.classList.remove("selected");
+    });
+
+  button.classList.add("selected");
+
+  selectedAvatar = avatar;
+
+}
+
+
+function createProfile() {
+
+  const input =
+    document.getElementById("playerName");
+
+  const name =
+    input.value.trim();
+
+
+  if (name === "") {
+
+    alert("Napiš jméno nebo přezdívku.");
+
+    return;
+
+  }
+
+
+  const profiles = getProfiles();
+
+
+  const newProfile = {
+
+    id: generateId(),
+
+    name: name,
+
+    avatar: selectedAvatar,
+
+    created: Date.now()
+
+  };
+
+
+  profiles.push(newProfile);
+
+  saveProfiles(profiles);
+
+
+  input.value = "";
+
+  hideForm();
+
+  renderProfiles();
+
+}
+
+
+function selectProfile(id) {
+
+  /*
+    Zapamatujeme si, kdo právě používá aplikaci.
+  */
+
+  localStorage.setItem(
+    "zlataUdiceActiveProfile",
+    id
+  );
+
+
+  /*
+    A přejdeme do hlavního menu.
+  */
+
+  window.location.href = "index.html";
+
+}
+
+
+function deleteProfile(id) {
+
+  const profiles = getProfiles();
+
+  const profile =
+    profiles.find(item => item.id === id);
+
+
+  if (!profile) {
+    return;
+  }
+
+
+  const confirmed =
+    confirm(
+      "Opravdu chceš smazat profil „" +
+      profile.name +
+      "“?\n\nSmažou se také jeho výsledky."
+    );
+
+
+  if (!confirmed) {
+    return;
+  }
+
+
+  const updatedProfiles =
+    profiles.filter(
+      item => item.id !== id
+    );
+
+
+  saveProfiles(updatedProfiles);
+
+
+  /*
+    Smažeme i data tohoto hráče.
+    Budoucí výsledky budeme ukládat
+    s jeho jedinečným ID.
+  */
+
+  localStorage.removeItem(
+    "zlataUdiceFishMistakes_" + id
+  );
+
+  localStorage.removeItem(
+    "zlataUdiceProgress_" + id
+  );
+
+
+  const activeProfile =
+    localStorage.getItem(
+      "zlataUdiceActiveProfile"
+    );
+
+
+  if (activeProfile === id) {
+
+    localStorage.removeItem(
+      "zlataUdiceActiveProfile"
+    );
+
+  }
+
+
+  renderProfiles();
+
+}
+
+
+renderProfiles();
+
+</script>
+
+</body>
+</html>
