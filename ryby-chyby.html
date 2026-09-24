@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+
+  <title>Co mi nejde | Zlatá udice</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #eef7fb;
+      color: #17324d;
+    }
+
+    .app {
+      max-width: 600px;
+      margin: auto;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .topbar {
+      margin-bottom: 20px;
+    }
+
+    .back {
+      color: #567;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .header-icon {
+      font-size: 44px;
+    }
+
+    .header h1 {
+      margin: 5px 0;
+      font-size: 28px;
+    }
+
+    .header p {
+      margin: 0;
+      color: #678;
+    }
+
+    .mistake-count {
+      background: #fff;
+      border-radius: 16px;
+      padding: 14px;
+      margin-bottom: 18px;
+      text-align: center;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+    }
+
+    .mistake-count strong {
+      font-size: 22px;
+    }
+
+    .mistake-count span {
+      display: block;
+      color: #789;
+      margin-top: 3px;
+      font-size: 13px;
+    }
+
+    .fish-card {
+      background: white;
+      border-radius: 22px;
+      padding: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      text-align: center;
+    }
+
+    .photo {
+      width: 100%;
+      min-height: 280px;
+      background: #f3f7f9;
+      border: 2px dashed #c7d8e2;
+      border-radius: 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: #789;
+      padding: 20px;
+      margin-bottom: 22px;
+    }
+
+    .photo-icon {
+      font-size: 60px;
+      margin-bottom: 10px;
+    }
+
+    .question {
+      font-size: 20px;
+      font-weight: bold;
+      margin: 5px 0 18px;
+    }
+
+    .show-name {
+      border: none;
+      background: #17324d;
+      color: white;
+      padding: 14px 22px;
+      border-radius: 14px;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .answer {
+      display: none;
+    }
+
+    .fish-name {
+      font-size: 30px;
+      margin: 5px 0 20px;
+    }
+
+    .answer-question {
+      color: #678;
+      margin-bottom: 12px;
+    }
+
+    .answer-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .answer-button {
+      border: none;
+      border-radius: 14px;
+      padding: 15px 8px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .wrong {
+      background: #fde8e8;
+      color: #9b2929;
+    }
+
+    .correct {
+      background: #e2f4e8;
+      color: #27683a;
+    }
+
+    .empty {
+      display: none;
+      background: white;
+      border-radius: 22px;
+      padding: 35px 20px;
+      text-align: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    }
+
+    .empty-icon {
+      font-size: 65px;
+      margin-bottom: 10px;
+    }
+
+    .empty h2 {
+      margin: 5px 0 10px;
+      font-size: 26px;
+    }
+
+    .empty p {
+      color: #678;
+      line-height: 1.5;
+      margin-bottom: 22px;
+    }
+
+    .practice-link {
+      display: inline-block;
+      background: #17324d;
+      color: white;
+      text-decoration: none;
+      padding: 14px 20px;
+      border-radius: 14px;
+      font-weight: bold;
+    }
+
+    .info {
+      margin-top: 18px;
+      text-align: center;
+      color: #789;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+
+<body>
+
+<main class="app">
+
+  <div class="topbar">
+    <a class="back" href="ryby.html">← Ryby</a>
+  </div>
+
+  <div class="header">
+    <div class="header-icon">❤️🐟</div>
+    <h1>Co mi nejde</h1>
+    <p>Procvičuj ryby, které ti dělají problém</p>
+  </div>
+
+  <div class="mistake-count" id="mistakeCountBox">
+    <strong id="mistakeCount">0</strong>
+    <span>ryb k procvičení</span>
+  </div>
+
+  <!-- Procvičování problémových ryb -->
+
+  <div id="practiceArea">
+
+    <div class="fish-card">
+
+      <div class="photo">
+        <div class="photo-icon">🖼️</div>
+        <strong>Fotografii doplníme</strong>
+        <span>Jaká ryba je na obrázku?</span>
+      </div>
+
+      <div id="questionArea">
+
+        <div class="question">
+          Vzpomeneš si tentokrát?
+        </div>
+
+        <button
+          class="show-name"
+          onclick="showAnswer()">
+          👁️ Zobrazit název
+        </button>
+
+      </div>
+
+      <div class="answer" id="answerArea">
+
+        <h2 class="fish-name" id="fishName"></h2>
+
+        <div class="answer-question">
+          Jak to tentokrát dopadlo?
+        </div>
+
+        <div class="answer-buttons">
+
+          <button
+            class="answer-button wrong"
+            onclick="stillDontKnow()">
+            ❌ Ještě nevím
+          </button>
+
+          <button
+            class="answer-button correct"
+            onclick="nowIKnow()">
+            ✅ Už umím
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="info">
+      Po kliknutí na „Už umím“ se ryba
+      z tohoto seznamu odstraní.
+    </div>
+
+  </div>
+
+
+  <!-- Když už žádné problémové ryby nejsou -->
+
+  <div class="empty" id="emptyArea">
+
+    <div class="empty-icon">🏆</div>
+
+    <h2>Paráda!</h2>
+
+    <p>
+      Teď tu nemáš žádnou rybu,
+      kterou by bylo potřeba znovu procvičit.
+    </p>
+
+    <a
+      class="practice-link"
+      href="ryby-procvicovani.html">
+      🎯 Procvičovat další ryby
+    </a>
+
+  </div>
+
+</main>
+
+
+<script>
+
+let mistakes = [];
+
+let currentFish = null;
+
+let previousCard = null;
+
+
+const practiceArea =
+  document.getElementById("practiceArea");
+
+const emptyArea =
+  document.getElementById("emptyArea");
+
+const mistakeCount =
+  document.getElementById("mistakeCount");
+
+const mistakeCountBox =
+  document.getElementById("mistakeCountBox");
+
+const questionArea =
+  document.getElementById("questionArea");
+
+const answerArea =
+  document.getElementById("answerArea");
+
+const fishName =
+  document.getElementById("fishName");
+
+
+function loadMistakes() {
+
+  const saved =
+    localStorage.getItem(
+      "zlataUdiceFishMistakes"
+    );
+
+  if (!saved) {
+
+    mistakes = [];
+    return;
+
+  }
+
+  try {
+
+    mistakes = JSON.parse(saved);
+
+  } catch {
+
+    mistakes = [];
+
+  }
+
+}
+
+
+function saveMistakes() {
+
+  localStorage.setItem(
+    "zlataUdiceFishMistakes",
+    JSON.stringify(mistakes)
+  );
+
+}
+
+
+function updateCount() {
+
+  mistakeCount.textContent =
+    mistakes.length;
+
+}
+
+
+function chooseFish() {
+
+  updateCount();
+
+  if (mistakes.length === 0) {
+
+    practiceArea.style.display = "none";
+    mistakeCountBox.style.display = "none";
+    emptyArea.style.display = "block";
+
+    return;
+
+  }
+
+  practiceArea.style.display = "block";
+  mistakeCountBox.style.display = "block";
+  emptyArea.style.display = "none";
+
+
+  let possibleFish = mistakes;
+
+
+  /*
+    Pokud máme více než jednu problémovou rybu,
+    pokusíme se neopakovat okamžitě tu samou.
+  */
+
+  if (
+    mistakes.length > 1 &&
+    previousCard !== null
+  ) {
+
+    possibleFish =
+      mistakes.filter(
+        item => item.card !== previousCard
+      );
+
+  }
+
+
+  const randomIndex =
+    Math.floor(
+      Math.random() * possibleFish.length
+    );
+
+
+  currentFish =
+    possibleFish[randomIndex];
+
+
+  previousCard =
+    currentFish.card;
+
+
+  fishName.textContent =
+    currentFish.name;
+
+
+  questionArea.style.display = "block";
+  answerArea.style.display = "none";
+
+}
+
+
+function showAnswer() {
+
+  questionArea.style.display = "none";
+  answerArea.style.display = "block";
+
+}
+
+
+function stillDontKnow() {
+
+  /*
+    Ryba zůstává v seznamu.
+    Pouze vybereme další.
+  */
+
+  chooseFish();
+
+}
+
+
+function nowIKnow() {
+
+  /*
+    Zvládnutou rybu odstraníme
+    z problémových.
+  */
+
+  mistakes =
+    mistakes.filter(
+      item => item.card !== currentFish.card
+    );
+
+
+  saveMistakes();
+
+  chooseFish();
+
+}
+
+
+loadMistakes();
+chooseFish();
+
+</script>
+
+</body>
+</html>
