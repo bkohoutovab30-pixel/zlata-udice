@@ -26,13 +26,24 @@
       padding: 25px 20px 40px;
     }
 
-    .back {
-      display: inline-block;
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       margin-bottom: 20px;
+    }
+
+    .back {
       color: #567;
       text-decoration: none;
       font-weight: bold;
       font-size: 16px;
+    }
+
+    .player {
+      color: #567;
+      font-size: 14px;
+      font-weight: bold;
     }
 
     .header {
@@ -101,65 +112,493 @@
       color: #dce8f2;
     }
 
+    /* POKROK */
+
     .progress-box {
       margin-top: 25px;
       background: #dfeef5;
       border-radius: 18px;
-      padding: 18px;
+      padding: 20px;
+    }
+
+    .progress-title {
+      text-align: center;
+      font-size: 19px;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+
+    .progress-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .progress-item {
+      background: rgba(255,255,255,0.7);
+      border-radius: 14px;
+      padding: 13px 8px;
       text-align: center;
     }
 
-    .progress-box strong {
-      font-size: 18px;
+    .progress-number {
+      display: block;
+      font-size: 23px;
+      font-weight: bold;
+      margin-bottom: 3px;
     }
 
-    .progress-box p {
-      margin: 6px 0 0;
+    .progress-label {
+      display: block;
+      font-size: 12px;
       color: #567;
+    }
+
+    .success-box {
+      margin-top: 12px;
+      text-align: center;
+      color: #567;
+      font-size: 14px;
+    }
+
+    .success-box strong {
+      color: #17324d;
+    }
+
+    .fish-total {
+      margin-top: 12px;
+      text-align: center;
+      color: #678;
+      font-size: 12px;
     }
   </style>
 </head>
 
 <body>
 
-  <main class="app">
+<main class="app">
 
-    <a class="back" href="index.html">← Zpět</a>
+  <div class="topbar">
 
-    <div class="header">
-      <div class="fish-icon">🐟</div>
-      <h1>Ryby</h1>
-      <p>Poznávání ryb našich vod</p>
+    <a class="back" href="index.html">
+      ← Zpět
+    </a>
+
+    <div class="player" id="playerInfo"></div>
+
+  </div>
+
+
+  <div class="header">
+
+    <div class="fish-icon">🐟</div>
+
+    <h1>Ryby</h1>
+
+    <p>Poznávání ryb našich vod</p>
+
+  </div>
+
+
+  <div class="menu">
+
+    <a class="card" href="ryby-uceni.html">
+
+      <div class="icon">📖</div>
+
+      <h2>Učení</h2>
+
+      <p>
+        Procházej ryby jednu po druhé
+        a nauč se jejich názvy.
+      </p>
+
+    </a>
+
+
+    <a
+      class="card practice"
+      href="ryby-procvicovani.html">
+
+      <div class="icon">🎯</div>
+
+      <h2>Procvičování</h2>
+
+      <p>
+        Poznávej ryby podle obrázků
+        a kontroluj své odpovědi.
+      </p>
+
+    </a>
+
+
+    <a
+      class="card"
+      href="ryby-chyby.html">
+
+      <div class="icon">❤️</div>
+
+      <h2>Co mi nejde</h2>
+
+      <p>
+        Procvičuj hlavně ryby,
+        které ti dělají problémy.
+      </p>
+
+    </a>
+
+  </div>
+
+
+  <!-- POKROK HRÁČE -->
+
+  <div class="progress-box">
+
+    <div class="progress-title">
+      📊 Můj pokrok
     </div>
 
-    <div class="menu">
 
-      <a class="card" href="ryby-uceni.html">
-        <div class="icon">📖</div>
-        <h2>Učení</h2>
-        <p>Procházej ryby jednu po druhé a nauč se jejich názvy.</p>
-      </a>
+    <div class="progress-grid">
 
-      <a class="card practice" href="ryby-procvicovani.html">
-        <div class="icon">🎯</div>
-        <h2>Procvičování</h2>
-        <p>Poznávej ryby podle obrázků a kontroluj své odpovědi.</p>
-      </a>
+      <div class="progress-item">
 
-      <a class="card" href="ryby-chyby.html">
-        <div class="icon">❤️</div>
-        <h2>Co mi nejde</h2>
-        <p>Procvičuj hlavně ryby, které ti dělají problémy.</p>
-      </a>
+        <span
+          class="progress-number"
+          id="totalProgress">
+          0
+        </span>
+
+        <span class="progress-label">
+          🎯 Procvičeno
+        </span>
+
+      </div>
+
+
+      <div class="progress-item">
+
+        <span
+          class="progress-number"
+          id="correctProgress">
+          0
+        </span>
+
+        <span class="progress-label">
+          ✅ Správně
+        </span>
+
+      </div>
+
+
+      <div class="progress-item">
+
+        <span
+          class="progress-number"
+          id="wrongProgress">
+          0
+        </span>
+
+        <span class="progress-label">
+          ❌ Chybně
+        </span>
+
+      </div>
+
+
+      <div class="progress-item">
+
+        <span
+          class="progress-number"
+          id="mistakesProgress">
+          0
+        </span>
+
+        <span class="progress-label">
+          ❤️ K procvičení
+        </span>
+
+      </div>
 
     </div>
 
-    <div class="progress-box">
-      <strong>🐟 56 ryb</strong>
-      <p>Tvůj pokrok se zde později zobrazí automaticky.</p>
+
+    <div
+      class="success-box"
+      id="successBox">
     </div>
 
-  </main>
+
+    <div class="fish-total">
+      🐟 V této části je 56 ryb.
+    </div>
+
+  </div>
+
+</main>
+
+
+<script>
+
+/* =========================
+   AKTIVNÍ HRÁČ
+========================= */
+
+const activeProfileId =
+  localStorage.getItem(
+    "zlataUdiceActiveProfile"
+  );
+
+
+if (!activeProfileId) {
+
+  window.location.href =
+    "profily.html";
+
+}
+
+
+function getProfiles() {
+
+  const saved =
+    localStorage.getItem(
+      "zlataUdiceProfiles"
+    );
+
+
+  if (!saved) {
+    return [];
+  }
+
+
+  try {
+
+    return JSON.parse(saved);
+
+  }
+  catch {
+
+    return [];
+
+  }
+
+}
+
+
+const activePlayer =
+  getProfiles().find(
+    profile =>
+      profile.id === activeProfileId
+  );
+
+
+if (!activePlayer) {
+
+  localStorage.removeItem(
+    "zlataUdiceActiveProfile"
+  );
+
+  window.location.href =
+    "profily.html";
+
+}
+else {
+
+  document.getElementById(
+    "playerInfo"
+  ).textContent =
+    activePlayer.avatar +
+    " " +
+    activePlayer.name;
+
+}
+
+
+/* =========================
+   KLÍČE HRÁČE
+========================= */
+
+const progressKey =
+  "zlataUdiceFishProgress_" +
+  activeProfileId;
+
+
+const mistakesKey =
+  "zlataUdiceFishMistakes_" +
+  activeProfileId;
+
+
+/* =========================
+   NAČTENÍ POKROKU
+========================= */
+
+function getProgress() {
+
+  const saved =
+    localStorage.getItem(
+      progressKey
+    );
+
+
+  if (!saved) {
+
+    return {
+      total: 0,
+      correct: 0,
+      wrong: 0
+    };
+
+  }
+
+
+  try {
+
+    const progress =
+      JSON.parse(saved);
+
+
+    return {
+
+      total:
+        Number(progress.total) || 0,
+
+      correct:
+        Number(progress.correct) || 0,
+
+      wrong:
+        Number(progress.wrong) || 0
+
+    };
+
+  }
+  catch {
+
+    return {
+      total: 0,
+      correct: 0,
+      wrong: 0
+    };
+
+  }
+
+}
+
+
+/* =========================
+   NAČTENÍ PROBLÉMOVÝCH RYB
+========================= */
+
+function getMistakes() {
+
+  const saved =
+    localStorage.getItem(
+      mistakesKey
+    );
+
+
+  if (!saved) {
+    return [];
+  }
+
+
+  try {
+
+    const mistakes =
+      JSON.parse(saved);
+
+    return Array.isArray(mistakes)
+      ? mistakes
+      : [];
+
+  }
+  catch {
+
+    return [];
+
+  }
+
+}
+
+
+/* =========================
+   ZOBRAZENÍ STATISTIK
+========================= */
+
+function showProgress() {
+
+  const progress =
+    getProgress();
+
+
+  const mistakes =
+    getMistakes();
+
+
+  document.getElementById(
+    "totalProgress"
+  ).textContent =
+    progress.total;
+
+
+  document.getElementById(
+    "correctProgress"
+  ).textContent =
+    progress.correct;
+
+
+  document.getElementById(
+    "wrongProgress"
+  ).textContent =
+    progress.wrong;
+
+
+  document.getElementById(
+    "mistakesProgress"
+  ).textContent =
+    mistakes.length;
+
+
+  /*
+    Úspěšnost počítáme pouze tehdy,
+    pokud už dítě něco procvičovalo.
+  */
+
+  const successBox =
+    document.getElementById(
+      "successBox"
+    );
+
+
+  if (progress.total === 0) {
+
+    successBox.innerHTML =
+      "Začni procvičovat a tady se zobrazí tvoje výsledky. 🎯";
+
+  }
+  else {
+
+    const percentage =
+      Math.round(
+        (
+          progress.correct /
+          progress.total
+        ) * 100
+      );
+
+
+    successBox.innerHTML =
+      "Úspěšnost: <strong>" +
+      percentage +
+      " %</strong>";
+
+  }
+
+}
+
+
+showProgress();
+
+</script>
 
 </body>
 </html>
