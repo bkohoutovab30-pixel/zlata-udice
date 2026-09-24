@@ -27,12 +27,21 @@
     }
 
     .topbar {
-      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
     }
 
     .back {
       color: #567;
       text-decoration: none;
+      font-weight: bold;
+    }
+
+    .player {
+      color: #567;
+      font-size: 14px;
       font-weight: bold;
     }
 
@@ -56,7 +65,7 @@
     }
 
     .mistake-count {
-      background: #fff;
+      background: white;
       border-radius: 16px;
       padding: 14px;
       margin-bottom: 18px;
@@ -209,31 +218,62 @@
 <main class="app">
 
   <div class="topbar">
-    <a class="back" href="ryby.html">← Ryby</a>
+
+    <a class="back" href="ryby.html">
+      ← Ryby
+    </a>
+
+    <div class="player" id="playerInfo"></div>
+
   </div>
+
 
   <div class="header">
+
     <div class="header-icon">❤️🐟</div>
+
     <h1>Co mi nejde</h1>
-    <p>Procvičuj ryby, které ti dělají problém</p>
+
+    <p>
+      Procvičuj ryby, které ti dělají problém
+    </p>
+
   </div>
 
-  <div class="mistake-count" id="mistakeCountBox">
+
+  <div
+    class="mistake-count"
+    id="mistakeCountBox">
+
     <strong id="mistakeCount">0</strong>
-    <span>ryb k procvičení</span>
+
+    <span id="mistakeCountText">
+      ryb k procvičení
+    </span>
+
   </div>
 
-  <!-- Procvičování problémových ryb -->
+
+  <!-- PROCVIČOVÁNÍ PROBLÉMOVÝCH RYB -->
 
   <div id="practiceArea">
 
     <div class="fish-card">
 
       <div class="photo">
+
         <div class="photo-icon">🖼️</div>
-        <strong>Fotografii doplníme</strong>
-        <span>Jaká ryba je na obrázku?</span>
+
+        <strong>
+          Fotografii doplníme
+        </strong>
+
+        <span>
+          Jaká ryba je na obrázku?
+        </span>
+
       </div>
+
 
       <div id="questionArea">
 
@@ -244,31 +284,45 @@
         <button
           class="show-name"
           onclick="showAnswer()">
+
           👁️ Zobrazit název
+
         </button>
 
       </div>
 
-      <div class="answer" id="answerArea">
 
-        <h2 class="fish-name" id="fishName"></h2>
+      <div
+        class="answer"
+        id="answerArea">
+
+        <h2
+          class="fish-name"
+          id="fishName">
+        </h2>
 
         <div class="answer-question">
           Jak to tentokrát dopadlo?
         </div>
+
 
         <div class="answer-buttons">
 
           <button
             class="answer-button wrong"
             onclick="stillDontKnow()">
+
             ❌ Ještě nevím
+
           </button>
+
 
           <button
             class="answer-button correct"
             onclick="nowIKnow()">
+
             ✅ Už umím
+
           </button>
 
         </div>
@@ -277,23 +331,30 @@
 
     </div>
 
+
     <div class="info">
+
       Po kliknutí na „Už umím“ se ryba
-      z tohoto seznamu odstraní.
+      z problémových ryb tohoto hráče odstraní.
+
     </div>
 
   </div>
 
 
-  <!-- Když už žádné problémové ryby nejsou -->
+  <!-- VŠECHNO ZVLÁDNUTO -->
 
-  <div class="empty" id="emptyArea">
+  <div
+    class="empty"
+    id="emptyArea">
 
-    <div class="empty-icon">🏆</div>
+    <div class="empty-icon">
+      🏆
+    </div>
 
     <h2>Paráda!</h2>
 
-    <p>
+    <p id="emptyText">
       Teď tu nemáš žádnou rybu,
       kterou by bylo potřeba znovu procvičit.
     </p>
@@ -301,7 +362,9 @@
     <a
       class="practice-link"
       href="ryby-procvicovani.html">
+
       🎯 Procvičovat další ryby
+
     </a>
 
   </div>
@@ -311,6 +374,94 @@
 
 <script>
 
+/* =========================
+   AKTIVNÍ HRÁČ
+========================= */
+
+const activeProfileId =
+  localStorage.getItem(
+    "zlataUdiceActiveProfile"
+  );
+
+
+if (!activeProfileId) {
+
+  window.location.href =
+    "profily.html";
+
+}
+
+
+function getProfiles() {
+
+  const saved =
+    localStorage.getItem(
+      "zlataUdiceProfiles"
+    );
+
+
+  if (!saved) {
+    return [];
+  }
+
+
+  try {
+
+    return JSON.parse(saved);
+
+  }
+  catch {
+
+    return [];
+
+  }
+
+}
+
+
+const activePlayer =
+  getProfiles().find(
+    profile =>
+      profile.id === activeProfileId
+  );
+
+
+if (!activePlayer) {
+
+  localStorage.removeItem(
+    "zlataUdiceActiveProfile"
+  );
+
+  window.location.href =
+    "profily.html";
+
+}
+else {
+
+  document.getElementById(
+    "playerInfo"
+  ).textContent =
+    activePlayer.avatar +
+    " " +
+    activePlayer.name;
+
+}
+
+
+/*
+  Každý hráč má vlastní seznam
+  problémových ryb.
+*/
+
+const mistakesKey =
+  "zlataUdiceFishMistakes_" +
+  activeProfileId;
+
+
+/* =========================
+   PROMĚNNÉ
+========================= */
+
 let mistakes = [];
 
 let currentFish = null;
@@ -319,46 +470,74 @@ let previousCard = null;
 
 
 const practiceArea =
-  document.getElementById("practiceArea");
+  document.getElementById(
+    "practiceArea"
+  );
 
 const emptyArea =
-  document.getElementById("emptyArea");
+  document.getElementById(
+    "emptyArea"
+  );
 
 const mistakeCount =
-  document.getElementById("mistakeCount");
+  document.getElementById(
+    "mistakeCount"
+  );
+
+const mistakeCountText =
+  document.getElementById(
+    "mistakeCountText"
+  );
 
 const mistakeCountBox =
-  document.getElementById("mistakeCountBox");
+  document.getElementById(
+    "mistakeCountBox"
+  );
 
 const questionArea =
-  document.getElementById("questionArea");
+  document.getElementById(
+    "questionArea"
+  );
 
 const answerArea =
-  document.getElementById("answerArea");
+  document.getElementById(
+    "answerArea"
+  );
 
 const fishName =
-  document.getElementById("fishName");
+  document.getElementById(
+    "fishName"
+  );
 
+
+/* =========================
+   NAČTENÍ CHYB HRÁČE
+========================= */
 
 function loadMistakes() {
 
   const saved =
     localStorage.getItem(
-      "zlataUdiceFishMistakes"
+      mistakesKey
     );
+
 
   if (!saved) {
 
     mistakes = [];
+
     return;
 
   }
 
+
   try {
 
-    mistakes = JSON.parse(saved);
+    mistakes =
+      JSON.parse(saved);
 
-  } catch {
+  }
+  catch {
 
     mistakes = [];
 
@@ -367,49 +546,118 @@ function loadMistakes() {
 }
 
 
+/* =========================
+   ULOŽENÍ
+========================= */
+
 function saveMistakes() {
 
   localStorage.setItem(
-    "zlataUdiceFishMistakes",
+    mistakesKey,
     JSON.stringify(mistakes)
   );
 
 }
 
 
+/* =========================
+   POČÍTADLO
+========================= */
+
 function updateCount() {
 
-  mistakeCount.textContent =
+  const count =
     mistakes.length;
+
+
+  mistakeCount.textContent =
+    count;
+
+
+  /*
+    Trochu hezčí čeština :-)
+  */
+
+  if (count === 1) {
+
+    mistakeCountText.textContent =
+      "ryba k procvičení";
+
+  }
+  else if (
+    count >= 2 &&
+    count <= 4
+  ) {
+
+    mistakeCountText.textContent =
+      "ryby k procvičení";
+
+  }
+  else {
+
+    mistakeCountText.textContent =
+      "ryb k procvičení";
+
+  }
 
 }
 
+
+/* =========================
+   VÝBĚR RYBY
+========================= */
 
 function chooseFish() {
 
   updateCount();
 
+
+  /*
+    Hráč nemá žádné chyby.
+  */
+
   if (mistakes.length === 0) {
 
-    practiceArea.style.display = "none";
-    mistakeCountBox.style.display = "none";
-    emptyArea.style.display = "block";
+    practiceArea.style.display =
+      "none";
+
+    mistakeCountBox.style.display =
+      "none";
+
+    emptyArea.style.display =
+      "block";
+
+
+    document.getElementById(
+      "emptyText"
+    ).textContent =
+      activePlayer.name +
+      " teď nemá žádnou rybu, " +
+      "kterou by bylo potřeba znovu procvičit. 🎉";
+
 
     return;
 
   }
 
-  practiceArea.style.display = "block";
-  mistakeCountBox.style.display = "block";
-  emptyArea.style.display = "none";
+
+  practiceArea.style.display =
+    "block";
+
+  mistakeCountBox.style.display =
+    "block";
+
+  emptyArea.style.display =
+    "none";
 
 
-  let possibleFish = mistakes;
+  let possibleFish =
+    mistakes;
 
 
   /*
-    Pokud máme více než jednu problémovou rybu,
-    pokusíme se neopakovat okamžitě tu samou.
+    Pokud je ryb více,
+    neopakujeme hned tu stejnou.
   */
 
   if (
@@ -417,17 +665,27 @@ function chooseFish() {
     previousCard !== null
   ) {
 
-    possibleFish =
+    const filtered =
       mistakes.filter(
-        item => item.card !== previousCard
+        item =>
+          item.card !== previousCard
       );
+
+
+    if (filtered.length > 0) {
+
+      possibleFish =
+        filtered;
+
+    }
 
   }
 
 
   const randomIndex =
     Math.floor(
-      Math.random() * possibleFish.length
+      Math.random() *
+      possibleFish.length
     );
 
 
@@ -443,25 +701,38 @@ function chooseFish() {
     currentFish.name;
 
 
-  questionArea.style.display = "block";
-  answerArea.style.display = "none";
+  questionArea.style.display =
+    "block";
+
+  answerArea.style.display =
+    "none";
 
 }
 
+
+/* =========================
+   ZOBRAZENÍ ODPOVĚDI
+========================= */
 
 function showAnswer() {
 
-  questionArea.style.display = "none";
-  answerArea.style.display = "block";
+  questionArea.style.display =
+    "none";
+
+  answerArea.style.display =
+    "block";
 
 }
 
+
+/* =========================
+   JEŠTĚ NEVÍM
+========================= */
 
 function stillDontKnow() {
 
   /*
-    Ryba zůstává v seznamu.
-    Pouze vybereme další.
+    Rybu necháme v seznamu.
   */
 
   chooseFish();
@@ -469,16 +740,27 @@ function stillDontKnow() {
 }
 
 
+/* =========================
+   UŽ UMÍM
+========================= */
+
 function nowIKnow() {
 
+  if (!currentFish) {
+    return;
+  }
+
+
   /*
-    Zvládnutou rybu odstraníme
-    z problémových.
+    Odstraníme pouze z problémových
+    ryb AKTUÁLNÍHO hráče.
   */
 
   mistakes =
     mistakes.filter(
-      item => item.card !== currentFish.card
+      item =>
+        item.card !==
+        currentFish.card
     );
 
 
@@ -489,7 +771,12 @@ function nowIKnow() {
 }
 
 
+/* =========================
+   START
+========================= */
+
 loadMistakes();
+
 chooseFish();
 
 </script>
