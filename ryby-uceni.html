@@ -67,28 +67,21 @@
       text-align: center;
     }
 
-    /* =========================
-       FOTOGRAFIE
-    ========================= */
-
     .photo {
       width: 100%;
       min-height: 280px;
       background: #f3f7f9;
       border-radius: 18px;
       display: flex;
-      flex-direction: column;
       justify-content: center;
       align-items: center;
       color: #789;
       margin-bottom: 22px;
       overflow: hidden;
-      position: relative;
     }
 
     .fish-photo {
       width: 100%;
-      height: auto;
       max-height: 420px;
       object-fit: contain;
       display: block;
@@ -96,8 +89,8 @@
     }
 
     .photo-placeholder {
-      min-height: 280px;
       width: 100%;
+      min-height: 280px;
       border: 2px dashed #c7d8e2;
       border-radius: 18px;
       display: flex;
@@ -193,16 +186,13 @@
       font-size: 16px;
     }
 
-    @media (max-width: 520px) {
+    @media(max-width:520px) {
 
       .app {
         padding: 15px;
       }
 
-      .photo {
-        min-height: 220px;
-      }
-
+      .photo,
       .photo-placeholder {
         min-height: 220px;
       }
@@ -287,130 +277,102 @@
 
 <script>
 
-/* =========================
-   SEZNAM RYB
-========================= */
+/* ========================================
+   RYBY
+======================================== */
 
 const fish = [
 
-  {card:"1", name:"Amur bílý", image:"images/amur-bily.webp"},
-
-  {card:"2", name:"Blatňák tmavý", image:"images/blatnak-tmavy.webp"},
-
-  {card:"3", name:"Bolen dravý", image:"images/bolen-dravy.webp"},
-
-  {card:"4", name:"Candát obecný", image:"images/candat-obecny.webp"},
-
+  {card:"1", name:"Amur bílý", image:"amur-bily.webp"},
+  {card:"2", name:"Blatňák tmavý", image:"blatnak-tmavy.webp"},
+  {card:"3", name:"Bolen dravý", image:"bolen-dravy.webp"},
+  {card:"4", name:"Candát obecný", image:"candat-obecny.webp"},
   {card:"5", name:"Candát východní"},
 
-  {card:"8", name:"Cejn velký", image:"images/cejn-velky.webp"},
+  {card:"8", name:"Cejn velký", image:"cejn-velky.webp"},
+  {card:"9", name:"Cejnek malý", image:"cejnek-maly.webp"},
+  {card:"10", name:"Drsek menší", image:"drsek-mensi.webp"},
+  {card:"11", name:"Hlavačka mramorovaná", image:"hlavacka-mramorovana.webp"},
+  {card:"12", name:"Hlavatka obecná", image:"hlavatka-obecna.webp"},
+  {card:"13", name:"Hořavka duhová", image:"horavka-duhova.webp"},
 
-  {card:"9", name:"Cejnek malý", image:"images/cejnek-maly.webp"},
-
-  {card:"10", name:"Drsek menší", image:"images/drsek-mensi.webp"},
-
-  {card:"11", name:"Hlavačka mramorovaná", image:"images/hlavacka-mramorovana.webp"},
-
-  {card:"12", name:"Hlavatka obecná", image:"images/hlavatka-obecna.webp"},
-
-  {card:"13", name:"Hořavka duhová", image:"images/horavka-duhova.webp"},
-
-  {card:"17", name:"Hrouzek obecný", image:"images/hrouzek-obecny.webp"},
-
-  {card:"18", name:"Jelec jesen", image:"images/jelec-jesen.webp"},
-
+  {card:"17", name:"Hrouzek obecný", image:"hrouzek-obecny.webp"},
+  {card:"18", name:"Jelec jesen", image:"jelec-jesen.webp"},
   {card:"19", name:"Jelec proudník"},
+  {card:"20", name:"Jelec tloušť", image:"jelec-tloust.webp"},
 
-  {card:"20", name:"Jelec tloušť", image:"images/jelec-tloust.webp"},
+  {card:"21", name:"Jeseter malý", image:"jeseter-maly.webp"},
+  {card:"22", name:"Ježdík obecný", image:"jezdik-obecny.webp"},
+  {card:"23", name:"Ježdík žlutý", image:"jezdik-zluty.webp"},
 
-  {card:"21", name:"Jeseter malý", image:"images/jeseter-maly.webp"},
+  {card:"24", name:"Kapr obecný", image:"kapr-obecny.webp"},
+  {card:"25", name:"Karas obecný", image:"karas-obecny.webp"},
+  {card:"26", name:"Karas stříbřitý", image:"karas-stribrity.webp"},
+  {card:"27", name:"Koljuška tříostná", image:"koljuska-triostna.webp"},
 
-  {card:"22", name:"Ježdík obecný", image:"images/jezdik-obecny.webp"},
+  {card:"28", name:"Lipan podhorní", image:"lipan-podhorni.webp"},
+  {card:"29", name:"Lín obecný", image:"lin-obecny.webp"},
+  {card:"30", name:"Losos obecný", image:"losos-obecny.webp"},
 
-  {card:"23", name:"Ježdík žlutý", image:"images/jezdik-zluty.webp"},
-
-  {card:"24", name:"Kapr obecný", image:"images/kapr-obecny.webp"},
-
-  {card:"25", name:"Karas obecný", image:"images/karas-obecny.webp"},
-
-  {card:"26", name:"Karas stříbřitý", image:"images/karas-stribrity.webp"},
-
-  {card:"27", name:"Koljuška tříostná", image:"images/koljuska-triostna.webp"},
-
-  {card:"28", name:"Lipan podhorní", image:"images/lipan-podhorni.webp"},
-
-  {card:"29", name:"Lín obecný", image:"images/lin-obecny.webp"},
-
-  {card:"30", name:"Losos obecný", image:"images/losos-obecny.webp"},
-
-  {card:"31", name:"Mník jednovousý", image:"images/mnik-jednovousy.webp"},
-
+  {card:"31", name:"Mník jednovousý", image:"mnik-jednovousy.webp"},
   {card:"32", name:"Mřenka mramorovaná"},
 
-  {card:"33", name:"Okoun říční", image:"images/okoun-ricni.webp"},
-
+  {card:"33", name:"Okoun říční", image:"okoun-ricni.webp"},
   {card:"34", name:"Okounek pstruhový"},
 
-  {card:"35", name:"Ostroretka stěhovavá", image:"images/ostroretka-stehovava.webp"},
-
+  {card:"35", name:"Ostroretka stěhovavá", image:"ostroretka-stehovava.webp"},
   {card:"36", name:"Ostrucha křivočará"},
 
-  {card:"37", name:"Ouklej obecná", image:"images/ouklej-obecna.webp"},
+  {card:"37", name:"Ouklej obecná", image:"ouklej-obecna.webp"},
+  {card:"38", name:"Ouklejka pruhovaná", image:"ouklejka-pruhovana.webp"},
 
-  {card:"38", name:"Ouklejka pruhovaná", image:"images/ouklejka-pruhovana.webp"},
-
-  {card:"39", name:"Parma obecná", image:"images/parma-obecna.webp"},
-
+  {card:"39", name:"Parma obecná", image:"parma-obecna.webp"},
   {card:"40", name:"Parma středomořská"},
 
-  {card:"41", name:"Perlín ostrobřichý", image:"images/perlin-ostrobrichy.webp"},
-
+  {card:"41", name:"Perlín ostrobřichý", image:"perlin-ostrobrichy.webp"},
   {card:"42", name:"Piskoř pruhovaný"},
 
-  {card:"43", name:"Plotice obecná", image:"images/plotice-obecna.webp"},
+  {card:"43", name:"Plotice obecná", image:"plotice-obecna.webp"},
+  {card:"44", name:"Podoustev říční", image:"podoustev-ricni.webp"},
 
-  {card:"44", name:"Podoustev říční", image:"images/podoustev-ricni.webp"},
+  {card:"45", name:"Pstruh duhový", image:"pstruh-duhovy.webp"},
 
-  {card:"45", name:"Pstruh duhový", image:"images/pstruh-duhovy.webp"},
+  /*
+    V prezentaci máme zatím společný obrázek
+    pstruha obecného.
+  */
 
-  {card:"46", name:"Pstruh obecný - f. mořská", image:"images/pstruh-obecny.webp"},
+  {card:"46", name:"Pstruh obecný - f. mořská", image:"pstruh-obecny.webp"},
+  {card:"47", name:"Pstruh obecný - f. potoční", image:"pstruh-obecny.webp"},
 
-  {card:"47", name:"Pstruh obecný - f. potoční", image:"images/pstruh-obecny.webp"},
-
-  {card:"50", name:"Siven americký", image:"images/siven-americky.webp"},
+  {card:"50", name:"Siven americký", image:"siven-americky.webp"},
 
   {card:"51", name:"Síh severní - maréna"},
-
   {card:"52", name:"Síh peleď"},
 
-  {card:"53", name:"Slunečnice pestrá", image:"images/slunecnice-pestra.webp"},
-
-  {card:"54", name:"Slunka stříbřitá", image:"images/slunka-stribrita.webp"},
+  {card:"53", name:"Slunečnice pestrá", image:"slunecnice-pestra.webp"},
+  {card:"54", name:"Slunka stříbřitá", image:"slunka-stribrita.webp"},
 
   {card:"55", name:"Střevle potoční"},
-
   {card:"56", name:"Střevlička východní"},
 
-  {card:"57", name:"Sumec velký", image:"images/sumec-velky.webp"},
+  {card:"57", name:"Sumec velký", image:"sumec-velky.webp"},
+  {card:"58", name:"Sumeček americký", image:"sumecek-americky.webp"},
+  {card:"59", name:"Štika obecná", image:"stika-obecna.webp"},
 
-  {card:"58", name:"Sumeček americký", image:"images/sumecek-americky.webp"},
+  {card:"60", name:"Tolstolobik bílý", image:"tolstolobik-bily.webp"},
 
-  {card:"59", name:"Štika obecná", image:"images/stika-obecna.webp"},
+  {card:"62", name:"Úhoř říční", image:"uhor-ricni.webp"},
 
-  {card:"60", name:"Tolstolobik bílý", image:"images/tolstolobik-bily.webp"},
-
-  {card:"62", name:"Úhoř říční", image:"images/uhor-ricni.webp"},
-
-  {card:"63", name:"Vranka obecná", image:"images/vranka-obecna.webp"},
-
+  {card:"63", name:"Vranka obecná", image:"vranka-obecna.webp"},
   {card:"64", name:"Vranka pruhoploutvá"}
 
 ];
 
 
-/* =========================
+/* ========================================
    PROMĚNNÉ
-========================= */
+======================================== */
 
 let currentFish = 0;
 
@@ -436,13 +398,13 @@ const photoArea =
   document.getElementById("photoArea");
 
 
-/* =========================
-   VÝBĚR RYBY
-========================= */
+/* ========================================
+   SEZNAM RYB
+======================================== */
 
 function createFishSelect() {
 
-  fish.forEach((item, index) => {
+  fish.forEach((item,index) => {
 
     const option =
       document.createElement("option");
@@ -464,85 +426,96 @@ function createFishSelect() {
 }
 
 
-/* =========================
-   FOTOGRAFIE
-========================= */
-
-function showPhoto(item) {
-
-  photoArea.innerHTML = "";
-
-  /*
-    Pokud máme obrázek,
-    zobrazíme ho.
-  */
-
-  if (item.image) {
-
-    const img =
-      document.createElement("img");
-
-    img.className =
-      "fish-photo";
-
-    img.src =
-      item.image;
-
-    img.alt =
-      item.name;
-
-    /*
-      Obrázek načteme až ve chvíli,
-      kdy je potřeba.
-      Pomáhá to hlavně na mobilu.
-    */
-
-    img.loading =
-      "lazy";
-
-    /*
-      Pokud by soubor obrázku
-      z nějakého důvodu chyběl,
-      zobrazíme zástupný text.
-    */
-
-    img.onerror =
-      function() {
-
-        showPlaceholder();
-
-      };
-
-    photoArea.appendChild(
-      img
-    );
-
-  }
-  else {
-
-    showPlaceholder();
-
-  }
-
-}
-
+/* ========================================
+   ZÁSTUPNÝ OBRÁZEK
+======================================== */
 
 function showPlaceholder() {
 
   photoArea.innerHTML = `
     <div class="photo-placeholder">
-      <div class="photo-icon">🖼️</div>
-      <strong>Fotografii doplníme</strong>
-      <span>Pro tuto rybu zatím fotografii nemáme.</span>
+
+      <div class="photo-icon">
+        🖼️
+      </div>
+
+      <strong>
+        Fotografii doplníme
+      </strong>
+
+      <span>
+        Pro tuto rybu zatím fotografii nemáme.
+      </span>
+
     </div>
   `;
 
 }
 
 
-/* =========================
+/* ========================================
+   FOTOGRAFIE
+======================================== */
+
+function showPhoto(item) {
+
+  photoArea.innerHTML =
+    "";
+
+  if (!item.image) {
+
+    showPlaceholder();
+
+    return;
+
+  }
+
+  const img =
+    document.createElement("img");
+
+  img.className =
+    "fish-photo";
+
+  /*
+    Obrázky jsou přímo ve stejné
+    složce jako ryby-uceni.html.
+  */
+
+  img.src =
+    item.image;
+
+  img.alt =
+    item.name;
+
+  img.loading =
+    "lazy";
+
+  img.decoding =
+    "async";
+
+  /*
+    Kdyby konkrétní obrázek
+    na GitHubu chyběl, aplikace
+    se nerozbije.
+  */
+
+  img.onerror =
+    function() {
+
+      showPlaceholder();
+
+    };
+
+  photoArea.appendChild(
+    img
+  );
+
+}
+
+
+/* ========================================
    ZOBRAZENÍ RYBY
-========================= */
+======================================== */
 
 function showFish() {
 
@@ -578,16 +551,18 @@ function showFish() {
 }
 
 
-/* =========================
-   PŘEHRÁNÍ NÁZVU
-========================= */
+/* ========================================
+   HLAS
+======================================== */
 
 function playName() {
 
   if (
     !("speechSynthesis" in window)
   ) {
+
     return;
+
   }
 
   window.speechSynthesis.cancel();
@@ -635,16 +610,18 @@ function playName() {
 }
 
 
-/* =========================
-   DALŠÍ
-========================= */
+/* ========================================
+   DALŠÍ RYBA
+======================================== */
 
 function nextFish() {
 
   if (
     "speechSynthesis" in window
   ) {
+
     window.speechSynthesis.cancel();
+
   }
 
   if (
@@ -657,8 +634,8 @@ function nextFish() {
     showFish();
 
     window.scrollTo({
-      top: 0,
-      behavior: "smooth"
+      top:0,
+      behavior:"smooth"
     });
 
   }
@@ -666,16 +643,18 @@ function nextFish() {
 }
 
 
-/* =========================
-   PŘEDCHOZÍ
-========================= */
+/* ========================================
+   PŘEDCHOZÍ RYBA
+======================================== */
 
 function previousFish() {
 
   if (
     "speechSynthesis" in window
   ) {
+
     window.speechSynthesis.cancel();
+
   }
 
   if (
@@ -687,8 +666,8 @@ function previousFish() {
     showFish();
 
     window.scrollTo({
-      top: 0,
-      behavior: "smooth"
+      top:0,
+      behavior:"smooth"
     });
 
   }
@@ -696,22 +675,26 @@ function previousFish() {
 }
 
 
-/* =========================
-   VÝBĚR ZE SEZNAMU
-========================= */
+/* ========================================
+   SKOK NA VYBRANOU RYBU
+======================================== */
 
 function jumpToFish() {
 
   if (
     fishSelect.value === ""
   ) {
+
     return;
+
   }
 
   if (
     "speechSynthesis" in window
   ) {
+
     window.speechSynthesis.cancel();
+
   }
 
   currentFish =
@@ -722,16 +705,16 @@ function jumpToFish() {
   showFish();
 
   window.scrollTo({
-    top: 0,
-    behavior: "smooth"
+    top:0,
+    behavior:"smooth"
   });
 
 }
 
 
-/* =========================
+/* ========================================
    START
-========================= */
+======================================== */
 
 createFishSelect();
 
