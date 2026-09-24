@@ -253,21 +253,25 @@
       id="photoArea">
     </div>
 
+
     <div
       class="animal-number"
       id="animalNumber">
     </div>
+
 
     <h2
       class="animal-name"
       id="animalName">
     </h2>
 
+
     <button
       class="sound-button"
       onclick="playName()">
       🔊 Přehrát název
     </button>
+
 
     <div class="sound-note">
       Klepni a poslechni si název
@@ -284,6 +288,7 @@
       onclick="previousAnimal()">
       ← Předchozí
     </button>
+
 
     <button
       class="nav-button next"
@@ -315,7 +320,10 @@
 </main>
 
 
-<!-- SEZNAM ŽIVOČICHŮ -->
+<!-- DŮLEŽITÉ:
+     seznam živočichů načítáme z tohoto souboru
+-->
+
 <script src="zivocichove-data.js"></script>
 
 
@@ -326,6 +334,7 @@
 ========================================= */
 
 let currentAnimal = 0;
+
 
 const animalName =
   document.getElementById("animalName");
@@ -350,7 +359,7 @@ const photoArea =
 
 
 /* =========================================
-   NÁZEV -> NÁZEV SOUBORU
+   NÁZEV -> SOUBOR
 ========================================= */
 
 function createImageName(name) {
@@ -391,8 +400,10 @@ function createAnimalSelect() {
       const option =
         document.createElement("option");
 
+
       option.value =
         index;
+
 
       if (item.card) {
 
@@ -401,14 +412,18 @@ function createAnimalSelect() {
           ". " +
           item.name;
 
-      } else {
+      }
+      else {
 
         option.textContent =
           item.name;
 
       }
 
-      animalSelect.appendChild(option);
+
+      animalSelect.appendChild(
+        option
+      );
 
     }
   );
@@ -446,31 +461,30 @@ function showPlaceholder() {
 
 
 /* =========================================
-   FOTOGRAFIE
+   AUTOMATICKÉ HLEDÁNÍ FOTKY
 ========================================= */
 
 function showPhoto(item) {
 
   /*
-    Nejdřív vždy ukážeme placeholder.
-
-    Díky tomu nikdy nezůstane
-    prázdný šedý obdélník.
+    Nejdříve zobrazíme placeholder.
+    Ten zůstane, pokud žádná fotka neexistuje.
   */
 
   showPlaceholder();
 
 
   const baseName =
-    createImageName(item.name);
+    createImageName(
+      item.name
+    );
 
 
   /*
-    Například:
+    Zkusíme postupně všechny běžné
+    varianty názvu.
 
-    Ledňáček říční
-
-    ->
+    Například Ledňáček říční:
 
     lednacek-ricni.webp
     lednacek-ricni-2.webp
@@ -499,12 +513,7 @@ function showPhoto(item) {
   let attempt = 0;
 
 
-  function tryImage() {
-
-    /*
-      Všechny varianty jsme vyzkoušeli.
-      Placeholder už je zobrazený.
-    */
+  function tryNextImage() {
 
     if (
       attempt >= possibleImages.length
@@ -515,34 +524,49 @@ function showPhoto(item) {
     }
 
 
-    const imagePath =
-      possibleImages[attempt];
-
-
     const img =
       new Image();
 
 
     /*
-      DŮLEŽITÉ:
-
-      Obrázek nejdříve načteme mimo stránku.
-
-      Teprve když opravdu existuje,
-      vložíme ho do photoArea.
+      Nejdříve obrázek načteme.
+      Do stránky ho vložíme až tehdy,
+      když opravdu existuje.
     */
 
     img.onload = function() {
 
-      photoArea.innerHTML = "";
+      /*
+        Ochrana proti situaci,
+        kdy už uživatel mezitím
+        přešel na jiného živočicha.
+      */
+
+      if (
+        animals[currentAnimal].name
+        !== item.name
+      ) {
+
+        return;
+
+      }
+
 
       img.className =
         "animal-photo";
 
+
       img.alt =
         item.name;
 
-      photoArea.appendChild(img);
+
+      photoArea.innerHTML =
+        "";
+
+
+      photoArea.appendChild(
+        img
+      );
 
     };
 
@@ -551,18 +575,18 @@ function showPhoto(item) {
 
       attempt++;
 
-      tryImage();
+      tryNextImage();
 
     };
 
 
     img.src =
-      imagePath;
+      possibleImages[attempt];
 
   }
 
 
-  tryImage();
+  tryNextImage();
 
 }
 
@@ -586,11 +610,13 @@ function showAnimal() {
     animalNumber.style.display =
       "inline-block";
 
+
     animalNumber.textContent =
       "Karta č. " +
       item.card;
 
-  } else {
+  }
+  else {
 
     animalNumber.style.display =
       "none";
@@ -617,7 +643,9 @@ function showAnimal() {
     "";
 
 
-  showPhoto(item);
+  showPhoto(
+    item
+  );
 
 }
 
@@ -629,7 +657,10 @@ function showAnimal() {
 function playName() {
 
   if (
-    !("speechSynthesis" in window)
+    !(
+      "speechSynthesis"
+      in window
+    )
   ) {
 
     return;
@@ -653,8 +684,10 @@ function playName() {
   speech.lang =
     "cs-CZ";
 
+
   speech.rate =
     0.85;
+
 
   speech.pitch =
     1;
@@ -696,7 +729,8 @@ function playName() {
 function nextAnimal() {
 
   if (
-    "speechSynthesis" in window
+    "speechSynthesis"
+    in window
   ) {
 
     window.speechSynthesis.cancel();
@@ -710,6 +744,7 @@ function nextAnimal() {
   ) {
 
     currentAnimal++;
+
 
     showAnimal();
 
@@ -731,7 +766,8 @@ function nextAnimal() {
 function previousAnimal() {
 
   if (
-    "speechSynthesis" in window
+    "speechSynthesis"
+    in window
   ) {
 
     window.speechSynthesis.cancel();
@@ -739,9 +775,12 @@ function previousAnimal() {
   }
 
 
-  if (currentAnimal > 0) {
+  if (
+    currentAnimal > 0
+  ) {
 
     currentAnimal--;
+
 
     showAnimal();
 
@@ -757,7 +796,7 @@ function previousAnimal() {
 
 
 /* =========================================
-   SKOK NA ŽIVOČICHA
+   SKOK ZE SEZNAMU
 ========================================= */
 
 function jumpToAnimal() {
@@ -772,7 +811,8 @@ function jumpToAnimal() {
 
 
   if (
-    "speechSynthesis" in window
+    "speechSynthesis"
+    in window
   ) {
 
     window.speechSynthesis.cancel();
@@ -781,7 +821,9 @@ function jumpToAnimal() {
 
 
   currentAnimal =
-    Number(animalSelect.value);
+    Number(
+      animalSelect.value
+    );
 
 
   showAnimal();
