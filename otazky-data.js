@@ -1740,7 +1740,7 @@ correct:["c"]
 },
 
 {
-category:"III. ZákON O RYBÁŘSTVÍ",
+category:"III. ZÁKON O RYBÁŘSTVÍ",
 number:1,
 question:"Jak rozdělujeme naše revíry z hlediska zákona o rybářství:",
 answers:[
