@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+
+  <title>Učení živočichů | Zlatá udice</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #eef7fb;
+      color: #17324d;
+    }
+
+    .app {
+      max-width: 600px;
+      margin: auto;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .back {
+      color: #567;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .counter {
+      color: #678;
+      font-weight: bold;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .header-icon {
+      font-size: 42px;
+    }
+
+    .header h1 {
+      margin: 5px 0;
+      font-size: 28px;
+    }
+
+    .header p {
+      margin: 0;
+      color: #678;
+    }
+
+    .animal-card {
+      background: white;
+      border-radius: 22px;
+      padding: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      text-align: center;
+    }
+
+    .photo {
+      width: 100%;
+      min-height: 280px;
+      background: #f3f7f9;
+      border: 2px dashed #c7d8e2;
+      border-radius: 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: #789;
+      padding: 20px;
+      margin-bottom: 22px;
+      overflow: hidden;
+    }
+
+    .photo img {
+      display: block;
+      width: 100%;
+      max-height: 350px;
+      object-fit: contain;
+      border-radius: 14px;
+    }
+
+    .photo-icon {
+      font-size: 60px;
+      margin-bottom: 10px;
+    }
+
+    .animal-number {
+      display: inline-block;
+      background: #dfeef5;
+      border-radius: 20px;
+      padding: 6px 12px;
+      font-size: 14px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .animal-name {
+      font-size: 30px;
+      margin: 5px 0 14px;
+    }
+
+    .sound-button {
+      border: none;
+      background: #e6f2f7;
+      color: #17324d;
+      padding: 12px 18px;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .sound-button:active {
+      transform: scale(0.97);
+    }
+
+    .sound-note {
+      color: #789;
+      font-size: 13px;
+      margin-top: 8px;
+    }
+
+    .navigation {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .nav-button {
+      border: none;
+      border-radius: 14px;
+      padding: 16px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .previous {
+      background: white;
+      color: #17324d;
+    }
+
+    .next {
+      background: #17324d;
+      color: white;
+    }
+
+    .nav-button:disabled {
+      opacity: 0.4;
+      cursor: default;
+    }
+
+    .jump {
+      margin-top: 20px;
+    }
+
+    select {
+      width: 100%;
+      padding: 13px;
+      border-radius: 12px;
+      border: 1px solid #c7d8e2;
+      background: white;
+      color: #17324d;
+      font-size: 16px;
+    }
+  </style>
+</head>
+
+<body>
+
+<main class="app">
+
+  <!-- HORNÍ LIŠTA -->
+
+  <div class="topbar">
+
+    <a class="back" href="zivocichove.html">
+      ← Živočichové
+    </a>
+
+    <span
+      class="counter"
+      id="counter">
+    </span>
+
+  </div>
+
+
+  <!-- HLAVIČKA -->
+
+  <div class="header">
+
+    <div class="header-icon">
+      📖 🦆
+    </div>
+
+    <h1>Učení</h1>
+
+    <p>
+      Procházej živočichy jednoho po druhém
+    </p>
+
+  </div>
+
+
+  <!-- KARTA ŽIVOČICHA -->
+
+  <div class="animal-card">
+
+
+    <!-- FOTOGRAFIE -->
+
+    <div
+      class="photo"
+      id="photoArea">
+    </div>
+
+
+    <!-- ČÍSLO KARTY -->
+
+    <div
+      class="animal-number"
+      id="animalNumber">
+    </div>
+
+
+    <!-- NÁZEV -->
+
+    <h2
+      class="animal-name"
+      id="animalName">
+    </h2>
+
+
+    <!-- ZVUK -->
+
+    <button
+      class="sound-button"
+      onclick="playName()">
+
+      🔊 Přehrát název
+
+    </button>
+
+    <div class="sound-note">
+      Klepni a poslechni si název
+    </div>
+
+  </div>
+
+
+  <!-- PŘEPÍNÁNÍ -->
+
+  <div class="navigation">
+
+    <button
+      class="nav-button previous"
+      id="previousButton"
+      onclick="previousAnimal()">
+
+      ← Předchozí
+
+    </button>
+
+
+    <button
+      class="nav-button next"
+      id="nextButton"
+      onclick="nextAnimal()">
+
+      Další →
+
+    </button>
+
+  </div>
+
+
+  <!-- VÝBĚR ŽIVOČICHA -->
+
+  <div class="jump">
+
+    <select
+      id="animalSelect"
+      onchange="jumpToAnimal()">
+
+      <option
+        value=""
+        selected
+        disabled>
+
+        Vybrat živočicha…
+
+      </option>
+
+    </select>
+
+  </div>
+
+</main>
+
+
+<!-- SPOLEČNÝ SEZNAM ŽIVOČICHŮ -->
+
+<script src="zivocichove-data.js"></script>
+
+
+<script>
+
+/* =========================
+   AKTUÁLNÍ ŽIVOČICH
+========================= */
+
+let currentAnimal = 0;
+
+
+const animalName =
+  document.getElementById(
+    "animalName"
+  );
+
+const animalNumber =
+  document.getElementById(
+    "animalNumber"
+  );
+
+const counter =
+  document.getElementById(
+    "counter"
+  );
+
+const previousButton =
+  document.getElementById(
+    "previousButton"
+  );
+
+const nextButton =
+  document.getElementById(
+    "nextButton"
+  );
+
+const animalSelect =
+  document.getElementById(
+    "animalSelect"
+  );
+
+const photoArea =
+  document.getElementById(
+    "photoArea"
+  );
+
+
+/* =========================
+   ROZBALOVACÍ SEZNAM
+========================= */
+
+function createAnimalSelect() {
+
+  animals.forEach(
+    (item, index) => {
+
+      const option =
+        document.createElement(
+          "option"
+        );
+
+
+      option.value =
+        index;
+
+
+      /*
+        Pokud má živočich číslo karty,
+        zobrazíme ho.
+
+        U neočíslované mihule
+        zobrazíme jen název.
+      */
+
+      if (item.card) {
+
+        option.textContent =
+          item.card +
+          ". " +
+          item.name;
+
+      }
+      else {
+
+        option.textContent =
+          item.name;
+
+      }
+
+
+      animalSelect.appendChild(
+        option
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================
+   FOTOGRAFIE
+========================= */
+
+function showPhoto(item) {
+
+  /*
+    Jakmile později doplníme cestu
+    k obrázku do zivocichove-data.js,
+    fotografie se zobrazí automaticky.
+  */
+
+  if (item.image) {
+
+    photoArea.innerHTML =
+      '<img src="' +
+      item.image +
+      '" alt="' +
+      item.name +
+      '">';
+
+  }
+  else {
+
+    photoArea.innerHTML =
+      '<div class="photo-icon">🖼️</div>' +
+      '<strong>Fotografii doplníme</strong>' +
+      '<span>Pro tohoto živočicha je připravené místo.</span>';
+
+  }
+
+}
+
+
+/* =========================
+   ZOBRAZENÍ ŽIVOČICHA
+========================= */
+
+function showAnimal() {
+
+  const item =
+    animals[currentAnimal];
+
+
+  animalName.textContent =
+    item.name;
+
+
+  /*
+    Číslo karty zobrazíme pouze,
+    pokud ho živočich má.
+  */
+
+  if (item.card) {
+
+    animalNumber.style.display =
+      "inline-block";
+
+    animalNumber.textContent =
+      "Karta č. " +
+      item.card;
+
+  }
+  else {
+
+    animalNumber.style.display =
+      "none";
+
+  }
+
+
+  /*
+    Počítadlo se počítá automaticky
+    podle skutečného seznamu.
+  */
+
+  counter.textContent =
+    (currentAnimal + 1) +
+    " / " +
+    animals.length;
+
+
+  previousButton.disabled =
+    currentAnimal === 0;
+
+
+  nextButton.disabled =
+    currentAnimal ===
+    animals.length - 1;
+
+
+  animalSelect.value =
+    "";
+
+
+  showPhoto(item);
+
+}
+
+
+/* =========================
+   ZVUK
+========================= */
+
+function playName() {
+
+  window.speechSynthesis.cancel();
+
+
+  const item =
+    animals[currentAnimal];
+
+
+  const speech =
+    new SpeechSynthesisUtterance(
+      item.name
+    );
+
+
+  speech.lang =
+    "cs-CZ";
+
+  speech.rate =
+    0.85;
+
+  speech.pitch =
+    1;
+
+
+  const voices =
+    window.speechSynthesis.getVoices();
+
+
+  const czechVoice =
+    voices.find(
+      voice =>
+        voice.lang
+          .toLowerCase()
+          .startsWith("cs")
+    );
+
+
+  if (czechVoice) {
+
+    speech.voice =
+      czechVoice;
+
+  }
+
+
+  window.speechSynthesis.speak(
+    speech
+  );
+
+}
+
+
+/* =========================
+   DALŠÍ
+========================= */
+
+function nextAnimal() {
+
+  window.speechSynthesis.cancel();
+
+
+  if (
+    currentAnimal <
+    animals.length - 1
+  ) {
+
+    currentAnimal++;
+
+    showAnimal();
+
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+
+  }
+
+}
+
+
+/* =========================
+   PŘEDCHOZÍ
+========================= */
+
+function previousAnimal() {
+
+  window.speechSynthesis.cancel();
+
+
+  if (currentAnimal > 0) {
+
+    currentAnimal--;
+
+    showAnimal();
+
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+
+  }
+
+}
+
+
+/* =========================
+   SKOK NA ŽIVOČICHA
+========================= */
+
+function jumpToAnimal() {
+
+  if (
+    animalSelect.value === ""
+  ) {
+    return;
+  }
+
+
+  window.speechSynthesis.cancel();
+
+
+  currentAnimal =
+    Number(
+      animalSelect.value
+    );
+
+
+  showAnimal();
+
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+
+}
+
+
+/* =========================
+   START
+========================= */
+
+createAnimalSelect();
+
+showAnimal();
+
+</script>
+
+</body>
+</html>
