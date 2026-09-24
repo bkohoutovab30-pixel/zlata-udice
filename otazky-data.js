@@ -1,26 +1,26 @@
 /*
-  ========================================
+  ==========================================
   ZLATÁ UDICE 2026 – TESTOVÉ OTÁZKY
-  ========================================
+  ==========================================
 
-  Každá otázka obsahuje:
+  Tento soubor obsahuje otázky pro test.
 
   category = oblast
   number   = číslo otázky
-  question = otázka
+  question = znění otázky
   answers  = možnosti odpovědí
-  correct  = správná odpověď
+  correct  = správná odpověď / odpovědi
 
-  Správná odpověď je uložená jako písmeno:
-  "a", "b" nebo "c".
+  correct je pole, takže systém umí
+  i otázku s více správnými odpověďmi.
 */
 
 
 const questions = [
 
-  /* =====================================
+  /* ========================================
      I. PŘÍRODOVĚDNÉ ZNALOSTI
-  ===================================== */
+     ======================================== */
 
   {
     category: "I. Přírodovědné znalosti",
