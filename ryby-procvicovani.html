@@ -8,9 +8,7 @@
   <title>Procvičování ryb | Zlatá udice</title>
 
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
@@ -27,7 +25,10 @@
     }
 
     .topbar {
-      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
     }
 
     .back {
@@ -36,14 +37,18 @@
       font-weight: bold;
     }
 
+    .player {
+      font-size: 14px;
+      font-weight: bold;
+      color: #567;
+    }
+
     .header {
       text-align: center;
       margin-bottom: 20px;
     }
 
-    .header-icon {
-      font-size: 42px;
-    }
+    .header-icon { font-size: 42px; }
 
     .header h1 {
       margin: 5px 0;
@@ -128,9 +133,7 @@
       cursor: pointer;
     }
 
-    .answer {
-      display: none;
-    }
+    .answer { display: none; }
 
     .fish-name {
       font-size: 30px;
@@ -183,6 +186,7 @@
 
   <div class="topbar">
     <a class="back" href="ryby.html">← Ryby</a>
+    <div class="player" id="playerInfo"></div>
   </div>
 
   <div class="header">
@@ -224,9 +228,7 @@
         Poznáš tuto rybu?
       </div>
 
-      <button
-        class="show-name"
-        onclick="showAnswer()">
+      <button class="show-name" onclick="showAnswer()">
         👁️ Zobrazit název
       </button>
 
@@ -261,8 +263,8 @@
   </div>
 
   <div class="info">
-    Ryby označené jako „Nevěděl/a“ se uloží do
-    ❤️ Co mi nejde.
+    Ryby označené jako „Nevěděl/a“ se uloží
+    do ❤️ Co mi nejde pouze tomuto hráči.
   </div>
 
 </main>
@@ -328,12 +330,92 @@ const fish = [
   {card:"64", name:"Vranka pruhoploutvá"}
 ];
 
+
+/* =========================
+   AKTIVNÍ HRÁČ
+========================= */
+
+const activeProfileId =
+  localStorage.getItem("zlataUdiceActiveProfile");
+
+if (!activeProfileId) {
+  window.location.href = "profily.html";
+}
+
+
+function getProfiles() {
+
+  const saved =
+    localStorage.getItem("zlataUdiceProfiles");
+
+  if (!saved) {
+    return [];
+  }
+
+  try {
+    return JSON.parse(saved);
+  }
+  catch {
+    return [];
+  }
+
+}
+
+
+const activePlayer =
+  getProfiles().find(
+    profile => profile.id === activeProfileId
+  );
+
+
+if (!activePlayer) {
+
+  localStorage.removeItem(
+    "zlataUdiceActiveProfile"
+  );
+
+  window.location.href = "profily.html";
+
+}
+else {
+
+  document.getElementById(
+    "playerInfo"
+  ).textContent =
+    activePlayer.avatar + " " + activePlayer.name;
+
+}
+
+
+/*
+  TOTO JE DŮLEŽITÉ:
+
+  Každé dítě má vlastní klíč pro svoje chyby.
+*/
+
+const mistakesKey =
+  "zlataUdiceFishMistakes_" + activeProfileId;
+
+
+/*
+  A vlastní klíč pro celkový pokrok.
+*/
+
+const progressKey =
+  "zlataUdiceFishProgress_" + activeProfileId;
+
+
+/* =========================
+   PROCVIČOVÁNÍ
+========================= */
+
 let currentFish = null;
 let previousFish = null;
 
 let sessionTotal = 0;
 let sessionCorrect = 0;
 let sessionWrong = 0;
+
 
 const fishName =
   document.getElementById("fishName");
@@ -363,10 +445,12 @@ function chooseRandomFish() {
     newFish =
       Math.floor(Math.random() * fish.length);
 
-  } while (
+  }
+  while (
     fish.length > 1 &&
     newFish === previousFish
   );
+
 
   currentFish = newFish;
   previousFish = newFish;
@@ -400,7 +484,8 @@ function answer(knewIt) {
       fish[currentFish].card
     );
 
-  } else {
+  }
+  else {
 
     sessionWrong++;
 
@@ -410,7 +495,11 @@ function answer(knewIt) {
 
   }
 
+
+  saveProgress(knewIt);
+
   updateScore();
+
   chooseRandomFish();
 
 }
@@ -430,12 +519,14 @@ function updateScore() {
 }
 
 
+/* =========================
+   CHYBY HRÁČE
+========================= */
+
 function getMistakes() {
 
   const saved =
-    localStorage.getItem(
-      "zlataUdiceFishMistakes"
-    );
+    localStorage.getItem(mistakesKey);
 
   if (!saved) {
     return [];
@@ -454,7 +545,7 @@ function getMistakes() {
 function saveMistakes(mistakes) {
 
   localStorage.setItem(
-    "zlataUdiceFishMistakes",
+    mistakesKey,
     JSON.stringify(mistakes)
   );
 
@@ -463,16 +554,20 @@ function saveMistakes(mistakes) {
 
 function addToMistakes(fishItem) {
 
-  const mistakes = getMistakes();
+  const mistakes =
+    getMistakes();
+
 
   const alreadyExists =
     mistakes.some(
       item => item.card === fishItem.card
     );
 
+
   if (!alreadyExists) {
 
     mistakes.push(fishItem);
+
     saveMistakes(mistakes);
 
   }
@@ -482,14 +577,81 @@ function addToMistakes(fishItem) {
 
 function removeFromMistakes(card) {
 
-  let mistakes = getMistakes();
+  let mistakes =
+    getMistakes();
+
 
   mistakes =
     mistakes.filter(
       item => item.card !== card
     );
 
+
   saveMistakes(mistakes);
+
+}
+
+
+/* =========================
+   CELKOVÝ POKROK HRÁČE
+========================= */
+
+function getProgress() {
+
+  const saved =
+    localStorage.getItem(progressKey);
+
+
+  if (!saved) {
+
+    return {
+      total: 0,
+      correct: 0,
+      wrong: 0
+    };
+
+  }
+
+
+  try {
+
+    return JSON.parse(saved);
+
+  }
+  catch {
+
+    return {
+      total: 0,
+      correct: 0,
+      wrong: 0
+    };
+
+  }
+
+}
+
+
+function saveProgress(knewIt) {
+
+  const progress =
+    getProgress();
+
+
+  progress.total++;
+
+
+  if (knewIt) {
+    progress.correct++;
+  }
+  else {
+    progress.wrong++;
+  }
+
+
+  localStorage.setItem(
+    progressKey,
+    JSON.stringify(progress)
+  );
 
 }
 
