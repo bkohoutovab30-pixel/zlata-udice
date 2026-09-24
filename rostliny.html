@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+
+  <title>Rostliny | Zlatá udice</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #eef7fb;
+      color: #17324d;
+    }
+
+    .app {
+      max-width: 600px;
+      margin: auto;
+      min-height: 100vh;
+      padding: 25px 20px 40px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .back {
+      color: #567;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    .player {
+      color: #567;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .plant-icon {
+      font-size: 55px;
+      margin-bottom: 5px;
+    }
+
+    .header h1 {
+      margin: 0 0 8px;
+      font-size: 34px;
+    }
+
+    .header p {
+      margin: 0;
+      color: #567;
+      font-size: 17px;
+    }
+
+    .menu {
+      display: grid;
+      gap: 15px;
+    }
+
+    .card {
+      display: block;
+      background: white;
+      border-radius: 18px;
+      padding: 22px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      text-decoration: none;
+      color: #17324d;
+      transition: 0.2s;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+    }
+
+    .card:active {
+      transform: scale(0.99);
+    }
+
+    .icon {
+      font-size: 36px;
+      margin-bottom: 8px;
+    }
+
+    .card h2 {
+      margin: 0 0 6px;
+      font-size: 22px;
+    }
+
+    .card p {
+      margin: 0;
+      color: #678;
+      line-height: 1.4;
+    }
+
+    .practice {
+      background: #17324d;
+      color: white;
+    }
+
+    .practice p {
+      color: #dce8f2;
+    }
+
+    /* POKROK */
+
+    .progress-box {
+      margin-top: 25px;
+      background: #dfeef5;
+      border-radius: 18px;
+      padding: 20px;
+    }
+
+    .progress-title {
+      text-align: center;
+      font-size: 19px;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+
+    .progress-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .progress-item {
+      background: rgba(255,255,255,0.7);
+      border-radius: 14px;
+      padding: 13px 8px;
+      text-align: center;
+    }
+
+    .progress-number {
+      display: block;
+      font-size: 23px;
+      font-weight: bold;
+      margin-bottom: 3px;
+    }
+
+    .progress-label {
+      display: block;
+      font-size: 12px;
+      color: #567;
+    }
+
+    .success-box {
+      margin-top: 12px;
+      text-align: center;
+      color: #567;
+      font-size: 14px;
+    }
+
+    .success-box strong {
+      color: #17324d;
+    }
+
+    .plant-total {
+      margin-top: 12px;
+      text-align: center;
+      color: #678;
+      font-size: 12px;
+    }
+  </style>
+</head>
+
+<body>
+
+<main class="app">
+
+  <!-- HORNÍ LIŠTA -->
+
+  <div class="topbar">
+
+    <a class="back" href="index.html">
+      ← Zpět
+    </a>
+
+    <div
+      class="player"
+      id="playerInfo">
+    </div>
+
+  </div>
+
+
+  <!-- HLAVIČKA -->
+
+  <div class="header">
+
+    <div class="plant-icon">
+      🌿
+    </div>
+
+    <h1>Rostliny</h1>
+
+    <p>
+      Poznávání rostlin kolem vody
+    </p>
+
+  </div>
+
+
+  <!-- MENU -->
+
+  <div class="menu">
+
+
+    <!-- UČENÍ -->
+
+    <a
+      class="card"
+      href="rostliny-uceni.html">
+
+      <div class="icon">
+        📖
+      </div>
+
+      <h2>Učení</h2>
+
+      <p>
+        Procházej rostliny jednu po druhé
+        a nauč se jejich názvy.
+      </p>
+
+    </a>
+
+
+    <!-- PROCVIČOVÁNÍ -->
+
+    <a
+      class="card practice"
+      href="rostliny-procvicovani.html">
+
+      <div class="icon">
+        🎯
+      </div>
+
+      <h2>Procvičování</h2>
+
+      <p>
+        Poznávej rostliny podle obrázků
+        a kontroluj své odpovědi.
+      </p>
+
+    </a>
+
+
+    <!-- CO MI NEJDE -->
+
+    <a
+      class="card"
+      href="rostliny-chyby.html">
+
+      <div class="icon">
+        ❤️
+      </div>
+
+      <h2>Co mi nejde</h2>
+
+      <p>
+        Procvičuj hlavně rostliny,
+        které ti dělají problémy.
+      </p>
+
+    </a>
+
+  </div>
+
+
+  <!-- POKROK -->
+
+  <div class="progress-box">
+
+    <div class="progress-title">
+      📊 Můj pokrok
+    </div>
+
+
+    <div class="progress-grid">
+
+
+      <!-- PROCVIČENO -->
+
+      <div class="progress-item">
+
+        <span
+          class="progress-number"
+          id="totalProgress">
+          0
+        </span>
+
+        <span class="progress-label">
+          🎯 Procvičeno
+        </span>
+
+      </div>
+
+
+      <!-- SPRÁVNĚ -->
+
+      <div class="progress-item">
+
+        <span
+          class="progress-number"
+          id="correctProgress">
+          0
+        </span>
+
+        <span class="progress-label">
+          ✅ Správně
+        </span>
+
+      </div>
+
+
+      <!-- CHYBNĚ -->
+
+      <div class="progress-item">
+
+        <span
+          class="progress-number"
+          id="wrongProgress">
+          0
+        </span>
+
+        <span class="progress-label">
+          ❌ Chybně
+        </span>
+
+      </div>
+
+
+      <!-- K PROCVIČENÍ -->
+
+      <div class="progress-item">
+
+        <span
+          class="progress-number"
+          id="mistakesProgress">
+          0
+        </span>
+
+        <span class="progress-label">
+          ❤️ K procvičení
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <!-- ÚSPĚŠNOST -->
+
+    <div
+      class="success-box"
+      id="successBox">
+    </div>
+
+
+    <div class="plant-total">
+      🌿 54 rostlin
+    </div>
+
+  </div>
+
+</main>
+
+
+<script>
+
+/* =========================
+   PROFILY
+========================= */
+
+function getProfiles() {
+
+  const saved =
+    localStorage.getItem(
+      "zlataUdiceProfiles"
+    );
+
+  if (!saved) {
+    return [];
+  }
+
+  try {
+    return JSON.parse(saved);
+  }
+  catch {
+    return [];
+  }
+
+}
+
+
+/* =========================
+   AKTIVNÍ HRÁČ
+========================= */
+
+const activeProfileId =
+  localStorage.getItem(
+    "zlataUdiceActiveProfile"
+  );
+
+
+if (!activeProfileId) {
+
+  window.location.href =
+    "profily.html";
+
+}
+
+
+const activePlayer =
+  getProfiles().find(
+    profile =>
+      profile.id === activeProfileId
+  );
+
+
+if (!activePlayer) {
+
+  localStorage.removeItem(
+    "zlataUdiceActiveProfile"
+  );
+
+  window.location.href =
+    "profily.html";
+
+}
+else {
+
+  document.getElementById(
+    "playerInfo"
+  ).textContent =
+    activePlayer.avatar +
+    " " +
+    activePlayer.name;
+
+}
+
+
+/* =========================
+   DATA KONKRÉTNÍHO HRÁČE
+========================= */
+
+const progressKey =
+  "zlataUdicePlantProgress_" +
+  activeProfileId;
+
+
+const mistakesKey =
+  "zlataUdicePlantMistakes_" +
+  activeProfileId;
+
+
+/* =========================
+   NAČTENÍ POKROKU
+========================= */
+
+function getProgress() {
+
+  const saved =
+    localStorage.getItem(
+      progressKey
+    );
+
+
+  if (!saved) {
+
+    return {
+      total: 0,
+      correct: 0,
+      wrong: 0
+    };
+
+  }
+
+
+  try {
+
+    const progress =
+      JSON.parse(saved);
+
+
+    return {
+
+      total:
+        Number(progress.total) || 0,
+
+      correct:
+        Number(progress.correct) || 0,
+
+      wrong:
+        Number(progress.wrong) || 0
+
+    };
+
+  }
+  catch {
+
+    return {
+      total: 0,
+      correct: 0,
+      wrong: 0
+    };
+
+  }
+
+}
+
+
+/* =========================
+   PROBLÉMOVÉ ROSTLINY
+========================= */
+
+function getMistakes() {
+
+  const saved =
+    localStorage.getItem(
+      mistakesKey
+    );
+
+
+  if (!saved) {
+    return [];
+  }
+
+
+  try {
+
+    const mistakes =
+      JSON.parse(saved);
+
+
+    return Array.isArray(mistakes)
+      ? mistakes
+      : [];
+
+  }
+  catch {
+
+    return [];
+
+  }
+
+}
+
+
+/* =========================
+   ZOBRAZENÍ POKROKU
+========================= */
+
+function showProgress() {
+
+  const progress =
+    getProgress();
+
+
+  const mistakes =
+    getMistakes();
+
+
+  document.getElementById(
+    "totalProgress"
+  ).textContent =
+    progress.total;
+
+
+  document.getElementById(
+    "correctProgress"
+  ).textContent =
+    progress.correct;
+
+
+  document.getElementById(
+    "wrongProgress"
+  ).textContent =
+    progress.wrong;
+
+
+  document.getElementById(
+    "mistakesProgress"
+  ).textContent =
+    mistakes.length;
+
+
+  const successBox =
+    document.getElementById(
+      "successBox"
+    );
+
+
+  if (progress.total === 0) {
+
+    successBox.innerHTML =
+      "Začni procvičovat a tady se zobrazí tvoje výsledky. 🌿";
+
+  }
+  else {
+
+    const percentage =
+      Math.round(
+        (
+          progress.correct /
+          progress.total
+        ) * 100
+      );
+
+
+    successBox.innerHTML =
+      "Úspěšnost: <strong>" +
+      percentage +
+      " %</strong>";
+
+  }
+
+}
+
+
+/* =========================
+   START
+========================= */
+
+showProgress();
+
+</script>
+
+</body>
+</html>
