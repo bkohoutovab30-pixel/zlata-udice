@@ -94,36 +94,15 @@
       padding: 6px 12px;
       font-size: 14px;
       font-weight: bold;
-      margin-bottom: 15px;
-    }
-
-    .name-area {
-      min-height: 100px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .show-name {
-      border: none;
-      background: #17324d;
-      color: white;
-      padding: 14px 22px;
-      border-radius: 14px;
-      font-size: 17px;
-      font-weight: bold;
-      cursor: pointer;
+      margin-bottom: 10px;
     }
 
     .fish-name {
-      display: none;
       font-size: 30px;
-      margin: 5px 0 15px;
+      margin: 5px 0 18px;
     }
 
     .sound-button {
-      display: none;
       border: none;
       background: #e6f2f7;
       color: #17324d;
@@ -135,10 +114,10 @@
 
     .sound-button:disabled {
       opacity: 0.55;
+      cursor: default;
     }
 
     .sound-note {
-      display: none;
       color: #789;
       font-size: 13px;
       margin-top: 8px;
@@ -216,25 +195,14 @@
 
     <div class="fish-number" id="fishNumber"></div>
 
-    <div class="name-area">
+    <h2 class="fish-name" id="fishName"></h2>
 
-      <button
-        class="show-name"
-        id="showNameButton"
-        onclick="showName()">
-        👁️ Zobrazit název
-      </button>
+    <button class="sound-button" disabled>
+      🔊 Přehrát název
+    </button>
 
-      <h2 class="fish-name" id="fishName"></h2>
-
-      <button class="sound-button" id="soundButton" disabled>
-        🔊 Přehrát název
-      </button>
-
-      <div class="sound-note" id="soundNote">
-        Zvuk doplníme později
-      </div>
-
+    <div class="sound-note">
+      Zvuk doplníme později
     </div>
 
   </div>
@@ -334,25 +302,36 @@ const fish = [
 
 let currentFish = 0;
 
-const fishName = document.getElementById("fishName");
-const fishNumber = document.getElementById("fishNumber");
-const counter = document.getElementById("counter");
-const previousButton = document.getElementById("previousButton");
-const nextButton = document.getElementById("nextButton");
-const fishSelect = document.getElementById("fishSelect");
-const showNameButton = document.getElementById("showNameButton");
-const soundButton = document.getElementById("soundButton");
-const soundNote = document.getElementById("soundNote");
+const fishName =
+  document.getElementById("fishName");
+
+const fishNumber =
+  document.getElementById("fishNumber");
+
+const counter =
+  document.getElementById("counter");
+
+const previousButton =
+  document.getElementById("previousButton");
+
+const nextButton =
+  document.getElementById("nextButton");
+
+const fishSelect =
+  document.getElementById("fishSelect");
 
 
 function createFishSelect() {
 
   fish.forEach((item, index) => {
 
-    const option = document.createElement("option");
+    const option =
+      document.createElement("option");
 
     option.value = index;
-    option.textContent = item.card + ". " + item.name;
+
+    option.textContent =
+      item.card + ". " + item.name;
 
     fishSelect.appendChild(option);
 
@@ -361,39 +340,20 @@ function createFishSelect() {
 }
 
 
-function hideName() {
-
-  fishName.style.display = "none";
-  soundButton.style.display = "none";
-  soundNote.style.display = "none";
-
-  showNameButton.style.display = "inline-block";
-
-}
-
-
-function showName() {
-
-  fishName.style.display = "block";
-  soundButton.style.display = "inline-block";
-  soundNote.style.display = "block";
-
-  showNameButton.style.display = "none";
-
-}
-
-
 function showFish() {
 
   const item = fish[currentFish];
 
-  fishName.textContent = item.name;
+  fishName.textContent =
+    item.name;
 
   fishNumber.textContent =
     "Karta č. " + item.card;
 
   counter.textContent =
-    (currentFish + 1) + " / " + fish.length;
+    (currentFish + 1) +
+    " / " +
+    fish.length;
 
   previousButton.disabled =
     currentFish === 0;
@@ -402,14 +362,8 @@ function showFish() {
     currentFish === fish.length - 1;
 
   /*
-    Po přechodu na jinou rybu se název
-    znovu automaticky schová.
-  */
-  hideName();
-
-  /*
-    Rolovací seznam se po změně ryby
-    vrátí na neutrální první řádek.
+    V základním stavu zůstává
+    rolovací pole neutrální.
   */
   fishSelect.value = "";
 
