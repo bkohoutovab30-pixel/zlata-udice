@@ -1,0 +1,1797 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+
+<title>Testové otázky | Zlatá udice</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #eef7fb;
+  color: #17324d;
+}
+
+.app {
+  max-width: 700px;
+  margin: auto;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.back {
+  color: #567;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.player {
+  color: #567;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.header-icon {
+  font-size: 46px;
+}
+
+.header h1 {
+  margin: 5px 0;
+  font-size: 30px;
+}
+
+.header p {
+  margin: 0;
+  color: #678;
+}
+
+.controls,
+.stats,
+.question-card {
+  background: white;
+  border-radius: 18px;
+  box-shadow: 0 4px 15px rgba(0,0,0,.07);
+}
+
+.controls {
+  padding: 15px;
+  margin-bottom: 14px;
+  display: grid;
+  gap: 10px;
+}
+
+.controls label {
+  font-size: 13px;
+  font-weight: bold;
+  color: #567;
+}
+
+.controls select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #cad9e2;
+  border-radius: 12px;
+  background: white;
+  color: #17324d;
+  font-size: 15px;
+}
+
+.mode-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.mode-btn {
+  border: 0;
+  border-radius: 12px;
+  padding: 11px;
+  font-weight: bold;
+  cursor: pointer;
+  background: #e6f2f7;
+  color: #17324d;
+}
+
+.mode-btn.active {
+  background: #17324d;
+  color: white;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  gap: 6px;
+  padding: 10px;
+  margin-bottom: 14px;
+}
+
+.stat {
+  text-align: center;
+}
+
+.stat strong {
+  display: block;
+  font-size: 19px;
+}
+
+.stat span {
+  font-size: 10px;
+  color: #789;
+}
+
+.question-card {
+  padding: 20px;
+}
+
+.meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 12px;
+  color: #789;
+  font-size: 12px;
+}
+
+.category {
+  background: #dfeef5;
+  padding: 6px 9px;
+  border-radius: 20px;
+  font-weight: bold;
+}
+
+.question-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  align-items: start;
+}
+
+.question-text {
+  font-size: 21px;
+  line-height: 1.45;
+  font-weight: bold;
+  margin: 5px 0 18px;
+}
+
+.sound {
+  border: 0;
+  background: #e6f2f7;
+  color: #17324d;
+  border-radius: 12px;
+  padding: 10px 12px;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.answers {
+  display: grid;
+  gap: 10px;
+}
+
+.answer {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 11px;
+  align-items: center;
+  border: 2px solid #e2ebf0;
+  border-radius: 15px;
+  padding: 12px;
+  background: #fff;
+}
+
+.answer input {
+  width: 23px;
+  height: 23px;
+  accent-color: #17324d;
+}
+
+.answer label {
+  line-height: 1.4;
+  cursor: pointer;
+}
+
+.answer-letter {
+  font-weight: bold;
+  margin-right: 4px;
+}
+
+.answer.correct {
+  border-color: #6bb37b;
+  background: #eaf7ed;
+}
+
+.answer.wrong {
+  border-color: #d98686;
+  background: #fdecec;
+}
+
+.actions {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.primary,
+.next {
+  border: 0;
+  border-radius: 14px;
+  padding: 15px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.primary {
+  background: #17324d;
+  color: white;
+}
+
+.next {
+  background: #e6f2f7;
+  color: #17324d;
+  display: none;
+}
+
+.feedback {
+  display: none;
+  margin-top: 15px;
+  padding: 14px;
+  border-radius: 14px;
+  line-height: 1.45;
+  font-weight: bold;
+}
+
+.feedback.ok {
+  display: block;
+  background: #e2f4e8;
+  color: #27683a;
+}
+
+.feedback.bad {
+  display: block;
+  background: #fde8e8;
+  color: #9b2929;
+}
+
+.empty {
+  display: none;
+  text-align: center;
+  background: white;
+  border-radius: 20px;
+  padding: 35px 20px;
+  box-shadow: 0 4px 15px rgba(0,0,0,.07);
+}
+
+.empty .big {
+  font-size: 60px;
+}
+
+.small-note {
+  text-align: center;
+  color: #789;
+  font-size: 12px;
+  line-height: 1.4;
+  margin-top: 14px;
+}
+
+@media(max-width:520px) {
+
+  .stats {
+    grid-template-columns: repeat(2,1fr);
+  }
+
+  .question-text {
+    font-size: 19px;
+  }
+
+  .answer {
+    grid-template-columns: auto 1fr auto;
+  }
+
+  .app {
+    padding: 15px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<main class="app">
+
+<div class="topbar">
+
+  <a class="back" href="index.html">
+    ← Zpět
+  </a>
+
+  <div
+    class="player"
+    id="playerInfo">
+  </div>
+
+</div>
+
+
+<div class="header">
+
+  <div class="header-icon">
+    📝
+  </div>
+
+  <h1>Testové otázky</h1>
+
+  <p>
+    Zlatá udice 2026
+  </p>
+
+</div>
+
+
+<!-- VÝBĚR OBLASTI -->
+
+<div class="controls">
+
+  <div>
+
+    <label for="categorySelect">
+      Oblast
+    </label>
+
+    <select id="categorySelect">
+
+      <option value="all">
+        Všechny oblasti
+      </option>
+
+    </select>
+
+  </div>
+
+
+  <div class="mode-row">
+
+    <button
+      class="mode-btn active"
+      id="allMode"
+      onclick="setMode('all')">
+
+      🎯 Všechny otázky
+
+    </button>
+
+
+    <button
+      class="mode-btn"
+      id="mistakeMode"
+      onclick="setMode('mistakes')">
+
+      ❤️ Co mi nejde
+
+    </button>
+
+  </div>
+
+</div>
+
+
+<!-- STATISTIKY -->
+
+<div class="stats">
+
+  <div class="stat">
+
+    <strong id="totalStat">
+      0
+    </strong>
+
+    <span>
+      Odpovězeno
+    </span>
+
+  </div>
+
+
+  <div class="stat">
+
+    <strong id="correctStat">
+      0
+    </strong>
+
+    <span>
+      Správně
+    </span>
+
+  </div>
+
+
+  <div class="stat">
+
+    <strong id="wrongStat">
+      0
+    </strong>
+
+    <span>
+      Chybně
+    </span>
+
+  </div>
+
+
+  <div class="stat">
+
+    <strong id="mistakeStat">
+      0
+    </strong>
+
+    <span>
+      Co mi nejde
+    </span>
+
+  </div>
+
+</div>
+
+
+<!-- OTÁZKA -->
+
+<div
+  id="quizArea"
+  class="question-card">
+
+
+  <div class="meta">
+
+    <span
+      class="category"
+      id="categoryLabel">
+    </span>
+
+    <span id="roundInfo">
+    </span>
+
+  </div>
+
+
+  <!-- TEXT OTÁZKY + ZVUK -->
+
+  <div class="question-row">
+
+    <div
+      class="question-text"
+      id="questionText">
+    </div>
+
+
+    <button
+      class="sound"
+      onclick="speakQuestion()"
+      aria-label="Přečíst otázku">
+
+      🔊
+
+    </button>
+
+  </div>
+
+
+  <!-- ODPOVĚDI -->
+
+  <div
+    class="answers"
+    id="answers">
+  </div>
+
+
+  <!-- VÝSLEDEK -->
+
+  <div
+    class="feedback"
+    id="feedback">
+  </div>
+
+
+  <!-- TLAČÍTKA -->
+
+  <div class="actions">
+
+    <button
+      class="primary"
+      id="evaluateBtn"
+      onclick="evaluateAnswer()">
+
+      ✓ Vyhodnotit odpověď
+
+    </button>
+
+
+    <button
+      class="next"
+      id="nextBtn"
+      onclick="nextQuestion()">
+
+      Další otázka →
+
+    </button>
+
+  </div>
+
+</div>
+
+
+<!-- KDYŽ UŽ NIC NENÍ -->
+
+<div
+  class="empty"
+  id="emptyArea">
+
+  <div class="big">
+    🏆
+  </div>
+
+  <h2>
+    Paráda!
+  </h2>
+
+  <p id="emptyText">
+    Teď tu není nic k procvičování.
+  </p>
+
+</div>
+
+
+<div class="small-note">
+  🔊 Otázku a každou odpověď můžeš poslouchat zvlášť.
+  Reproduktor odpověď nezaškrtne.
+</div>
+
+</main>
+
+
+<script src="otazky-data.js"></script>
+
+
+<script>
+
+/* =========================================
+   PROFILY
+========================================= */
+
+function getProfiles() {
+
+  try {
+
+    return JSON.parse(
+      localStorage.getItem(
+        "zlataUdiceProfiles"
+      ) || "[]"
+    );
+
+  }
+  catch {
+
+    return [];
+
+  }
+
+}
+
+
+const activeProfileId =
+  localStorage.getItem(
+    "zlataUdiceActiveProfile"
+  );
+
+
+if (!activeProfileId) {
+
+  location.href =
+    "profily.html";
+
+}
+
+
+const activePlayer =
+  getProfiles().find(
+    p => p.id === activeProfileId
+  );
+
+
+if (!activePlayer) {
+
+  localStorage.removeItem(
+    "zlataUdiceActiveProfile"
+  );
+
+  location.href =
+    "profily.html";
+
+}
+else {
+
+  document.getElementById(
+    "playerInfo"
+  ).textContent =
+    (activePlayer.avatar || "") +
+    " " +
+    activePlayer.name;
+
+}
+
+
+/* =========================================
+   DATA HRÁČE
+========================================= */
+
+const progressKey =
+  "zlataUdiceQuestionProgress_" +
+  activeProfileId;
+
+
+const mistakesKey =
+  "zlataUdiceQuestionMistakes_" +
+  activeProfileId;
+
+
+let mode =
+  "all";
+
+
+let deck =
+  [];
+
+
+let position =
+  0;
+
+
+let current =
+  null;
+
+
+let evaluated =
+  false;
+
+
+/* =========================================
+   OBLASTI
+========================================= */
+
+const categorySelect =
+  document.getElementById(
+    "categorySelect"
+  );
+
+
+const categories =
+  [
+    ...new Set(
+      questions.map(
+        q => q.category
+      )
+    )
+  ];
+
+
+categories.forEach(
+  category => {
+
+    const option =
+      document.createElement(
+        "option"
+      );
+
+    option.value =
+      category;
+
+    option.textContent =
+      category;
+
+    categorySelect.appendChild(
+      option
+    );
+
+  }
+);
+
+
+categorySelect.addEventListener(
+  "change",
+  resetDeck
+);
+
+
+/* =========================================
+   IDENTIFIKACE OTÁZKY
+========================================= */
+
+function qKey(q) {
+
+  return (
+    q.category +
+    "|" +
+    q.number
+  );
+
+}
+
+
+/* =========================================
+   STATISTIKY
+========================================= */
+
+function getProgress() {
+
+  try {
+
+    return Object.assign(
+
+      {
+        total: 0,
+        correct: 0,
+        wrong: 0
+      },
+
+      JSON.parse(
+        localStorage.getItem(
+          progressKey
+        ) || "{}"
+      )
+
+    );
+
+  }
+  catch {
+
+    return {
+      total: 0,
+      correct: 0,
+      wrong: 0
+    };
+
+  }
+
+}
+
+
+function saveProgress(progress) {
+
+  localStorage.setItem(
+    progressKey,
+    JSON.stringify(progress)
+  );
+
+}
+
+
+/* =========================================
+   CO MI NEJDE
+========================================= */
+
+function getMistakes() {
+
+  try {
+
+    const mistakes =
+      JSON.parse(
+        localStorage.getItem(
+          mistakesKey
+        ) || "[]"
+      );
+
+
+    return Array.isArray(mistakes)
+      ? mistakes
+      : [];
+
+  }
+  catch {
+
+    return [];
+
+  }
+
+}
+
+
+function saveMistakes(mistakes) {
+
+  localStorage.setItem(
+    mistakesKey,
+    JSON.stringify(mistakes)
+  );
+
+}
+
+
+function addMistake(question) {
+
+  const mistakes =
+    getMistakes();
+
+
+  if (
+    !mistakes.includes(
+      qKey(question)
+    )
+  ) {
+
+    mistakes.push(
+      qKey(question)
+    );
+
+    saveMistakes(
+      mistakes
+    );
+
+  }
+
+}
+
+
+function removeMistake(question) {
+
+  saveMistakes(
+
+    getMistakes().filter(
+      key =>
+        key !==
+        qKey(question)
+    )
+
+  );
+
+}
+
+
+/* =========================================
+   ZOBRAZENÍ STATISTIK
+========================================= */
+
+function updateStats() {
+
+  const progress =
+    getProgress();
+
+
+  document.getElementById(
+    "totalStat"
+  ).textContent =
+    progress.total;
+
+
+  document.getElementById(
+    "correctStat"
+  ).textContent =
+    progress.correct;
+
+
+  document.getElementById(
+    "wrongStat"
+  ).textContent =
+    progress.wrong;
+
+
+  document.getElementById(
+    "mistakeStat"
+  ).textContent =
+    getMistakes().length;
+
+}
+
+
+/* =========================================
+   ZAMÍCHÁNÍ
+========================================= */
+
+function shuffle(array) {
+
+  const copy =
+    [...array];
+
+
+  for (
+    let i = copy.length - 1;
+    i > 0;
+    i--
+  ) {
+
+    const j =
+      Math.floor(
+        Math.random() *
+        (i + 1)
+      );
+
+
+    [
+      copy[i],
+      copy[j]
+    ] =
+    [
+      copy[j],
+      copy[i]
+    ];
+
+  }
+
+
+  return copy;
+
+}
+
+
+/* =========================================
+   VÝBĚR OTÁZEK
+========================================= */
+
+function sourceQuestions() {
+
+  let source =
+    questions;
+
+
+  /*
+    Vybraná oblast.
+  */
+
+  if (
+    categorySelect.value !==
+    "all"
+  ) {
+
+    source =
+      source.filter(
+        q =>
+          q.category ===
+          categorySelect.value
+      );
+
+  }
+
+
+  /*
+    Jen otázky z Co mi nejde.
+  */
+
+  if (
+    mode ===
+    "mistakes"
+  ) {
+
+    const mistakes =
+      new Set(
+        getMistakes()
+      );
+
+
+    source =
+      source.filter(
+        q =>
+          mistakes.has(
+            qKey(q)
+          )
+      );
+
+  }
+
+
+  return source;
+
+}
+
+
+/* =========================================
+   NOVÉ KOLO
+========================================= */
+
+function resetDeck() {
+
+  speechSynthesis.cancel();
+
+
+  deck =
+    shuffle(
+      sourceQuestions()
+    );
+
+
+  position =
+    0;
+
+
+  showNextFromDeck();
+
+}
+
+
+/* =========================================
+   REŽIM
+========================================= */
+
+function setMode(newMode) {
+
+  mode =
+    newMode;
+
+
+  document.getElementById(
+    "allMode"
+  ).classList.toggle(
+    "active",
+    newMode === "all"
+  );
+
+
+  document.getElementById(
+    "mistakeMode"
+  ).classList.toggle(
+    "active",
+    newMode === "mistakes"
+  );
+
+
+  resetDeck();
+
+}
+
+
+/* =========================================
+   DALŠÍ OTÁZKA Z BALÍČKU
+========================================= */
+
+function showNextFromDeck() {
+
+  const quiz =
+    document.getElementById(
+      "quizArea"
+    );
+
+
+  const empty =
+    document.getElementById(
+      "emptyArea"
+    );
+
+
+  /*
+    Nic k procvičování.
+  */
+
+  if (
+    deck.length === 0
+  ) {
+
+    quiz.style.display =
+      "none";
+
+
+    empty.style.display =
+      "block";
+
+
+    document.getElementById(
+      "emptyText"
+    ).textContent =
+
+      mode === "mistakes"
+
+      ? "Nemáš tu žádnou otázku, kterou by bylo potřeba znovu procvičit. 🎉"
+
+      : "V této oblasti nejsou žádné otázky.";
+
+
+    updateStats();
+
+    return;
+
+  }
+
+
+  /*
+    Dokončeno celé kolo.
+    Znovu zamícháme.
+  */
+
+  if (
+    position >=
+    deck.length
+  ) {
+
+    deck =
+      shuffle(
+        sourceQuestions()
+      );
+
+
+    position =
+      0;
+
+
+    if (
+      deck.length === 0
+    ) {
+
+      resetDeck();
+
+      return;
+
+    }
+
+  }
+
+
+  quiz.style.display =
+    "block";
+
+
+  empty.style.display =
+    "none";
+
+
+  current =
+    deck[position];
+
+
+  position++;
+
+
+  renderQuestion();
+
+}
+
+
+/* =========================================
+   VYKRESLENÍ OTÁZKY
+========================================= */
+
+function renderQuestion() {
+
+  speechSynthesis.cancel();
+
+
+  evaluated =
+    false;
+
+
+  document.getElementById(
+    "categoryLabel"
+  ).textContent =
+
+    current.category +
+    " • " +
+    current.number;
+
+
+  document.getElementById(
+    "roundInfo"
+  ).textContent =
+
+    position +
+    " / " +
+    deck.length;
+
+
+  document.getElementById(
+    "questionText"
+  ).textContent =
+    current.question;
+
+
+  const box =
+    document.getElementById(
+      "answers"
+    );
+
+
+  box.innerHTML =
+    "";
+
+
+  /*
+    ODPOVĚDI
+  */
+
+  current.answers.forEach(
+    answer => {
+
+      const row =
+        document.createElement(
+          "div"
+        );
+
+
+      row.className =
+        "answer";
+
+
+      row.dataset.id =
+        answer.id;
+
+
+      /*
+        ZAŠKRTÁVACÍ OKÉNKO
+      */
+
+      const checkbox =
+        document.createElement(
+          "input"
+        );
+
+
+      checkbox.type =
+        "checkbox";
+
+
+      checkbox.id =
+        "answer_" +
+        answer.id;
+
+
+      checkbox.value =
+        answer.id;
+
+
+      /*
+        TEXT ODPOVĚDI
+      */
+
+      const label =
+        document.createElement(
+          "label"
+        );
+
+
+      label.htmlFor =
+        checkbox.id;
+
+
+      label.innerHTML =
+
+        '<span class="answer-letter">' +
+
+        answer.id.toUpperCase() +
+
+        ')</span> ' +
+
+        escapeHtml(
+          answer.text
+        );
+
+
+      /*
+        SAMOSTATNÝ ZVUK ODPOVĚDI
+      */
+
+      const sound =
+        document.createElement(
+          "button"
+        );
+
+
+      sound.className =
+        "sound";
+
+
+      sound.type =
+        "button";
+
+
+      sound.textContent =
+        "🔊";
+
+
+      sound.setAttribute(
+        "aria-label",
+        "Přečíst odpověď " +
+        answer.id.toUpperCase()
+      );
+
+
+      sound.onclick =
+        event => {
+
+          /*
+            Zabráníme tomu,
+            aby reproduktor zaškrtl
+            odpověď.
+          */
+
+          event.preventDefault();
+
+          event.stopPropagation();
+
+
+          speak(
+
+            answer.id.toUpperCase() +
+            ". " +
+            answer.text
+
+          );
+
+        };
+
+
+      row.append(
+        checkbox,
+        label,
+        sound
+      );
+
+
+      box.appendChild(
+        row
+      );
+
+    }
+  );
+
+
+  /*
+    VYČISTÍME STARÝ VÝSLEDEK
+  */
+
+  const feedback =
+    document.getElementById(
+      "feedback"
+    );
+
+
+  feedback.className =
+    "feedback";
+
+
+  feedback.textContent =
+    "";
+
+
+  document.getElementById(
+    "evaluateBtn"
+  ).style.display =
+    "block";
+
+
+  document.getElementById(
+    "nextBtn"
+  ).style.display =
+    "none";
+
+}
+
+
+/* =========================================
+   BEZPEČNÉ ZOBRAZENÍ TEXTU
+========================================= */
+
+function escapeHtml(text) {
+
+  return text.replace(
+
+    /[&<>"]/g,
+
+    character => (
+
+      {
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;"
+      }
+
+    )[character]
+
+  );
+
+}
+
+
+/* =========================================
+   HLAS
+========================================= */
+
+function speak(text) {
+
+  /*
+    Zastaví předchozí čtení.
+  */
+
+  speechSynthesis.cancel();
+
+
+  const speech =
+    new SpeechSynthesisUtterance(
+      text
+    );
+
+
+  speech.lang =
+    "cs-CZ";
+
+
+  speech.rate =
+    0.88;
+
+
+  const voices =
+    speechSynthesis.getVoices();
+
+
+  const czechVoice =
+    voices.find(
+      voice =>
+        voice.lang &&
+        voice.lang
+          .toLowerCase()
+          .startsWith("cs")
+    );
+
+
+  if (
+    czechVoice
+  ) {
+
+    speech.voice =
+      czechVoice;
+
+  }
+
+
+  speechSynthesis.speak(
+    speech
+  );
+
+}
+
+
+/* =========================================
+   PŘEČTENÍ OTÁZKY
+========================================= */
+
+function speakQuestion() {
+
+  if (
+    current
+  ) {
+
+    speak(
+      current.question
+    );
+
+  }
+
+}
+
+
+/* =========================================
+   VYHODNOCENÍ
+========================================= */
+
+function evaluateAnswer() {
+
+  if (
+    evaluated ||
+    !current
+  ) {
+
+    return;
+
+  }
+
+
+  /*
+    Zjistíme zaškrtnuté odpovědi.
+  */
+
+  const selected =
+    [
+      ...document.querySelectorAll(
+        "#answers input:checked"
+      )
+    ]
+    .map(
+      input =>
+        input.value
+    )
+    .sort();
+
+
+  /*
+    Nic není zaškrtnuté.
+  */
+
+  if (
+    selected.length === 0
+  ) {
+
+    const feedback =
+      document.getElementById(
+        "feedback"
+      );
+
+
+    feedback.className =
+      "feedback bad";
+
+
+    feedback.textContent =
+      "Nejdřív zaškrtni odpověď.";
+
+
+    return;
+
+  }
+
+
+  evaluated =
+    true;
+
+
+  const correct =
+    [
+      ...current.correct
+    ].sort();
+
+
+  /*
+    Porovnáme celé pole.
+    Funguje tedy i případ,
+    kdyby otázka měla více
+    správných odpovědí.
+  */
+
+  const isCorrect =
+
+    selected.length ===
+    correct.length
+
+    &&
+
+    selected.every(
+      (value,index) =>
+        value ===
+        correct[index]
+    );
+
+
+  /*
+    BAREVNÉ VYHODNOCENÍ
+  */
+
+  document.querySelectorAll(
+    ".answer"
+  ).forEach(
+
+    row => {
+
+      const id =
+        row.dataset.id;
+
+
+      if (
+        correct.includes(id)
+      ) {
+
+        row.classList.add(
+          "correct"
+        );
+
+      }
+      else if (
+        selected.includes(id)
+      ) {
+
+        row.classList.add(
+          "wrong"
+        );
+
+      }
+
+
+      row.querySelector(
+        "input"
+      ).disabled =
+        true;
+
+    }
+
+  );
+
+
+  /*
+    STATISTIKY
+  */
+
+  const progress =
+    getProgress();
+
+
+  progress.total++;
+
+
+  if (
+    isCorrect
+  ) {
+
+    progress.correct++;
+
+    /*
+      Pokud už otázku umí,
+      odstraníme ji z Co mi nejde.
+    */
+
+    removeMistake(
+      current
+    );
+
+  }
+  else {
+
+    progress.wrong++;
+
+    /*
+      Chybná otázka se uloží
+      aktuálnímu dítěti.
+    */
+
+    addMistake(
+      current
+    );
+
+  }
+
+
+  saveProgress(
+    progress
+  );
+
+
+  updateStats();
+
+
+  /*
+    TEXT SPRÁVNÉ ODPOVĚDI
+  */
+
+  const correctTexts =
+
+    current.answers
+
+    .filter(
+      answer =>
+        correct.includes(
+          answer.id
+        )
+    )
+
+    .map(
+      answer =>
+
+        answer.id.toUpperCase() +
+        ") " +
+        answer.text
+
+    )
+
+    .join("; ");
+
+
+  const feedback =
+    document.getElementById(
+      "feedback"
+    );
+
+
+  feedback.className =
+
+    "feedback " +
+
+    (
+      isCorrect
+        ? "ok"
+        : "bad"
+    );
+
+
+  feedback.textContent =
+
+    isCorrect
+
+    ? "✅ Správně!"
+
+    : "❌ Správná odpověď: " +
+      correctTexts;
+
+
+  /*
+    TLAČÍTKA
+  */
+
+  document.getElementById(
+    "evaluateBtn"
+  ).style.display =
+    "none";
+
+
+  document.getElementById(
+    "nextBtn"
+  ).style.display =
+    "block";
+
+}
+
+
+/* =========================================
+   DALŠÍ OTÁZKA
+========================================= */
+
+function nextQuestion() {
+
+  speechSynthesis.cancel();
+
+
+  /*
+    V režimu Co mi nejde
+    aktualizujeme balíček.
+
+    Pokud dítě otázku právě
+    zvládlo, už se znovu
+    neobjeví.
+  */
+
+  if (
+    mode ===
+    "mistakes"
+  ) {
+
+    deck =
+      deck.filter(
+
+        question =>
+          getMistakes().includes(
+            qKey(question)
+          )
+
+      );
+
+  }
+
+
+  showNextFromDeck();
+
+}
+
+
+/* =========================================
+   START
+========================================= */
+
+updateStats();
+
+resetDeck();
+
+</script>
+
+</body>
+</html>
