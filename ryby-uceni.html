@@ -322,6 +322,11 @@
 </main>
 
 
+<!-- SPOLEČNÝ SYSTÉM ZVUKU -->
+
+<script src="zvuk.js"></script>
+
+
 <script>
 
 /* =========================================
@@ -541,12 +546,6 @@ function showPlaceholder() {
 
 function showPhoto(item) {
 
-  /*
-    Placeholder zobrazíme hned.
-    Jakmile najdeme skutečnou fotku,
-    nahradíme ho obrázkem.
-  */
-
   showPlaceholder();
 
 
@@ -555,15 +554,6 @@ function showPhoto(item) {
       item.name
     );
 
-
-  /*
-    Zkoušíme více variant.
-
-    Například:
-    amur-bily.webp
-    amur-bily-2.webp
-    amur-bily-3.webp
-  */
 
   const possibleImages = [
 
@@ -602,19 +592,7 @@ function showPhoto(item) {
       new Image();
 
 
-    /*
-      DŮLEŽITÉ:
-      onload a onerror nastavíme
-      PŘED nastavením src.
-    */
-
     img.onload = function() {
-
-      /*
-        Pokud už uživatel mezitím
-        přešel na jinou rybu,
-        starou fotografii nevložíme.
-      */
 
       if (
         fish[currentFish].name
@@ -653,10 +631,6 @@ function showPhoto(item) {
 
     };
 
-
-    /*
-      SRC nastavíme až úplně nakonec.
-    */
 
     img.src =
       possibleImages[attempt];
@@ -720,67 +694,13 @@ function showFish() {
 
 function playName() {
 
-  if (
-    !(
-      "speechSynthesis"
-      in window
-    )
-  ) {
-
-    return;
-
-  }
-
-
-  window.speechSynthesis.cancel();
-
-
   const item =
     fish[currentFish];
 
 
-  const speech =
-    new SpeechSynthesisUtterance(
-      item.name
-    );
-
-
-  speech.lang =
-    "cs-CZ";
-
-
-  speech.rate =
-    0.85;
-
-
-  speech.pitch =
-    1;
-
-
-  const voices =
-    window.speechSynthesis.getVoices();
-
-
-  const czechVoice =
-    voices.find(
-      voice =>
-        voice.lang &&
-        voice.lang
-          .toLowerCase()
-          .startsWith("cs")
-    );
-
-
-  if (czechVoice) {
-
-    speech.voice =
-      czechVoice;
-
-  }
-
-
-  window.speechSynthesis.speak(
-    speech
+  playNamedSound(
+    item.name,
+    "audio/ryby"
   );
 
 }
@@ -792,14 +712,7 @@ function playName() {
 
 function nextFish() {
 
-  if (
-    "speechSynthesis"
-    in window
-  ) {
-
-    window.speechSynthesis.cancel();
-
-  }
+  stopSound();
 
 
   if (
@@ -828,14 +741,7 @@ function nextFish() {
 
 function previousFish() {
 
-  if (
-    "speechSynthesis"
-    in window
-  ) {
-
-    window.speechSynthesis.cancel();
-
-  }
+  stopSound();
 
 
   if (
@@ -872,14 +778,7 @@ function jumpToFish() {
   }
 
 
-  if (
-    "speechSynthesis"
-    in window
-  ) {
-
-    window.speechSynthesis.cancel();
-
-  }
+  stopSound();
 
 
   currentFish =
