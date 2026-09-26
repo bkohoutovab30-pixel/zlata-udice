@@ -15,13 +15,15 @@
     content="noindex, nofollow"
   >
 
-  <title>Učení živočichů | Zlatá udice</title>
+  <title>Procvičování živočichů | Zlatá udice</title>
+
 
   <style>
 
     * {
       box-sizing: border-box;
     }
+
 
     body {
       margin: 0;
@@ -30,6 +32,7 @@
       color: #17324d;
     }
 
+
     .app {
       max-width: 600px;
       margin: auto;
@@ -37,12 +40,14 @@
       padding: 20px;
     }
 
+
     .topbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
+
 
     .back {
       color: #567;
@@ -50,29 +55,78 @@
       font-weight: bold;
     }
 
-    .counter {
-      color: #678;
+
+    .player {
+      color: #567;
+      font-size: 14px;
       font-weight: bold;
     }
+
 
     .header {
       text-align: center;
       margin-bottom: 20px;
     }
 
+
     .header-icon {
       font-size: 42px;
     }
+
 
     .header h1 {
       margin: 5px 0;
       font-size: 28px;
     }
 
+
     .header p {
       margin: 0;
       color: #678;
     }
+
+
+    /* =========================
+       SKÓRE
+    ========================= */
+
+
+    .score {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin: 20px 0;
+    }
+
+
+    .score-box {
+      background: white;
+      border-radius: 14px;
+      padding: 12px 5px;
+      text-align: center;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+    }
+
+
+    .score-number {
+      display: block;
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+
+    .score-label {
+      display: block;
+      margin-top: 3px;
+      font-size: 12px;
+      color: #789;
+    }
+
+
+    /* =========================
+       KARTA
+    ========================= */
+
 
     .animal-card {
       background: white;
@@ -81,6 +135,7 @@
       box-shadow: 0 4px 15px rgba(0,0,0,0.08);
       text-align: center;
     }
+
 
     .photo {
       width: 100%;
@@ -91,18 +146,20 @@
       justify-content: center;
       align-items: center;
       color: #789;
-      margin-bottom: 22px;
+      margin-bottom: 20px;
       overflow: hidden;
     }
 
+
     .animal-photo {
+      display: block;
       width: 100%;
       height: auto;
       max-height: 420px;
       object-fit: contain;
-      display: block;
       border-radius: 18px;
     }
+
 
     .photo-placeholder {
       width: 100%;
@@ -116,101 +173,144 @@
       padding: 20px;
     }
 
+
     .photo-icon {
       font-size: 60px;
       margin-bottom: 10px;
     }
 
-    .photo-placeholder strong {
-      display: block;
-      margin-bottom: 6px;
-    }
 
-    .animal-number {
-      display: inline-block;
-      background: #dfeef5;
-      border-radius: 20px;
-      padding: 6px 12px;
-      font-size: 14px;
+    .question {
+      font-size: 21px;
       font-weight: bold;
-      margin-bottom: 10px;
-    }
-
-    .animal-name {
-      font-size: 30px;
       margin: 5px 0 18px;
     }
 
-    .sound-button {
-      border: none;
-      background: #e6f2f7;
-      color: #17324d;
-      padding: 12px 18px;
-      border-radius: 12px;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-    }
 
-    .sound-button:active {
-      transform: scale(0.97);
-    }
+    /* =========================
+       ODPOVĚDI
+    ========================= */
 
-    .sound-message {
-      min-height: 20px;
-      color: #789;
-      font-size: 13px;
-      margin-top: 9px;
-    }
 
-    .sound-error {
-      color: #a65b5b;
-    }
-
-    .navigation {
+    .answers {
       display: grid;
-      grid-template-columns: 1fr 1fr;
       gap: 12px;
-      margin-top: 18px;
     }
 
-    .nav-button {
-      border: none;
-      border-radius: 14px;
-      padding: 16px;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
+
+    .answer-row {
+      display: grid;
+      grid-template-columns: 1fr 52px;
+      gap: 8px;
     }
 
-    .previous {
+
+    .answer-button {
+      width: 100%;
+      border: 2px solid #d7e5ec;
       background: white;
       color: #17324d;
+      border-radius: 14px;
+      padding: 15px;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+      text-align: left;
     }
 
-    .next {
-      background: #17324d;
-      color: white;
+
+    .answer-button:active {
+      transform: scale(0.99);
     }
 
-    .nav-button:disabled {
-      opacity: 0.4;
+
+    .answer-button.correct {
+      background: #dff4e5;
+      border-color: #65a876;
+    }
+
+
+    .answer-button.wrong {
+      background: #f9dfdf;
+      border-color: #c77;
+    }
+
+
+    .answer-button:disabled {
       cursor: default;
     }
 
-    .jump {
-      margin-top: 20px;
+
+    .answer-sound {
+      border: none;
+      border-radius: 14px;
+      background: #e6f2f7;
+      color: #17324d;
+      font-size: 21px;
+      cursor: pointer;
     }
 
-    select {
-      width: 100%;
-      padding: 13px;
-      border-radius: 12px;
-      border: 1px solid #c7d8e2;
-      background: white;
-      color: #17324d;
-      font-size: 16px;
+
+    .answer-sound:active {
+      transform: scale(0.96);
     }
+
+
+    /* =========================
+       VÝSLEDEK
+    ========================= */
+
+
+    .result {
+      min-height: 28px;
+      margin-top: 18px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+
+    .result.correct {
+      color: #387848;
+    }
+
+
+    .result.wrong {
+      color: #a64f4f;
+    }
+
+
+    /* =========================
+       DALŠÍ
+    ========================= */
+
+
+    .next-button {
+      display: none;
+      width: 100%;
+      margin-top: 16px;
+      border: none;
+      border-radius: 14px;
+      background: #17324d;
+      color: white;
+      padding: 16px;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+
+    .next-button:active {
+      transform: scale(0.99);
+    }
+
+
+    .sound-message {
+      min-height: 18px;
+      margin-top: 12px;
+      color: #789;
+      font-size: 12px;
+    }
+
 
     @media (max-width: 520px) {
 
@@ -218,17 +318,21 @@
         padding: 15px;
       }
 
+
       .photo,
       .photo-placeholder {
         min-height: 220px;
       }
 
+
       .animal-photo {
         max-height: 340px;
       }
 
-      .animal-name {
-        font-size: 26px;
+
+      .answer-button {
+        font-size: 16px;
+        padding: 14px 12px;
       }
 
     }
@@ -256,10 +360,10 @@
     </a>
 
 
-    <span
-      class="counter"
-      id="counter"
-    ></span>
+    <div
+      class="player"
+      id="playerInfo"
+    ></div>
 
   </div>
 
@@ -269,21 +373,77 @@
   <div class="header">
 
     <div class="header-icon">
-      📖 🦆
+      🎯 🦆
     </div>
 
     <h1>
-      Učení
+      Procvičování
     </h1>
 
     <p>
-      Procházej živočichy jednoho po druhém
+      Poznej živočicha podle obrázku
     </p>
 
   </div>
 
 
-  <!-- KARTA ŽIVOČICHA -->
+  <!-- SKÓRE -->
+
+  <div class="score">
+
+
+    <div class="score-box">
+
+      <span
+        class="score-number"
+        id="totalScore"
+      >
+        0
+      </span>
+
+      <span class="score-label">
+        🎯 Procvičeno
+      </span>
+
+    </div>
+
+
+    <div class="score-box">
+
+      <span
+        class="score-number"
+        id="correctScore"
+      >
+        0
+      </span>
+
+      <span class="score-label">
+        ✅ Správně
+      </span>
+
+    </div>
+
+
+    <div class="score-box">
+
+      <span
+        class="score-number"
+        id="wrongScore"
+      >
+        0
+      </span>
+
+      <span class="score-label">
+        ❌ Chybně
+      </span>
+
+    </div>
+
+
+  </div>
+
+
+  <!-- KARTA -->
 
   <div class="animal-card">
 
@@ -296,90 +456,46 @@
     ></div>
 
 
-    <!-- ČÍSLO KARTY -->
+    <!-- OTÁZKA -->
+
+    <div class="question">
+      Který živočich je na obrázku?
+    </div>
+
+
+    <!-- ODPOVĚDI -->
 
     <div
-      class="animal-number"
-      id="animalNumber"
+      class="answers"
+      id="answers"
     ></div>
 
 
-    <!-- NÁZEV -->
+    <!-- VÝSLEDEK -->
 
-    <h2
-      class="animal-name"
-      id="animalName"
-    ></h2>
+    <div
+      class="result"
+      id="result"
+    ></div>
 
 
-    <!-- ZVUK -->
+    <!-- DALŠÍ -->
 
     <button
-      class="sound-button"
+      class="next-button"
+      id="nextButton"
       type="button"
-      onclick="playName()"
+      onclick="nextQuestion()"
     >
-      🔊 Přehrát název
+      Další otázka →
     </button>
 
 
     <div
       class="sound-message"
       id="soundMessage"
-    >
-      Klepni a poslechni si název
-    </div>
+    ></div>
 
-
-  </div>
-
-
-  <!-- NAVIGACE -->
-
-  <div class="navigation">
-
-
-    <button
-      class="nav-button previous"
-      id="previousButton"
-      type="button"
-      onclick="previousAnimal()"
-    >
-      ← Předchozí
-    </button>
-
-
-    <button
-      class="nav-button next"
-      id="nextButton"
-      type="button"
-      onclick="nextAnimal()"
-    >
-      Další →
-    </button>
-
-
-  </div>
-
-
-  <!-- VÝBĚR ŽIVOČICHA -->
-
-  <div class="jump">
-
-    <select
-      id="animalSelect"
-      onchange="jumpToAnimal()"
-    >
-
-      <option
-        value=""
-        selected
-        disabled
-      >
-        Vybrat živočicha…
-      </option>
-
-    </select>
 
   </div>
 
@@ -398,44 +514,123 @@
 
 
 /* ========================================
-   AKTUÁLNÍ ŽIVOČICH
+   AKTUÁLNÍ OTÁZKA
 ======================================== */
 
-let currentAnimal = 0;
+let currentAnimal = null;
+
+let currentAnswers = [];
+
+let answered = false;
+
+let lastAnimalName = "";
+
+let animalAudio = null;
 
 
 /* ========================================
-   AKTUÁLNÍ ZVUK
+   PROFILY
 ======================================== */
 
-let animalAudio = null;
+function getProfiles() {
+
+  const saved =
+    localStorage.getItem(
+      "zlataUdiceProfiles"
+    );
+
+
+  if (!saved) {
+
+    return [];
+
+  }
+
+
+  try {
+
+    return JSON.parse(
+      saved
+    );
+
+  }
+  catch {
+
+    return [];
+
+  }
+
+}
+
+
+/* ========================================
+   AKTIVNÍ HRÁČ
+======================================== */
+
+const activeProfileId =
+  localStorage.getItem(
+    "zlataUdiceActiveProfile"
+  );
+
+
+const activePlayer =
+  getProfiles().find(
+    function(profile) {
+
+      return (
+        profile.id ===
+        activeProfileId
+      );
+
+    }
+  );
+
+
+if (activePlayer) {
+
+  document.getElementById(
+    "playerInfo"
+  ).textContent =
+    (activePlayer.avatar || "") +
+    " " +
+    (activePlayer.name || "");
+
+}
+
+
+/* ========================================
+   KLÍČE PRO POKROK
+======================================== */
+
+const progressKey =
+  "zlataUdiceAnimalProgress_" +
+  (activeProfileId || "default");
+
+
+const mistakesKey =
+  "zlataUdiceAnimalMistakes_" +
+  (activeProfileId || "default");
 
 
 /* ========================================
    PRVKY STRÁNKY
 ======================================== */
 
-const animalName =
+const photoArea =
   document.getElementById(
-    "animalName"
+    "photoArea"
   );
 
 
-const animalNumber =
+const answersArea =
   document.getElementById(
-    "animalNumber"
+    "answers"
   );
 
 
-const counter =
+const resultArea =
   document.getElementById(
-    "counter"
-  );
-
-
-const previousButton =
-  document.getElementById(
-    "previousButton"
+    "result"
   );
 
 
@@ -445,26 +640,32 @@ const nextButton =
   );
 
 
-const animalSelect =
-  document.getElementById(
-    "animalSelect"
-  );
-
-
-const photoArea =
-  document.getElementById(
-    "photoArea"
-  );
-
-
 const soundMessage =
   document.getElementById(
     "soundMessage"
   );
 
 
+const totalScore =
+  document.getElementById(
+    "totalScore"
+  );
+
+
+const correctScore =
+  document.getElementById(
+    "correctScore"
+  );
+
+
+const wrongScore =
+  document.getElementById(
+    "wrongScore"
+  );
+
+
 /* ========================================
-   NÁZEV -> NÁZEV SOUBORU
+   NÁZEV -> SOUBOR
 ======================================== */
 
 function createFileName(name) {
@@ -480,62 +681,290 @@ function createFileName(name) {
 
 
 /* ========================================
-   VÝBĚR ŽIVOČICHA
+   NÁHODNÉ POŘADÍ
 ======================================== */
 
-function createAnimalSelect() {
+function shuffle(array) {
 
-  if (
-    typeof animals === "undefined" ||
-    !Array.isArray(animals)
+  const copy =
+    [...array];
+
+
+  for (
+    let i = copy.length - 1;
+    i > 0;
+    i--
   ) {
 
-    return;
+    const j =
+      Math.floor(
+        Math.random() *
+        (i + 1)
+      );
+
+
+    [
+      copy[i],
+      copy[j]
+    ] =
+    [
+      copy[j],
+      copy[i]
+    ];
 
   }
 
 
-  animals.forEach(
-    function(item, index) {
+  return copy;
 
-      const option =
-        document.createElement(
-          "option"
-        );
+}
 
 
-      option.value =
-        index;
+/* ========================================
+   POKROK
+======================================== */
+
+function getProgress() {
+
+  const saved =
+    localStorage.getItem(
+      progressKey
+    );
 
 
-      if (item.card) {
+  if (!saved) {
 
-        option.textContent =
-          item.card +
-          ". " +
-          item.name;
+    return {
+      total: 0,
+      correct: 0,
+      wrong: 0
+    };
 
-      }
-      else {
-
-        option.textContent =
-          item.name;
-
-      }
+  }
 
 
-      animalSelect.appendChild(
-        option
-      );
+  try {
 
-    }
+    const data =
+      JSON.parse(saved);
+
+
+    return {
+
+      total:
+        Number(data.total) || 0,
+
+      correct:
+        Number(data.correct) || 0,
+
+      wrong:
+        Number(data.wrong) || 0
+
+    };
+
+  }
+  catch {
+
+    return {
+      total: 0,
+      correct: 0,
+      wrong: 0
+    };
+
+  }
+
+}
+
+
+/* ========================================
+   ULOŽENÍ POKROKU
+======================================== */
+
+function saveProgress(progress) {
+
+  localStorage.setItem(
+    progressKey,
+    JSON.stringify(progress)
   );
 
 }
 
 
 /* ========================================
-   PLACEHOLDER FOTOGRAFIE
+   ZOBRAZENÍ POKROKU
+======================================== */
+
+function showProgress() {
+
+  const progress =
+    getProgress();
+
+
+  totalScore.textContent =
+    progress.total;
+
+
+  correctScore.textContent =
+    progress.correct;
+
+
+  wrongScore.textContent =
+    progress.wrong;
+
+}
+
+
+/* ========================================
+   CHYBY
+======================================== */
+
+function getMistakes() {
+
+  const saved =
+    localStorage.getItem(
+      mistakesKey
+    );
+
+
+  if (!saved) {
+
+    return [];
+
+  }
+
+
+  try {
+
+    const data =
+      JSON.parse(saved);
+
+
+    return Array.isArray(data)
+      ? data
+      : [];
+
+  }
+  catch {
+
+    return [];
+
+  }
+
+}
+
+
+/* ========================================
+   PŘIDÁNÍ DO CHYB
+======================================== */
+
+function addMistake(item) {
+
+  const mistakes =
+    getMistakes();
+
+
+  const exists =
+    mistakes.some(
+      function(savedItem) {
+
+        if (
+          typeof savedItem === "string"
+        ) {
+
+          return (
+            savedItem === item.name
+          );
+
+        }
+
+
+        return (
+          savedItem &&
+          savedItem.name ===
+          item.name
+        );
+
+      }
+    );
+
+
+  if (!exists) {
+
+    /*
+      Ukládáme celý objekt.
+      Stránka Co mi nejde tak má
+      k dispozici název, kartu i obrázek.
+    */
+
+    mistakes.push({
+
+      card:
+        item.card || "",
+
+      name:
+        item.name,
+
+      image:
+        item.image || ""
+
+    });
+
+
+    localStorage.setItem(
+      mistakesKey,
+      JSON.stringify(mistakes)
+    );
+
+  }
+
+}
+
+
+/* ========================================
+   ODSTRANĚNÍ Z CHYB
+======================================== */
+
+function removeMistake(item) {
+
+  const mistakes =
+    getMistakes();
+
+
+  const filtered =
+    mistakes.filter(
+      function(savedItem) {
+
+        if (
+          typeof savedItem === "string"
+        ) {
+
+          return (
+            savedItem !== item.name
+          );
+
+        }
+
+
+        return !(
+          savedItem &&
+          savedItem.name ===
+          item.name
+        );
+
+      }
+    );
+
+
+  localStorage.setItem(
+    mistakesKey,
+    JSON.stringify(filtered)
+  );
+
+}
+
+
+/* ========================================
+   PLACEHOLDER
 ======================================== */
 
 function showPlaceholder() {
@@ -569,11 +998,6 @@ function showPhoto(item) {
     [];
 
 
-  /*
-    Pokud je obrázek zadaný přímo
-    v zivocichove-data.js.
-  */
-
   if (item.image) {
 
     possibleImages.push(
@@ -582,10 +1006,6 @@ function showPhoto(item) {
 
   }
 
-
-  /*
-    Automatické hledání obrázku.
-  */
 
   possibleImages.push(
 
@@ -630,15 +1050,9 @@ function showPhoto(item) {
     img.onload =
       function() {
 
-        /*
-          Pokud už uživatel přešel
-          na jiného živočicha,
-          starý obrázek nezobrazíme.
-        */
-
         if (
-          !animals[currentAnimal] ||
-          animals[currentAnimal].name !==
+          !currentAnimal ||
+          currentAnimal.name !==
           item.name
         ) {
 
@@ -710,11 +1124,6 @@ function stopAnimalSound() {
   }
   catch (error) {
 
-    console.log(
-      "Zvuk se nepodařilo zastavit.",
-      error
-    );
-
   }
 
 
@@ -725,55 +1134,25 @@ function stopAnimalSound() {
 
 
 /* ========================================
-   PŘEHRÁNÍ MP3
+   PŘEHRÁNÍ LIBOVOLNÉHO NÁZVU
 ======================================== */
 
-function playName() {
-
-  if (
-    typeof animals === "undefined" ||
-    !animals[currentAnimal]
-  ) {
-
-    return;
-
-  }
-
+function playAnimalName(name) {
 
   stopAnimalSound();
 
 
-  const item =
-    animals[currentAnimal];
-
-
-  /*
-    Například:
-
-    Nezmar zelený
-
-    se převede na:
-
-    nezmar-zeleny.mp3
-  */
-
   const fileName =
     createFileName(
-      item.name
+      name
     ) +
     ".mp3";
 
 
   /*
-    MP3 SOUBORY MÁME VE SLOŽCE:
+    MP3 živočichů jsou ve složce:
 
     zivocichove/
-
-    Například:
-
-    zivocichove/nezmar-zeleny.mp3
-    zivocichove/beruska-vodni.mp3
-    zivocichove/bobr-evropsky.mp3
   */
 
   const audioPath =
@@ -781,134 +1160,19 @@ function playName() {
     fileName;
 
 
-  soundMessage.classList.remove(
-    "sound-error"
-  );
-
-
   soundMessage.textContent =
-    "🔊 Načítám zvuk…";
+    "🔊 " +
+    name;
 
 
   const audio =
-    new Audio();
+    new Audio(
+      audioPath
+    );
 
 
   animalAudio =
     audio;
-
-
-  let errorHandled =
-    false;
-
-
-  function audioError() {
-
-    if (errorHandled) {
-
-      return;
-
-    }
-
-
-    errorHandled =
-      true;
-
-
-    if (
-      animalAudio === audio
-    ) {
-
-      animalAudio =
-        null;
-
-    }
-
-
-    soundMessage.classList.add(
-      "sound-error"
-    );
-
-
-    soundMessage.textContent =
-      "Zvuk pro tohoto živočicha nebyl nalezen.";
-
-  }
-
-
-  audio.addEventListener(
-    "canplaythrough",
-    function() {
-
-      if (errorHandled) {
-
-        return;
-
-      }
-
-
-      /*
-        Pokud mezitím uživatel
-        přešel na jiného živočicha,
-        zvuk nepustíme.
-      */
-
-      if (
-        !animals[currentAnimal] ||
-        animals[currentAnimal].name !==
-        item.name
-      ) {
-
-        return;
-
-      }
-
-
-      soundMessage.textContent =
-        "🔊 Přehrávám: " +
-        item.name;
-
-
-      const playPromise =
-        audio.play();
-
-
-      if (
-        playPromise &&
-        typeof playPromise.catch ===
-        "function"
-      ) {
-
-        playPromise.catch(
-          function() {
-
-            soundMessage.classList.add(
-              "sound-error"
-            );
-
-
-            soundMessage.textContent =
-              "Zvuk se nepodařilo přehrát.";
-
-          }
-        );
-
-      }
-
-    },
-    {
-      once: true
-    }
-  );
-
-
-  audio.addEventListener(
-    "error",
-    audioError,
-    {
-      once: true
-    }
-  );
 
 
   audio.addEventListener(
@@ -925,13 +1189,8 @@ function playName() {
       }
 
 
-      soundMessage.classList.remove(
-        "sound-error"
-      );
-
-
       soundMessage.textContent =
-        "Klepni a poslechni si název";
+        "";
 
     },
     {
@@ -940,219 +1199,456 @@ function playName() {
   );
 
 
-  audio.preload =
-    "auto";
+  audio.addEventListener(
+    "error",
+    function() {
+
+      if (
+        animalAudio === audio
+      ) {
+
+        animalAudio =
+          null;
+
+      }
 
 
-  audio.src =
-    audioPath;
+      soundMessage.textContent =
+        "Zvuk nebyl nalezen.";
+
+    },
+    {
+      once: true
+    }
+  );
 
 
-  audio.load();
+  const promise =
+    audio.play();
+
+
+  if (
+    promise &&
+    typeof promise.catch ===
+    "function"
+  ) {
+
+    promise.catch(
+      function() {
+
+        soundMessage.textContent =
+          "Zvuk se nepodařilo přehrát.";
+
+      }
+    );
+
+  }
 
 }
 
 
 /* ========================================
-   ZOBRAZENÍ ŽIVOČICHA
+   VYTVOŘENÍ ODPOVĚDÍ
 ======================================== */
 
-function showAnimal() {
+function createAnswers() {
+
+  answersArea.innerHTML =
+    "";
+
+
+  currentAnswers.forEach(
+    function(item) {
+
+      const row =
+        document.createElement(
+          "div"
+        );
+
+
+      row.className =
+        "answer-row";
+
+
+      /*
+        TLAČÍTKO ODPOVĚDI
+      */
+
+      const answerButton =
+        document.createElement(
+          "button"
+        );
+
+
+      answerButton.type =
+        "button";
+
+
+      answerButton.className =
+        "answer-button";
+
+
+      answerButton.textContent =
+        item.name;
+
+
+      answerButton.dataset.name =
+        item.name;
+
+
+      answerButton.onclick =
+        function() {
+
+          checkAnswer(
+            item,
+            answerButton
+          );
+
+        };
+
+
+      /*
+        TLAČÍTKO ZVUKU
+      */
+
+      const soundButton =
+        document.createElement(
+          "button"
+        );
+
+
+      soundButton.type =
+        "button";
+
+
+      soundButton.className =
+        "answer-sound";
+
+
+      soundButton.innerHTML =
+        "🔊";
+
+
+      soundButton.setAttribute(
+        "aria-label",
+        "Přehrát " +
+        item.name
+      );
+
+
+      soundButton.onclick =
+        function(event) {
+
+          event.stopPropagation();
+
+
+          playAnimalName(
+            item.name
+          );
+
+        };
+
+
+      row.appendChild(
+        answerButton
+      );
+
+
+      row.appendChild(
+        soundButton
+      );
+
+
+      answersArea.appendChild(
+        row
+      );
+
+    }
+  );
+
+}
+
+
+/* ========================================
+   NOVÁ OTÁZKA
+======================================== */
+
+function newQuestion() {
 
   stopAnimalSound();
 
 
-  soundMessage.classList.remove(
-    "sound-error"
-  );
+  answered =
+    false;
+
+
+  resultArea.textContent =
+    "";
+
+
+  resultArea.className =
+    "result";
+
+
+  nextButton.style.display =
+    "none";
 
 
   soundMessage.textContent =
-    "Klepni a poslechni si název";
+    "";
 
-
-  /*
-    Kontrola dat.
-  */
 
   if (
     typeof animals === "undefined" ||
     !Array.isArray(animals) ||
-    animals.length === 0
+    animals.length < 4
   ) {
 
-    animalName.textContent =
+    resultArea.textContent =
       "Seznam živočichů se nepodařilo načíst.";
 
-
-    animalNumber.style.display =
-      "none";
-
-
-    counter.textContent =
-      "";
-
-
-    showPlaceholder();
-
-
     return;
 
   }
 
 
-  const item =
-    animals[currentAnimal];
-
-
   /*
-    NÁZEV
+    Aby se pokud možno neopakoval
+    stejný živočich hned dvakrát.
   */
 
-  animalName.textContent =
-    item.name;
+  let availableAnimals =
+    animals;
 
-
-  /*
-    ČÍSLO KARTY
-  */
-
-  if (item.card) {
-
-    animalNumber.style.display =
-      "inline-block";
-
-
-    animalNumber.textContent =
-      "Karta č. " +
-      item.card;
-
-  }
-  else {
-
-    animalNumber.style.display =
-      "none";
-
-  }
-
-
-  /*
-    POČÍTADLO
-  */
-
-  counter.textContent =
-    (currentAnimal + 1) +
-    " / " +
-    animals.length;
-
-
-  /*
-    TLAČÍTKA
-  */
-
-  previousButton.disabled =
-    currentAnimal === 0;
-
-
-  nextButton.disabled =
-    currentAnimal ===
-    animals.length - 1;
-
-
-  /*
-    SELECT
-  */
-
-  animalSelect.value =
-    currentAnimal;
-
-
-  /*
-    FOTOGRAFIE
-  */
-
-  showPhoto(
-    item
-  );
-
-}
-
-
-/* ========================================
-   DALŠÍ ŽIVOČICH
-======================================== */
-
-function nextAnimal() {
 
   if (
-    currentAnimal <
-    animals.length - 1
+    animals.length > 1 &&
+    lastAnimalName
   ) {
 
-    currentAnimal++;
+    availableAnimals =
+      animals.filter(
+        function(item) {
 
+          return (
+            item.name !==
+            lastAnimalName
+          );
 
-    showAnimal();
-
-
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth"
-    });
-
-  }
-
-}
-
-
-/* ========================================
-   PŘEDCHOZÍ ŽIVOČICH
-======================================== */
-
-function previousAnimal() {
-
-  if (
-    currentAnimal > 0
-  ) {
-
-    currentAnimal--;
-
-
-    showAnimal();
-
-
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth"
-    });
-
-  }
-
-}
-
-
-/* ========================================
-   VÝBĚR ZE SEZNAMU
-======================================== */
-
-function jumpToAnimal() {
-
-  if (
-    animalSelect.value === ""
-  ) {
-
-    return;
+        }
+      );
 
   }
 
 
   currentAnimal =
-    Number(
-      animalSelect.value
+    availableAnimals[
+      Math.floor(
+        Math.random() *
+        availableAnimals.length
+      )
+    ];
+
+
+  lastAnimalName =
+    currentAnimal.name;
+
+
+  /*
+    Tři špatné možnosti.
+  */
+
+  const wrongOptions =
+    shuffle(
+      animals.filter(
+        function(item) {
+
+          return (
+            item.name !==
+            currentAnimal.name
+          );
+
+        }
+      )
+    ).slice(
+      0,
+      3
     );
 
 
-  showAnimal();
+  /*
+    Správná + tři špatné.
+  */
+
+  currentAnswers =
+    shuffle(
+      [
+        currentAnimal,
+        ...wrongOptions
+      ]
+    );
+
+
+  showPhoto(
+    currentAnimal
+  );
+
+
+  createAnswers();
+
+}
+
+
+/* ========================================
+   KONTROLA ODPOVĚDI
+======================================== */
+
+function checkAnswer(
+  selectedItem,
+  selectedButton
+) {
+
+  if (answered) {
+
+    return;
+
+  }
+
+
+  answered =
+    true;
+
+
+  const progress =
+    getProgress();
+
+
+  progress.total++;
+
+
+  const buttons =
+    document.querySelectorAll(
+      ".answer-button"
+    );
+
+
+  buttons.forEach(
+    function(button) {
+
+      button.disabled =
+        true;
+
+
+      if (
+        button.dataset.name ===
+        currentAnimal.name
+      ) {
+
+        button.classList.add(
+          "correct"
+        );
+
+      }
+
+    }
+  );
+
+
+  /*
+    SPRÁVNĚ
+  */
+
+  if (
+    selectedItem.name ===
+    currentAnimal.name
+  ) {
+
+    progress.correct++;
+
+
+    selectedButton.classList.add(
+      "correct"
+    );
+
+
+    resultArea.className =
+      "result correct";
+
+
+    resultArea.textContent =
+      "✅ Správně! " +
+      currentAnimal.name;
+
+
+    /*
+      Pokud už byl tento živočich
+      v chybách, správná odpověď ho
+      z chyb odstraní.
+    */
+
+    removeMistake(
+      currentAnimal
+    );
+
+  }
+
+
+  /*
+    ŠPATNĚ
+  */
+
+  else {
+
+    progress.wrong++;
+
+
+    selectedButton.classList.add(
+      "wrong"
+    );
+
+
+    resultArea.className =
+      "result wrong";
+
+
+    resultArea.textContent =
+      "❌ Správná odpověď je: " +
+      currentAnimal.name;
+
+
+    /*
+      Přidáme živočicha do
+      Co mi nejde.
+    */
+
+    addMistake(
+      currentAnimal
+    );
+
+  }
+
+
+  saveProgress(
+    progress
+  );
+
+
+  showProgress();
+
+
+  nextButton.style.display =
+    "block";
+
+}
+
+
+/* ========================================
+   DALŠÍ OTÁZKA
+======================================== */
+
+function nextQuestion() {
+
+  newQuestion();
 
 
   window.scrollTo({
@@ -1167,9 +1663,9 @@ function jumpToAnimal() {
    START
 ======================================== */
 
-createAnimalSelect();
+showProgress();
 
-showAnimal();
+newQuestion();
 
 
 </script>
