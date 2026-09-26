@@ -3,23 +3,13 @@
 <html lang="cs">
 
 <head>
-
   <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
-
-  <meta
-    name="robots"
-    content="noindex, nofollow"
-  >
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
 
   <title>Procvičování rostlin | Zlatá udice</title>
 
   <style>
-
     * {
       box-sizing: border-box;
     }
@@ -71,5 +61,1115 @@
       font-size: 28px;
     }
 
-    .header
+    .header p {
+      margin: 0;
+      color: #678;
+    }
+
+    .score {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin: 20px 0;
+    }
+
+    .score-box {
+      background: white;
+      border-radius: 14px;
+      padding: 12px 5px;
+      text-align: center;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+    }
+
+    .score-number {
+      display: block;
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    .score-label {
+      display: block;
+      margin-top: 3px;
+      font-size: 12px;
+      color: #789;
+    }
+
+    .plant-card {
+      background: white;
+      border-radius: 22px;
+      padding: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      text-align: center;
+    }
+
+    .photo {
+      width: 100%;
+      min-height: 280px;
+      background: #f3f7f9;
+      border: 2px dashed #c7d8e2;
+      border-radius: 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: #789;
+      padding: 20px;
+      margin-bottom: 22px;
+      overflow: hidden;
+    }
+
+    .photo img {
+      display: block;
+      width: 100%;
+      max-height: 350px;
+      object-fit: contain;
+      border-radius: 14px;
+    }
+
+    .photo-icon {
+      font-size: 60px;
+      margin-bottom: 10px;
+    }
+
+    .question {
+      font-size: 20px;
+      font-weight: bold;
+      margin: 5px 0 18px;
+    }
+
+    .show-name {
+      border: none;
+      background: #17324d;
+      color: white;
+      padding: 14px 22px;
+      border-radius: 14px;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .answer {
+      display: none;
+    }
+
+    .plant-name {
+      font-size: 30px;
+      margin: 5px 0 14px;
+    }
+
+    .sound-button {
+      border: none;
+      background: #e6f2f7;
+      color: #17324d;
+      padding: 11px 17px;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-bottom: 22px;
+    }
+
+    .sound-button:active {
+      transform: scale(0.97);
+    }
+
+    .answer-question {
+      color: #678;
+      margin-bottom: 12px;
+    }
+
+    .answer-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .answer-button {
+      border: none;
+      border-radius: 14px;
+      padding: 15px 8px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .wrong {
+      background: #fde8e8;
+      color: #9b2929;
+    }
+
+    .correct {
+      background: #e2f4e8;
+      color: #27683a;
+    }
+
+    .info {
+      margin-top: 20px;
+      text-align: center;
+      color: #789;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+
+
+<body>
+
+<main class="app">
+
+  <div class="topbar">
+
+    <a class="back" href="rostliny.html">
+      ← Rostliny
+    </a>
+
+    <div class="player" id="playerInfo"></div>
+
+  </div>
+
+
+  <div class="header">
+
+    <div class="header-icon">
+      🎯🌿
+    </div>
+
+    <h1>
+      Procvičování
+    </h1>
+
+    <p>
+      Zkus rostlinu poznat bez nápovědy
+    </p>
+
+  </div>
+
+
+  <div class="score">
+
+    <div class="score-box">
+      <span class="score-number" id="totalScore">
+        0
+      </span>
+
+      <span class="score-label">
+        Procvičeno
+      </span>
+    </div>
+
+
+    <div class="score-box">
+      <span class="score-number" id="correctScore">
+        0
+      </span>
+
+      <span class="score-label">
+        ✅ Vím
+      </span>
+    </div>
+
+
+    <div class="score-box">
+      <span class="score-number" id="wrongScore">
+        0
+      </span>
+
+      <span class="score-label">
+        ❌ Nevím
+      </span>
+    </div>
+
+  </div>
+
+
+  <div class="plant-card">
+
+    <div
+      class="photo"
+      id="photoArea">
+    </div>
+
+
+    <div id="questionArea">
+
+      <div class="question">
+        Poznáš tuto rostlinu?
+      </div>
+
+      <button
+        class="show-name"
+        type="button"
+        onclick="showAnswer()">
+        👁️ Zobrazit název
+      </button>
+
+    </div>
+
+
+    <div
+      class="answer"
+      id="answerArea">
+
+      <h2
+        class="plant-name"
+        id="plantName">
+      </h2>
+
+
+      <button
+        class="sound-button"
+        type="button"
+        onclick="playName()">
+        🔊 Přehrát název
+      </button>
+
+
+      <div class="answer-question">
+        Věděl/a jsi správnou odpověď?
+      </div>
+
+
+      <div class="answer-buttons">
+
+        <button
+          class="answer-button wrong"
+          type="button"
+          onclick="answer(false)">
+          ❌ Nevěděl/a
+        </button>
+
+
+        <button
+          class="answer-button correct"
+          type="button"
+          onclick="answer(true)">
+          ✅ Věděl/a
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="info">
+    Rostliny označené jako „Nevěděl/a“
+    se uloží do ❤️ Co mi nejde
+    pouze tomuto hráči.
+  </div>
+
+</main>
+
+
+<!-- =========================================
+     SPOLEČNÝ SEZNAM ROSTLIN
+========================================= -->
+
+<script src="rostliny-data.js"></script>
+
+
+<!-- =========================================
+     SPOLEČNÝ ZVUK
+========================================= -->
+
+<script src="zvuk.js"></script>
+
+
+<script>
+
+/* =========================================
+   PROFIL
+========================================= */
+
+const activeProfileId =
+  localStorage.getItem(
+    "zlataUdiceActiveProfile"
+  );
+
+
+if (!activeProfileId) {
+
+  window.location.href =
+    "profily.html";
+
+}
+
+
+function getProfiles() {
+
+  const saved =
+    localStorage.getItem(
+      "zlataUdiceProfiles"
+    );
+
+
+  if (!saved) {
+
+    return [];
+
+  }
+
+
+  try {
+
+    return JSON.parse(
+      saved
+    );
+
+  }
+
+  catch {
+
+    return [];
+
+  }
+
+}
+
+
+const activePlayer =
+  getProfiles().find(
+    profile =>
+      profile.id ===
+      activeProfileId
+  );
+
+
+if (!activePlayer) {
+
+  localStorage.removeItem(
+    "zlataUdiceActiveProfile"
+  );
+
+
+  window.location.href =
+    "profily.html";
+
+}
+
+else {
+
+  document
+    .getElementById(
+      "playerInfo"
+    )
+    .textContent =
+      activePlayer.avatar +
+      " " +
+      activePlayer.name;
+
+}
+
+
+/* =========================================
+   ULOŽENÁ DATA HRÁČE
+========================================= */
+
+const mistakesKey =
+  "zlataUdicePlantMistakes_" +
+  activeProfileId;
+
+
+const progressKey =
+  "zlataUdicePlantProgress_" +
+  activeProfileId;
+
+
+/* =========================================
+   PROMĚNNÉ
+========================================= */
+
+let currentPlant = 0;
+
+let previousPlant = -1;
+
+let sessionTotal = 0;
+
+let sessionCorrect = 0;
+
+let sessionWrong = 0;
+
+
+const plantName =
+  document.getElementById(
+    "plantName"
+  );
+
+
+const photoArea =
+  document.getElementById(
+    "photoArea"
+  );
+
+
+const questionArea =
+  document.getElementById(
+    "questionArea"
+  );
+
+
+const answerArea =
+  document.getElementById(
+    "answerArea"
+  );
+
+
+const totalScore =
+  document.getElementById(
+    "totalScore"
+  );
+
+
+const correctScore =
+  document.getElementById(
+    "correctScore"
+  );
+
+
+const wrongScore =
+  document.getElementById(
+    "wrongScore"
+  );
+
+
+/* =========================================
+   ID ROSTLINY
+
+   Číslované rostliny používají číslo karty.
+   Nečíslované rostliny používají název.
+========================================= */
+
+function getPlantId(item) {
+
+  if (
+    item.card !== undefined &&
+    item.card !== null &&
+    String(item.card).trim() !== ""
+  ) {
+
+    return String(
+      item.card
+    );
+
+  }
+
+
+  return item.name;
+
+}
+
+
+/* =========================================
+   TEXT -> NÁZEV SOUBORU
+========================================= */
+
+function createFileName(text) {
+
+  return text
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+
+}
+
+
+/* =========================================
+   PLACEHOLDER
+========================================= */
+
+function showPlaceholder() {
+
+  photoArea.innerHTML = `
+
+    <div class="photo-icon">
+      🖼️
+    </div>
+
+    <strong>
+      Fotografii doplníme
+    </strong>
+
+    <span>
+      Pro tuto rostlinu zatím fotografii nemáme.
+    </span>
+
+  `;
+
+}
+
+
+/* =========================================
+   FOTOGRAFIE
+========================================= */
+
+function showPhoto(item) {
+
+  showPlaceholder();
+
+
+  const baseName =
+    createFileName(
+      item.name
+    );
+
+
+  const possibleImages = [];
+
+
+  if (item.image) {
+
+    possibleImages.push(
+      item.image
+    );
+
+  }
+
+
+  possibleImages.push(
+
+    baseName + ".webp",
+    baseName + "-2.webp",
+    baseName + "-3.webp",
+
+    baseName + ".jpg",
+    baseName + "-2.jpg",
+    baseName + "-3.jpg",
+
+    baseName + ".jpeg",
+    baseName + "-2.jpeg",
+
+    baseName + ".png",
+    baseName + "-2.png"
+
+  );
+
+
+  const uniqueImages =
+    [...new Set(
+      possibleImages
+    )];
+
+
+  let attempt = 0;
+
+
+  function tryNextImage() {
+
+    if (
+      attempt >=
+      uniqueImages.length
+    ) {
+
+      return;
+
+    }
+
+
+    const img =
+      new Image();
+
+
+    img.onload =
+      function() {
+
+        if (
+          plants[currentPlant] !==
+          item
+        ) {
+
+          return;
+
+        }
+
+
+        img.alt =
+          item.name;
+
+
+        photoArea.innerHTML =
+          "";
+
+
+        photoArea.appendChild(
+          img
+        );
+
+      };
+
+
+    img.onerror =
+      function() {
+
+        attempt++;
+
+
+        tryNextImage();
+
+      };
+
+
+    img.src =
+      uniqueImages[
+        attempt
+      ];
+
+  }
+
+
+  tryNextImage();
+
+}
+
+
+/* =========================================
+   NÁHODNÁ ROSTLINA
+========================================= */
+
+function chooseRandomPlant() {
+
+  /*
+    Zastaví předchozí MP3.
+  */
+
+  stopSound();
+
+
+  let newPlant;
+
+
+  do {
+
+    newPlant =
+      Math.floor(
+        Math.random() *
+        plants.length
+      );
+
+  }
+
+  while (
+    plants.length > 1 &&
+    newPlant === previousPlant
+  );
+
+
+  currentPlant =
+    newPlant;
+
+
+  previousPlant =
+    newPlant;
+
+
+  const item =
+    plants[
+      currentPlant
+    ];
+
+
+  plantName.textContent =
+    item.name;
+
+
+  showPhoto(
+    item
+  );
+
+
+  questionArea.style.display =
+    "block";
+
+
+  answerArea.style.display =
+    "none";
+
+}
+
+
+/* =========================================
+   ZOBRAZIT ODPOVĚĎ
+========================================= */
+
+function showAnswer() {
+
+  questionArea.style.display =
+    "none";
+
+
+  answerArea.style.display =
+    "block";
+
+}
+
+
+/* =========================================
+   ZVUK
+========================================= */
+
+function playName() {
+
+  const item =
+    plants[
+      currentPlant
+    ];
+
+
+  /*
+    Například:
+
+    Blatouch bahenní
+
+    se pomocí zvuk.js převede na:
+
+    audio/rostliny/blatouch-bahenni.mp3
+  */
+
+
+  playNamedSound(
+    item.name,
+    "audio/rostliny"
+  );
+
+}
+
+
+/* =========================================
+   NAČTENÍ CHYB
+========================================= */
+
+function getMistakes() {
+
+  const saved =
+    localStorage.getItem(
+      mistakesKey
+    );
+
+
+  if (!saved) {
+
+    return [];
+
+  }
+
+
+  try {
+
+    const parsed =
+      JSON.parse(
+        saved
+      );
+
+
+    return Array.isArray(
+      parsed
+    )
+      ? parsed
+      : [];
+
+  }
+
+  catch {
+
+    return [];
+
+  }
+
+}
+
+
+/* =========================================
+   ULOŽENÍ CHYB
+========================================= */
+
+function saveMistakes(
+  mistakes
+) {
+
+  localStorage.setItem(
+    mistakesKey,
+    JSON.stringify(
+      mistakes
+    )
+  );
+
+}
+
+
+/* =========================================
+   PŘIDAT DO CO MI NEJDE
+========================================= */
+
+function addToMistakes(
+  item
+) {
+
+  const mistakes =
+    getMistakes();
+
+
+  const plantId =
+    getPlantId(
+      item
+    );
+
+
+  const alreadyExists =
+    mistakes.some(
+      mistake =>
+        getPlantId(
+          mistake
+        ) ===
+        plantId
+    );
+
+
+  if (!alreadyExists) {
+
+    mistakes.push(
+      item
+    );
+
+
+    saveMistakes(
+      mistakes
+    );
+
+  }
+
+}
+
+
+/* =========================================
+   ODEBRAT Z CO MI NEJDE
+========================================= */
+
+function removeFromMistakes(
+  plantId
+) {
+
+  let mistakes =
+    getMistakes();
+
+
+  mistakes =
+    mistakes.filter(
+      item =>
+        getPlantId(
+          item
+        ) !==
+        plantId
+    );
+
+
+  saveMistakes(
+    mistakes
+  );
+
+}
+
+
+/* =========================================
+   DLOUHODOBÝ POKROK
+========================================= */
+
+function getProgress() {
+
+  const saved =
+    localStorage.getItem(
+      progressKey
+    );
+
+
+  if (!saved) {
+
+    return {
+
+      total: 0,
+
+      correct: 0,
+
+      wrong: 0
+
+    };
+
+  }
+
+
+  try {
+
+    const progress =
+      JSON.parse(
+        saved
+      );
+
+
+    return {
+
+      total:
+        Number(
+          progress.total
+        ) || 0,
+
+      correct:
+        Number(
+          progress.correct
+        ) || 0,
+
+      wrong:
+        Number(
+          progress.wrong
+        ) || 0
+
+    };
+
+  }
+
+  catch {
+
+    return {
+
+      total: 0,
+
+      correct: 0,
+
+      wrong: 0
+
+    };
+
+  }
+
+}
+
+
+/* =========================================
+   ULOŽENÍ POKROKU
+========================================= */
+
+function saveProgress(
+  knewIt
+) {
+
+  const progress =
+    getProgress();
+
+
+  progress.total++;
+
+
+  if (knewIt) {
+
+    progress.correct++;
+
+  }
+
+  else {
+
+    progress.wrong++;
+
+  }
+
+
+  localStorage.setItem(
+    progressKey,
+    JSON.stringify(
+      progress
+    )
+  );
+
+}
+
+
+/* =========================================
+   ODPOVĚĎ
+========================================= */
+
+function answer(
+  knewIt
+) {
+
+  stopSound();
+
+
+  const item =
+    plants[
+      currentPlant
+    ];
+
+
+  sessionTotal++;
+
+
+  if (knewIt) {
+
+    sessionCorrect++;
+
+
+    removeFromMistakes(
+      getPlantId(
+        item
+      )
+    );
+
+  }
+
+  else {
+
+    sessionWrong++;
+
+
+    addToMistakes(
+      item
+    );
+
+  }
+
+
+  saveProgress(
+    knewIt
+  );
+
+
+  updateScore();
+
+
+  chooseRandomPlant();
+
+}
+
+
+/* =========================================
+   SKÓRE
+========================================= */
+
+function updateScore() {
+
+  totalScore.textContent =
+    sessionTotal;
+
+
+  correctScore.textContent =
+    sessionCorrect;
+
+
+  wrongScore.textContent =
+    sessionWrong;
+
+}
+
+
+/* =========================================
+   START
+========================================= */
+
+chooseRandomPlant();
+
+</script>
+
+</body>
+
+</html>
 ```
