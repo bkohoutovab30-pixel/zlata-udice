@@ -137,6 +137,10 @@
       cursor: pointer;
     }
 
+    .sound-button:active {
+      transform: scale(0.97);
+    }
+
     .sound-note {
       color: #789;
       font-size: 13px;
@@ -189,6 +193,7 @@
     }
 
     @media (max-width: 520px) {
+
       .app {
         padding: 15px;
       }
@@ -205,22 +210,36 @@
       .animal-name {
         font-size: 26px;
       }
+
     }
   </style>
 </head>
+
 
 <body>
 
 <main class="app">
 
+
+  <!-- HORNÍ LIŠTA -->
+
   <div class="topbar">
-    <a class="back" href="zivocichove.html">
+
+    <a
+      class="back"
+      href="zivocichove.html">
       ← Živočichové
     </a>
 
-    <span class="counter" id="counter"></span>
+    <span
+      class="counter"
+      id="counter">
+    </span>
+
   </div>
 
+
+  <!-- HLAVIČKA -->
 
   <div class="header">
 
@@ -228,7 +247,9 @@
       📖 🦆
     </div>
 
-    <h1>Učení</h1>
+    <h1>
+      Učení
+    </h1>
 
     <p>
       Procházej živočichy jednoho po druhém
@@ -237,22 +258,36 @@
   </div>
 
 
+  <!-- KARTA -->
+
   <div class="animal-card">
+
+
+    <!-- FOTOGRAFIE -->
 
     <div
       class="photo"
       id="photoArea">
     </div>
 
+
+    <!-- ČÍSLO KARTY -->
+
     <div
       class="animal-number"
       id="animalNumber">
     </div>
 
+
+    <!-- NÁZEV -->
+
     <h2
       class="animal-name"
       id="animalName">
     </h2>
+
+
+    <!-- ZVUK -->
 
     <button
       class="sound-button"
@@ -261,12 +296,15 @@
       🔊 Přehrát název
     </button>
 
+
     <div class="sound-note">
       Klepni a poslechni si název
     </div>
 
   </div>
 
+
+  <!-- NAVIGACE -->
 
   <div class="navigation">
 
@@ -278,6 +316,7 @@
       ← Předchozí
     </button>
 
+
     <button
       class="nav-button next"
       id="nextButton"
@@ -288,6 +327,8 @@
 
   </div>
 
+
+  <!-- VÝBĚR -->
 
   <div class="jump">
 
@@ -306,42 +347,80 @@
 
   </div>
 
+
 </main>
 
+
+<!-- ========================================
+     DATA ŽIVOČICHŮ
+======================================== -->
 
 <script src="zivocichove-data.js"></script>
 
 
+<!-- ========================================
+     SPOLEČNÝ ZVUK
+======================================== -->
+
+<script src="zvuk.js"></script>
+
+
 <script>
+
+/* ========================================
+   AKTUÁLNÍ ŽIVOČICH
+======================================== */
 
 let currentAnimal = 0;
 
 
+/* ========================================
+   PRVKY STRÁNKY
+======================================== */
+
 const animalName =
-  document.getElementById("animalName");
+  document.getElementById(
+    "animalName"
+  );
 
 const animalNumber =
-  document.getElementById("animalNumber");
+  document.getElementById(
+    "animalNumber"
+  );
 
 const counter =
-  document.getElementById("counter");
+  document.getElementById(
+    "counter"
+  );
 
 const previousButton =
-  document.getElementById("previousButton");
+  document.getElementById(
+    "previousButton"
+  );
 
 const nextButton =
-  document.getElementById("nextButton");
+  document.getElementById(
+    "nextButton"
+  );
 
 const animalSelect =
-  document.getElementById("animalSelect");
+  document.getElementById(
+    "animalSelect"
+  );
 
 const photoArea =
-  document.getElementById("photoArea");
+  document.getElementById(
+    "photoArea"
+  );
 
+
+/* ========================================
+   NÁZEV OBRÁZKU
+======================================== */
 
 function createImageName(name) {
 
-  return name
+  return String(name)
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
     .toLowerCase()
@@ -351,38 +430,68 @@ function createImageName(name) {
 }
 
 
+/* ========================================
+   VÝBĚR ŽIVOČICHA
+======================================== */
+
 function createAnimalSelect() {
 
-  animals.forEach(function(item, index) {
+  if (
+    typeof animals === "undefined" ||
+    !Array.isArray(animals)
+  ) {
 
-    const option =
-      document.createElement("option");
+    console.error(
+      "Seznam animals nebyl načten."
+    );
 
-    option.value =
-      index;
+    return;
+
+  }
 
 
-    if (item.card) {
+  animals.forEach(
+    function(item, index) {
 
-      option.textContent =
-        item.card +
-        ". " +
-        item.name;
+      const option =
+        document.createElement(
+          "option"
+        );
 
-    } else {
 
-      option.textContent =
-        item.name;
+      option.value =
+        index;
+
+
+      if (item.card) {
+
+        option.textContent =
+          item.card +
+          ". " +
+          item.name;
+
+      }
+      else {
+
+        option.textContent =
+          item.name;
+
+      }
+
+
+      animalSelect.appendChild(
+        option
+      );
 
     }
-
-
-    animalSelect.appendChild(option);
-
-  });
+  );
 
 }
 
+
+/* ========================================
+   PLACEHOLDER FOTOGRAFIE
+======================================== */
 
 function showPlaceholder() {
 
@@ -396,16 +505,45 @@ function showPlaceholder() {
 }
 
 
+/* ========================================
+   FOTOGRAFIE
+======================================== */
+
 function showPhoto(item) {
 
   showPlaceholder();
 
 
   const baseName =
-    createImageName(item.name);
+    createImageName(
+      item.name
+    );
 
 
-  const possibleImages = [
+  const possibleImages =
+    [];
+
+
+  /*
+    Pokud někdy zadáme obrázek
+    přímo v zivocichove-data.js,
+    zkusí se jako první.
+  */
+
+  if (item.image) {
+
+    possibleImages.push(
+      item.image
+    );
+
+  }
+
+
+  /*
+    Automatické hledání podle názvu.
+  */
+
+  possibleImages.push(
 
     baseName + ".webp",
     baseName + "-2.webp",
@@ -417,11 +555,13 @@ function showPhoto(item) {
 
     baseName + ".jpeg",
     baseName + "-2.jpeg",
+    baseName + "-3.jpeg",
 
     baseName + ".png",
-    baseName + "-2.png"
+    baseName + "-2.png",
+    baseName + "-3.png"
 
-  ];
+  );
 
 
   let attempt = 0;
@@ -430,9 +570,12 @@ function showPhoto(item) {
   function tryNextImage() {
 
     if (
-      attempt >= possibleImages.length
+      attempt >=
+      possibleImages.length
     ) {
+
       return;
+
     }
 
 
@@ -440,38 +583,47 @@ function showPhoto(item) {
       new Image();
 
 
-    img.onload = function() {
+    img.onload =
+      function() {
 
-      if (
-        animals[currentAnimal].name !==
-        item.name
-      ) {
-        return;
-      }
+        if (
+          !animals[currentAnimal] ||
+          animals[currentAnimal].name !==
+            item.name
+        ) {
 
+          return;
 
-      img.className =
-        "animal-photo";
-
-      img.alt =
-        item.name;
+        }
 
 
-      photoArea.innerHTML =
-        "";
-
-      photoArea.appendChild(img);
-
-    };
+        img.className =
+          "animal-photo";
 
 
-    img.onerror = function() {
+        img.alt =
+          item.name;
 
-      attempt++;
 
-      tryNextImage();
+        photoArea.innerHTML =
+          "";
 
-    };
+
+        photoArea.appendChild(
+          img
+        );
+
+      };
+
+
+    img.onerror =
+      function() {
+
+        attempt++;
+
+        tryNextImage();
+
+      };
 
 
     img.src =
@@ -485,26 +637,81 @@ function showPhoto(item) {
 }
 
 
+/* ========================================
+   ZOBRAZENÍ ŽIVOČICHA
+======================================== */
+
 function showAnimal() {
+
+  /*
+    Zastavíme zvuk předchozího
+    živočicha.
+  */
+
+  if (
+    typeof stopSound ===
+    "function"
+  ) {
+
+    stopSound();
+
+  }
+
+
+  /*
+    Kontrola dat.
+  */
+
+  if (
+    typeof animals === "undefined" ||
+    !Array.isArray(animals) ||
+    animals.length === 0
+  ) {
+
+    animalName.textContent =
+      "Seznam živočichů se nepodařilo načíst.";
+
+    animalNumber.style.display =
+      "none";
+
+    counter.textContent =
+      "";
+
+    showPlaceholder();
+
+    return;
+
+  }
+
 
   const item =
     animals[currentAnimal];
 
 
+  /*
+    Název.
+  */
+
   animalName.textContent =
     item.name;
 
+
+  /*
+    Číslo karty.
+  */
 
   if (item.card) {
 
     animalNumber.style.display =
       "inline-block";
 
+
     animalNumber.textContent =
       "Karta č. " +
       item.card;
 
-  } else {
+  }
+  else {
 
     animalNumber.style.display =
       "none";
@@ -512,11 +719,19 @@ function showAnimal() {
   }
 
 
+  /*
+    Počítadlo.
+  */
+
   counter.textContent =
     (currentAnimal + 1) +
     " / " +
     animals.length;
 
+
+  /*
+    Tlačítka.
+  */
 
   previousButton.disabled =
     currentAnimal === 0;
@@ -527,21 +742,59 @@ function showAnimal() {
     animals.length - 1;
 
 
+  /*
+    Fotografie.
+  */
+
   showPhoto(item);
 
 }
 
 
-/*
-  ZVUK JE TEĎ DOČASNĚ JEN TESTOVACÍ.
-  Nepoužíváme zvuk.js.
-*/
+/* ========================================
+   PŘEHRÁNÍ NÁZVU
+======================================== */
 
 function playName() {
+
+  if (
+    typeof animals === "undefined" ||
+    !animals[currentAnimal]
+  ) {
+
+    return;
+
+  }
+
 
   const item =
     animals[currentAnimal];
 
+
+  /*
+    Primárně používáme společný
+    zvuk.js.
+  */
+
+  if (
+    typeof playNamedSound ===
+    "function"
+  ) {
+
+    playNamedSound(
+      item.name,
+      "audio/zivocichove"
+    );
+
+    return;
+
+  }
+
+
+  /*
+    Záloha, pokud by zvuk.js
+    nebyl dostupný.
+  */
 
   if (
     "speechSynthesis" in window
@@ -560,6 +813,10 @@ function playName() {
       "cs-CZ";
 
 
+    speech.rate =
+      0.85;
+
+
     window.speechSynthesis.speak(
       speech
     );
@@ -568,6 +825,10 @@ function playName() {
 
 }
 
+
+/* ========================================
+   DALŠÍ
+======================================== */
 
 function nextAnimal() {
 
@@ -578,6 +839,7 @@ function nextAnimal() {
 
     currentAnimal++;
 
+
     showAnimal();
 
 
@@ -590,6 +852,10 @@ function nextAnimal() {
 
 }
 
+
+/* ========================================
+   PŘEDCHOZÍ
+======================================== */
 
 function previousAnimal() {
 
@@ -599,6 +865,7 @@ function previousAnimal() {
 
     currentAnimal--;
 
+
     showAnimal();
 
 
@@ -612,12 +879,18 @@ function previousAnimal() {
 }
 
 
+/* ========================================
+   SKOK NA ŽIVOČICHA
+======================================== */
+
 function jumpToAnimal() {
 
   if (
     animalSelect.value === ""
   ) {
+
     return;
+
   }
 
 
@@ -638,13 +911,16 @@ function jumpToAnimal() {
 }
 
 
-/* START */
+/* ========================================
+   START
+======================================== */
 
 createAnimalSelect();
 
 showAnimal();
 
 </script>
+
 
 </body>
 </html>
