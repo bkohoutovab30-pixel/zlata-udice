@@ -1,7 +1,5 @@
-```html
 <!DOCTYPE html>
 <html lang="cs">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -102,5 +100,565 @@
       border-radius: 18px;
       display: flex;
       flex-direction: column;
-      justify-con
-```
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .photo-icon {
+      font-size: 60px;
+      margin-bottom: 10px;
+    }
+
+    .animal-number {
+      display: inline-block;
+      background: #dfeef5;
+      border-radius: 20px;
+      padding: 6px 12px;
+      font-size: 14px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .animal-name {
+      font-size: 30px;
+      margin: 5px 0 18px;
+    }
+
+    .sound-button {
+      border: none;
+      background: #e6f2f7;
+      color: #17324d;
+      padding: 12px 18px;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .sound-button:active {
+      transform: scale(0.97);
+    }
+
+    .sound-note {
+      color: #789;
+      font-size: 13px;
+      margin-top: 8px;
+    }
+
+    .navigation {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .nav-button {
+      border: none;
+      border-radius: 14px;
+      padding: 16px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .previous {
+      background: white;
+      color: #17324d;
+    }
+
+    .next {
+      background: #17324d;
+      color: white;
+    }
+
+    .nav-button:disabled {
+      opacity: 0.4;
+      cursor: default;
+    }
+
+    .jump {
+      margin-top: 20px;
+    }
+
+    select {
+      width: 100%;
+      padding: 13px;
+      border-radius: 12px;
+      border: 1px solid #c7d8e2;
+      background: white;
+      color: #17324d;
+      font-size: 16px;
+    }
+
+    @media (max-width: 520px) {
+      .app {
+        padding: 15px;
+      }
+
+      .photo,
+      .photo-placeholder {
+        min-height: 220px;
+      }
+
+      .animal-photo {
+        max-height: 340px;
+      }
+
+      .animal-name {
+        font-size: 26px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<main class="app">
+
+  <div class="topbar">
+    <a class="back" href="zivocichove.html">
+      ← Živočichové
+    </a>
+
+    <span class="counter" id="counter"></span>
+  </div>
+
+
+  <div class="header">
+    <div class="header-icon">
+      📖 🦆
+    </div>
+
+    <h1>Učení</h1>
+
+    <p>
+      Procházej živočichy jednoho po druhém
+    </p>
+  </div>
+
+
+  <div class="animal-card">
+
+    <div class="photo" id="photoArea"></div>
+
+    <div
+      class="animal-number"
+      id="animalNumber">
+    </div>
+
+    <h2
+      class="animal-name"
+      id="animalName">
+    </h2>
+
+    <button
+      class="sound-button"
+      type="button"
+      onclick="playName()">
+      🔊 Přehrát název
+    </button>
+
+    <div class="sound-note">
+      Klepni a poslechni si název
+    </div>
+
+  </div>
+
+
+  <div class="navigation">
+
+    <button
+      class="nav-button previous"
+      id="previousButton"
+      type="button"
+      onclick="previousAnimal()">
+      ← Předchozí
+    </button>
+
+    <button
+      class="nav-button next"
+      id="nextButton"
+      type="button"
+      onclick="nextAnimal()">
+      Další →
+    </button>
+
+  </div>
+
+
+  <div class="jump">
+
+    <select
+      id="animalSelect"
+      onchange="jumpToAnimal()">
+
+      <option
+        value=""
+        selected
+        disabled>
+        Vybrat živočicha…
+      </option>
+
+    </select>
+
+  </div>
+
+</main>
+
+
+<script src="zivocichove-data.js"></script>
+<script src="zvuk.js"></script>
+
+
+<script>
+
+let currentAnimal = 0;
+
+
+const animalName =
+  document.getElementById("animalName");
+
+const animalNumber =
+  document.getElementById("animalNumber");
+
+const counter =
+  document.getElementById("counter");
+
+const previousButton =
+  document.getElementById("previousButton");
+
+const nextButton =
+  document.getElementById("nextButton");
+
+const animalSelect =
+  document.getElementById("animalSelect");
+
+const photoArea =
+  document.getElementById("photoArea");
+
+
+/* ========================================
+   NÁZEV SOUBORU
+======================================== */
+
+function createImageName(name) {
+
+  return name
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+
+}
+
+
+/* ========================================
+   VÝBĚR ŽIVOČICHA
+======================================== */
+
+function createAnimalSelect() {
+
+  animals.forEach(function(item, index) {
+
+    const option =
+      document.createElement("option");
+
+    option.value =
+      index;
+
+    if (item.card) {
+
+      option.textContent =
+        item.card +
+        ". " +
+        item.name;
+
+    } else {
+
+      option.textContent =
+        item.name;
+
+    }
+
+    animalSelect.appendChild(option);
+
+  });
+
+}
+
+
+/* ========================================
+   PLACEHOLDER
+======================================== */
+
+function showPlaceholder() {
+
+  photoArea.innerHTML =
+    '<div class="photo-placeholder">' +
+      '<div class="photo-icon">🖼️</div>' +
+      '<strong>Fotografii doplníme</strong>' +
+      '<span>Pro tohoto živočicha zatím fotografii nemáme.</span>' +
+    '</div>';
+
+}
+
+
+/* ========================================
+   FOTOGRAFIE
+======================================== */
+
+function showPhoto(item) {
+
+  showPlaceholder();
+
+
+  const baseName =
+    createImageName(item.name);
+
+
+  const possibleImages = [];
+
+
+  if (item.image) {
+    possibleImages.push(item.image);
+  }
+
+
+  possibleImages.push(
+    baseName + ".webp",
+    baseName + "-2.webp",
+    baseName + "-3.webp",
+    baseName + ".jpg",
+    baseName + "-2.jpg",
+    baseName + "-3.jpg",
+    baseName + ".jpeg",
+    baseName + "-2.jpeg",
+    baseName + ".png",
+    baseName + "-2.png"
+  );
+
+
+  let attempt = 0;
+
+
+  function tryNextImage() {
+
+    if (attempt >= possibleImages.length) {
+      return;
+    }
+
+
+    const img =
+      new Image();
+
+
+    img.onload = function() {
+
+      if (
+        !animals[currentAnimal] ||
+        animals[currentAnimal].name !== item.name
+      ) {
+        return;
+      }
+
+
+      img.className =
+        "animal-photo";
+
+      img.alt =
+        item.name;
+
+
+      photoArea.innerHTML =
+        "";
+
+      photoArea.appendChild(img);
+
+    };
+
+
+    img.onerror = function() {
+
+      attempt++;
+
+      tryNextImage();
+
+    };
+
+
+    img.src =
+      possibleImages[attempt];
+
+  }
+
+
+  tryNextImage();
+
+}
+
+
+/* ========================================
+   ZOBRAZENÍ ŽIVOČICHA
+======================================== */
+
+function showAnimal() {
+
+  if (
+    typeof stopSound === "function"
+  ) {
+    stopSound();
+  }
+
+
+  const item =
+    animals[currentAnimal];
+
+
+  animalName.textContent =
+    item.name;
+
+
+  if (item.card) {
+
+    animalNumber.style.display =
+      "inline-block";
+
+    animalNumber.textContent =
+      "Karta č. " +
+      item.card;
+
+  } else {
+
+    animalNumber.style.display =
+      "none";
+
+  }
+
+
+  counter.textContent =
+    (currentAnimal + 1) +
+    " / " +
+    animals.length;
+
+
+  previousButton.disabled =
+    currentAnimal === 0;
+
+
+  nextButton.disabled =
+    currentAnimal ===
+    animals.length - 1;
+
+
+  showPhoto(item);
+
+}
+
+
+/* ========================================
+   ZVUK
+======================================== */
+
+function playName() {
+
+  const item =
+    animals[currentAnimal];
+
+
+  playNamedSound(
+    item.name,
+    "audio/zivocichove"
+  );
+
+}
+
+
+/* ========================================
+   DALŠÍ
+======================================== */
+
+function nextAnimal() {
+
+  if (
+    currentAnimal <
+    animals.length - 1
+  ) {
+
+    currentAnimal++;
+
+    showAnimal();
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+
+  }
+
+}
+
+
+/* ========================================
+   PŘEDCHOZÍ
+======================================== */
+
+function previousAnimal() {
+
+  if (currentAnimal > 0) {
+
+    currentAnimal--;
+
+    showAnimal();
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+
+  }
+
+}
+
+
+/* ========================================
+   SKOK NA ŽIVOČICHA
+======================================== */
+
+function jumpToAnimal() {
+
+  if (
+    animalSelect.value === ""
+  ) {
+    return;
+  }
+
+
+  currentAnimal =
+    Number(animalSelect.value);
+
+
+  showAnimal();
+
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+
+}
+
+
+/* ========================================
+   START
+======================================== */
+
+createAnimalSelect();
+
+showAnimal();
+
+</script>
+
+</body>
+</html>
