@@ -1,14 +1,28 @@
+```html
 <!DOCTYPE html>
 <html lang="cs">
+
 <head>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="robots" content="noindex, nofollow">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="robots"
+    content="noindex, nofollow"
+  >
 
   <title>Co mi nejde – Živočichové | Zlatá udice</title>
 
   <style>
-    * { box-sizing: border-box; }
+
+    * {
+      box-sizing: border-box;
+    }
 
     body {
       margin: 0;
@@ -155,6 +169,10 @@
       margin-bottom: 22px;
     }
 
+    .sound-button:active {
+      transform: scale(0.97);
+    }
+
     .answer-question {
       color: #678;
       margin-bottom: 12px;
@@ -227,23 +245,45 @@
       font-size: 13px;
       line-height: 1.5;
     }
+
   </style>
+
 </head>
+
 
 <body>
 
+
 <main class="app">
 
+
   <div class="topbar">
-    <a class="back" href="zivocichove.html">← Živočichové</a>
-    <div class="player" id="playerInfo"></div>
+
+    <a
+      class="back"
+      href="zivocichove.html"
+    >
+      ← Živočichové
+    </a>
+
+    <div
+      class="player"
+      id="playerInfo"
+    >
+    </div>
+
   </div>
+
 
   <div class="header">
 
-    <div class="header-icon">❤️🦆</div>
+    <div class="header-icon">
+      ❤️🦆
+    </div>
 
-    <h1>Co mi nejde</h1>
+    <h1>
+      Co mi nejde
+    </h1>
 
     <p>
       Procvičuj živočichy, kteří ti dělají problém
@@ -251,9 +291,11 @@
 
   </div>
 
+
   <div
     class="mistake-count"
-    id="mistakeCountBox">
+    id="mistakeCountBox"
+  >
 
     <strong id="mistakeCount">
       0
@@ -265,14 +307,19 @@
 
   </div>
 
+
   <div id="practiceArea">
+
 
     <div class="animal-card">
 
+
       <div
         class="photo"
-        id="photoArea">
+        id="photoArea"
+      >
       </div>
+
 
       <div id="questionArea">
 
@@ -282,67 +329,91 @@
 
         <button
           class="show-name"
-          onclick="showAnswer()">
+          onclick="showAnswer()"
+        >
           👁️ Zobrazit název
         </button>
 
       </div>
 
+
       <div
         class="answer"
-        id="answerArea">
+        id="answerArea"
+      >
+
 
         <h2
           class="animal-name"
-          id="animalName">
+          id="animalName"
+        >
         </h2>
+
 
         <button
           class="sound-button"
-          onclick="playName()">
+          onclick="playName()"
+        >
           🔊 Přehrát název
         </button>
+
 
         <div class="answer-question">
           Jak to tentokrát dopadlo?
         </div>
 
+
         <div class="answer-buttons">
+
 
           <button
             class="answer-button wrong"
-            onclick="stillDontKnow()">
+            onclick="stillDontKnow()"
+          >
             ❌ Ještě nevím
           </button>
 
+
           <button
             class="answer-button correct"
-            onclick="nowIKnow()">
+            onclick="nowIKnow()"
+          >
             ✅ Už umím
           </button>
 
+
         </div>
+
 
       </div>
 
+
     </div>
 
+
     <div class="info">
+
       Po kliknutí na „Už umím“ se živočich
       z problémových živočichů tohoto hráče odstraní.
+
     </div>
+
 
   </div>
 
+
   <div
     class="empty"
-    id="emptyArea">
+    id="emptyArea"
+  >
 
     <div class="empty-icon">
       🏆
     </div>
 
-    <h2>Paráda!</h2>
+    <h2>
+      Paráda!
+    </h2>
 
     <p id="emptyText">
       Teď tu nemáš žádného živočicha,
@@ -351,23 +422,34 @@
 
     <a
       class="practice-link"
-      href="zivocichove-procvicovani.html">
+      href="zivocichove-procvicovani.html"
+    >
       🎯 Procvičovat další živočichy
     </a>
 
   </div>
 
+
 </main>
 
+
+<!-- SPOLEČNÝ SEZNAM ŽIVOČICHŮ -->
 
 <script src="zivocichove-data.js"></script>
 
 
+<!-- SPOLEČNÝ SYSTÉM ZVUKU -->
+
+<script src="zvuk.js"></script>
+
+
 <script>
 
-/* =========================
+
+/* =========================================
    PROFIL
-========================= */
+========================================= */
+
 
 const activeProfileId =
   localStorage.getItem(
@@ -379,6 +461,7 @@ if (!activeProfileId) {
 
   window.location.href =
     "profily.html";
+
 }
 
 
@@ -391,23 +474,34 @@ function getProfiles() {
 
 
   if (!saved) {
+
     return [];
+
   }
 
 
   try {
-    return JSON.parse(saved);
+
+    return JSON.parse(
+      saved
+    );
+
   }
+
   catch {
+
     return [];
+
   }
+
 }
 
 
 const activePlayer =
   getProfiles().find(
     profile =>
-      profile.id === activeProfileId
+      profile.id ===
+      activeProfileId
   );
 
 
@@ -421,20 +515,25 @@ if (!activePlayer) {
     "profily.html";
 
 }
+
 else {
 
-  document.getElementById(
-    "playerInfo"
-  ).textContent =
-    activePlayer.avatar +
-    " " +
-    activePlayer.name;
+  document
+    .getElementById(
+      "playerInfo"
+    )
+    .textContent =
+      activePlayer.avatar +
+      " " +
+      activePlayer.name;
+
 }
 
 
-/* =========================
+/* =========================================
    DATA HRÁČE
-========================= */
+========================================= */
+
 
 const mistakesKey =
   "zlataUdiceAnimalMistakes_" +
@@ -453,40 +552,48 @@ const practiceArea =
     "practiceArea"
   );
 
+
 const emptyArea =
   document.getElementById(
     "emptyArea"
   );
+
 
 const mistakeCount =
   document.getElementById(
     "mistakeCount"
   );
 
+
 const mistakeCountText =
   document.getElementById(
     "mistakeCountText"
   );
+
 
 const mistakeCountBox =
   document.getElementById(
     "mistakeCountBox"
   );
 
+
 const questionArea =
   document.getElementById(
     "questionArea"
   );
+
 
 const answerArea =
   document.getElementById(
     "answerArea"
   );
 
+
 const animalName =
   document.getElementById(
     "animalName"
   );
+
 
 const photoArea =
   document.getElementById(
@@ -494,9 +601,10 @@ const photoArea =
   );
 
 
-/* =========================
+/* =========================================
    ID ŽIVOČICHA
-========================= */
+========================================= */
+
 
 function getAnimalId(item) {
 
@@ -505,15 +613,18 @@ function getAnimalId(item) {
     return String(
       item.card
     );
+
   }
 
   return item.name;
+
 }
 
 
-/* =========================
+/* =========================================
    NAČTENÍ CHYB
-========================= */
+========================================= */
+
 
 function loadMistakes() {
 
@@ -528,44 +639,57 @@ function loadMistakes() {
     mistakes = [];
 
     return;
+
   }
 
 
   try {
 
     const parsed =
-      JSON.parse(saved);
+      JSON.parse(
+        saved
+      );
 
 
     mistakes =
-      Array.isArray(parsed)
+      Array.isArray(
+        parsed
+      )
         ? parsed
         : [];
 
   }
+
   catch {
 
     mistakes = [];
+
   }
+
 }
 
 
-/* =========================
+/* =========================================
    ULOŽENÍ CHYB
-========================= */
+========================================= */
+
 
 function saveMistakes() {
 
   localStorage.setItem(
     mistakesKey,
-    JSON.stringify(mistakes)
+    JSON.stringify(
+      mistakes
+    )
   );
+
 }
 
 
-/* =========================
+/* =========================================
    POČÍTADLO
-========================= */
+========================================= */
+
 
 function updateCount() {
 
@@ -583,6 +707,7 @@ function updateCount() {
       "živočich k procvičení";
 
   }
+
   else if (
     count >= 2 &&
     count <= 4
@@ -592,55 +717,78 @@ function updateCount() {
       "živočichové k procvičení";
 
   }
+
   else {
 
     mistakeCountText.textContent =
       "živočichů k procvičení";
+
   }
+
 }
 
 
-/* =========================
+/* =========================================
    NÁZEV -> SOUBOR
-========================= */
+========================================= */
+
 
 function createImageName(name) {
 
   return name
+
     .normalize("NFD")
+
     .replace(
       /[\u0300-\u036f]/g,
       ""
     )
+
     .toLowerCase()
+
     .replace(
       /[^a-z0-9]+/g,
       "-"
     )
+
     .replace(
       /^-+|-+$/g,
       ""
     );
+
 }
 
 
-/* =========================
+/* =========================================
    PLACEHOLDER
-========================= */
+========================================= */
+
 
 function showPlaceholder() {
 
   photoArea.innerHTML = `
-    <div class="photo-icon">🖼️</div>
-    <strong>Fotografii doplníme</strong>
-    <span>Pro tohoto živočicha zatím fotografii nemáme.</span>
+
+    <div class="photo-icon">
+      🖼️
+    </div>
+
+    <strong>
+      Fotografii doplníme
+    </strong>
+
+    <span>
+      Pro tohoto živočicha zatím fotografii nemáme.
+    </span>
+
   `;
+
 }
 
 
-/* =========================
+/* =========================================
    FOTOGRAFIE
-========================= */
+========================================= */
+
 
 function showPhoto(item) {
 
@@ -653,20 +801,16 @@ function showPhoto(item) {
     );
 
 
-  const possibleImages = [];
+  const possibleImages =
+    [];
 
-
-  /*
-    Pokud už máme obrázek zapsaný
-    přímo v zivocichove-data.js,
-    zkusíme ho jako první.
-  */
 
   if (item.image) {
 
     possibleImages.push(
       item.image
     );
+
   }
 
 
@@ -690,7 +834,9 @@ function showPhoto(item) {
 
 
   const uniqueImages =
-    [...new Set(possibleImages)];
+    [...new Set(
+      possibleImages
+    )];
 
 
   let attempt = 0;
@@ -702,7 +848,9 @@ function showPhoto(item) {
       attempt >=
       uniqueImages.length
     ) {
+
       return;
+
     }
 
 
@@ -710,59 +858,71 @@ function showPhoto(item) {
       new Image();
 
 
-    img.onload = function() {
+    img.onload =
+      function() {
 
-      if (
-        !currentAnimal ||
-        currentAnimal.name
-          !== item.name
-      ) {
-        return;
-      }
+        if (
+          !currentAnimal ||
+          currentAnimal.name !==
+          item.name
+        ) {
 
+          return;
 
-      img.alt =
-        item.name;
-
-
-      photoArea.innerHTML =
-        "";
+        }
 
 
-      photoArea.appendChild(
-        img
-      );
-    };
+        img.alt =
+          item.name;
 
 
-    img.onerror = function() {
+        photoArea.innerHTML =
+          "";
 
-      attempt++;
 
-      tryNextImage();
-    };
+        photoArea.appendChild(
+          img
+        );
+
+      };
+
+
+    img.onerror =
+      function() {
+
+        attempt++;
+
+        tryNextImage();
+
+      };
 
 
     img.src =
-      uniqueImages[attempt];
+      uniqueImages[
+        attempt
+      ];
+
   }
 
 
   tryNextImage();
+
 }
 
 
-/* =========================
+/* =========================================
    VÝBĚR ŽIVOČICHA
-========================= */
+========================================= */
+
 
 function chooseAnimal() {
 
-  if (
-    "speechSynthesis" in window
-  ) {
-    window.speechSynthesis.cancel();
-  }
+  /*
+    Zastaví právě přehrávané MP3
+    i případný záložní hlas.
+  */
+
+  stopSound();
 
 
   updateCount();
@@ -784,15 +944,18 @@ function chooseAnimal() {
       "block";
 
 
-    document.getElementById(
-      "emptyText"
-    ).textContent =
-      activePlayer.name +
-      " teď nemá žádného živočicha, " +
-      "kterého by bylo potřeba znovu procvičit. 🎉";
+    document
+      .getElementById(
+        "emptyText"
+      )
+      .textContent =
+        activePlayer.name +
+        " teď nemá žádného živočicha, " +
+        "kterého by bylo potřeba znovu procvičit. 🎉";
 
 
     return;
+
   }
 
 
@@ -820,8 +983,10 @@ function chooseAnimal() {
     const filtered =
       mistakes.filter(
         item =>
-          getAnimalId(item)
-            !== previousAnimalId
+          getAnimalId(
+            item
+          ) !==
+          previousAnimalId
       );
 
 
@@ -831,7 +996,9 @@ function chooseAnimal() {
 
       possibleAnimals =
         filtered;
+
     }
+
   }
 
 
@@ -869,99 +1036,71 @@ function chooseAnimal() {
 
   answerArea.style.display =
     "none";
+
 }
 
 
-/* =========================
+/* =========================================
    ODHALENÍ
-========================= */
+========================================= */
+
 
 function showAnswer() {
 
   questionArea.style.display =
     "none";
 
+
   answerArea.style.display =
     "block";
+
 }
 
 
-/* =========================
+/* =========================================
    ZVUK
-========================= */
+========================================= */
+
 
 function playName() {
 
-  if (
-    !currentAnimal ||
-    !(
-      "speechSynthesis"
-      in window
-    )
-  ) {
+  if (!currentAnimal) {
+
     return;
+
   }
 
 
-  window.speechSynthesis.cancel();
+  /*
+    Použije připravené české MP3:
+
+    audio/zivocichove/nazev-zivocicha.mp3
+
+    Například:
+
+    audio/zivocichove/rak-ricni.mp3
+
+    Pokud konkrétní MP3 chybí,
+    zvuk.js použije záložní hlas.
+  */
 
 
-  const speech =
-    new SpeechSynthesisUtterance(
-      currentAnimal.name
-    );
-
-
-  speech.lang =
-    "cs-CZ";
-
-  speech.rate =
-    0.85;
-
-  speech.pitch =
-    1;
-
-
-  const voices =
-    window.speechSynthesis.getVoices();
-
-
-  const czechVoice =
-    voices.find(
-      voice =>
-        voice.lang &&
-        voice.lang
-          .toLowerCase()
-          .startsWith("cs")
-    );
-
-
-  if (czechVoice) {
-
-    speech.voice =
-      czechVoice;
-  }
-
-
-  window.speechSynthesis.speak(
-    speech
+  playNamedSound(
+    currentAnimal.name,
+    "audio/zivocichove"
   );
+
 }
 
 
-/* =========================
+/* =========================================
    JEŠTĚ NEVÍM
-========================= */
+========================================= */
+
 
 function stillDontKnow() {
 
-  if (
-    "speechSynthesis"
-    in window
-  ) {
-
-    window.speechSynthesis.cancel();
-  }
+  stopSound();
 
 
   /*
@@ -970,28 +1109,27 @@ function stillDontKnow() {
     v Co mi nejde.
   */
 
+
   chooseAnimal();
+
 }
 
 
-/* =========================
+/* =========================================
    UŽ UMÍM
-========================= */
+========================================= */
+
 
 function nowIKnow() {
 
   if (!currentAnimal) {
+
     return;
+
   }
 
 
-  if (
-    "speechSynthesis"
-    in window
-  ) {
-
-    window.speechSynthesis.cancel();
-  }
+  stopSound();
 
 
   const animalId =
@@ -1003,8 +1141,10 @@ function nowIKnow() {
   mistakes =
     mistakes.filter(
       item =>
-        getAnimalId(item)
-          !== animalId
+        getAnimalId(
+          item
+        ) !==
+        animalId
     );
 
 
@@ -1012,18 +1152,24 @@ function nowIKnow() {
 
 
   chooseAnimal();
+
 }
 
 
-/* =========================
+/* =========================================
    START
-========================= */
+========================================= */
+
 
 loadMistakes();
 
 chooseAnimal();
 
+
 </script>
 
+
 </body>
+
 </html>
+```
