@@ -3,23 +3,13 @@
 <html lang="cs">
 
 <head>
-
   <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
-
-  <meta
-    name="robots"
-    content="noindex, nofollow"
-  >
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
 
   <title>Co mi nejde – Rostliny | Zlatá udice</title>
 
   <style>
-
     * {
       box-sizing: border-box;
     }
@@ -53,4 +43,1118 @@
 
     .player {
       font-size: 14px;
+      font-weight: bold;
+      color: #567;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .header-icon {
+      font-size: 42px;
+    }
+
+    .header h1 {
+      margin: 5px 0;
+      font-size: 28px;
+    }
+
+    .header p {
+      margin: 0;
+      color: #678;
+    }
+
+    .mistake-count {
+      background: white;
+      border-radius: 16px;
+      padding: 13px;
+      margin-bottom: 18px;
+      text-align: center;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+    }
+
+    .mistake-count strong {
+      font-size: 22px;
+      margin-right: 5px;
+    }
+
+    .mistake-count span {
+      color: #678;
+    }
+
+    .plant-card {
+      background: white;
+      border-radius: 22px;
+      padding: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      text-align: center;
+    }
+
+    .photo {
+      width: 100%;
+      min-height: 280px;
+      background: #f3f7f9;
+      border: 2px dashed #c7d8e2;
+      border-radius: 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: #789;
+      padding: 20px;
+      margin-bottom: 22px;
+      overflow: hidden;
+    }
+
+    .photo img {
+      display: block;
+      width: 100%;
+      max-height: 350px;
+      object-fit: contain;
+      border-radius: 14px;
+    }
+
+    .photo-icon {
+      font-size: 60px;
+      margin-bottom: 10px;
+    }
+
+    .question {
+      font-size: 20px;
+      font-weight: bold;
+      margin: 5px 0 18px;
+    }
+
+    .show-name {
+      border: none;
+      background: #17324d;
+      color: white;
+      padding: 14px 22px;
+      border-radius: 14px;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .answer {
+      display: none;
+    }
+
+    .plant-name {
+      font-size: 30px;
+      margin: 5px 0 14px;
+    }
+
+    .sound-button {
+      border: none;
+      background: #e6f2f7;
+      color: #17324d;
+      padding: 11px 17px;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-bottom: 22px;
+    }
+
+    .sound-button:active {
+      transform: scale(0.97);
+    }
+
+    .answer-question {
+      color: #678;
+      margin-bottom: 12px;
+    }
+
+    .answer-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .answer-button {
+      border: none;
+      border-radius: 14px;
+      padding: 15px 8px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .wrong {
+      background: #fde8e8;
+      color: #9b2929;
+    }
+
+    .correct {
+      background: #e2f4e8;
+      color: #27683a;
+    }
+
+    .empty {
+      display: none;
+      background: white;
+      border-radius: 22px;
+      padding: 35px 20px;
+      text-align: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    }
+
+    .empty-icon {
+      font-size: 60px;
+      margin-bottom: 10px;
+    }
+
+    .empty h2 {
+      margin: 5px 0 10px;
+      font-size: 26px;
+    }
+
+    .empty p {
+      color: #678;
+      line-height: 1.5;
+      margin-bottom: 22px;
+    }
+
+    .practice-link {
+      display: inline-block;
+      background: #17324d;
+      color: white;
+      text-decoration: none;
+      padding: 14px 20px;
+      border-radius: 14px;
+      font-weight: bold;
+    }
+
+    .info {
+      margin-top: 18px;
+      text-align: center;
+      color: #789;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+
+
+<body>
+
+<main class="app">
+
+  <!-- HORNÍ LIŠTA -->
+
+  <div class="topbar">
+
+    <a
+      class="back"
+      href="rostliny.html"
+    >
+      ← Rostliny
+    </a>
+
+    <div
+      class="player"
+      id="playerInfo"
+    ></div>
+
+  </div>
+
+
+  <!-- HLAVIČKA -->
+
+  <div class="header">
+
+    <div class="header-icon">
+      ❤️🌿
+    </div>
+
+    <h1>
+      Co mi nejde
+    </h1>
+
+    <p>
+      Procvičuj rostliny, které ti dělají problém
+    </p>
+
+  </div>
+
+
+  <!-- POČET PROBLÉMOVÝCH ROSTLIN -->
+
+  <div
+    class="mistake-count"
+    id="mistakeCountBox"
+  >
+
+    <strong id="mistakeCount">
+      0
+    </strong>
+
+    <span id="mistakeCountText">
+      rostlin k procvičení
+    </span>
+
+  </div>
+
+
+  <!-- PROCVIČOVÁNÍ -->
+
+  <div id="practiceArea">
+
+    <div class="plant-card">
+
+      <div
+        class="photo"
+        id="photoArea"
+      ></div>
+
+
+      <!-- OTÁZKA -->
+
+      <div id="questionArea">
+
+        <div class="question">
+          Vzpomeneš si tentokrát?
+        </div>
+
+        <button
+          class="show-name"
+          type="button"
+          onclick="showAnswer()"
+        >
+          👁️ Zobrazit název
+        </button>
+
+      </div>
+
+
+      <!-- ODPOVĚĎ -->
+
+      <div
+        class="answer"
+        id="answerArea"
+      >
+
+        <h2
+          class="plant-name"
+          id="plantName"
+        ></h2>
+
+
+        <button
+          class="sound-button"
+          type="button"
+          onclick="playName()"
+        >
+          🔊 Přehrát název
+        </button>
+
+
+        <div class="answer-question">
+          Jak to tentokrát dopadlo?
+        </div>
+
+
+        <div class="answer-buttons">
+
+          <button
+            class="answer-button wrong"
+            type="button"
+            onclick="stillDontKnow()"
+          >
+            ❌ Ještě nevím
+          </button>
+
+
+          <button
+            class="answer-button correct"
+            type="button"
+            onclick="nowIKnow()"
+          >
+            ✅ Už umím
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="info">
+      Po kliknutí na „Už umím“ se rostlina
+      odstraní z tvého seznamu ❤️ Co mi nejde.
+    </div>
+
+  </div>
+
+
+  <!-- PRÁZDNÝ SEZNAM -->
+
+  <div
+    class="empty"
+    id="emptyArea"
+  >
+
+    <div class="empty-icon">
+      🏆
+    </div>
+
+    <h2>
+      Paráda!
+    </h2>
+
+    <p id="emptyText">
+      Teď tu nemáš žádnou rostlinu,
+      kterou by bylo potřeba znovu procvičit.
+    </p>
+
+    <a
+      class="practice-link"
+      href="rostliny-procvicovani.html"
+    >
+      🎯 Procvičovat další rostliny
+    </a>
+
+  </div>
+
+</main>
+
+
+<!-- =========================================
+     SPOLEČNÝ SEZNAM ROSTLIN
+========================================= -->
+
+<script src="rostliny-data.js"></script>
+
+
+<!-- =========================================
+     SPOLEČNÝ ZVUK
+========================================= -->
+
+<script src="zvuk.js"></script>
+
+
+<script>
+
+/* =========================================
+   PROFIL
+========================================= */
+
+const activeProfileId =
+  localStorage.getItem(
+    "zlataUdiceActiveProfile"
+  );
+
+
+if (!activeProfileId) {
+
+  window.location.href =
+    "profily.html";
+
+}
+
+
+function getProfiles() {
+
+  const saved =
+    localStorage.getItem(
+      "zlataUdiceProfiles"
+    );
+
+
+  if (!saved) {
+
+    return [];
+
+  }
+
+
+  try {
+
+    return JSON.parse(
+      saved
+    );
+
+  }
+
+  catch {
+
+    return [];
+
+  }
+
+}
+
+
+const activePlayer =
+  getProfiles().find(
+    profile =>
+      profile.id ===
+      activeProfileId
+  );
+
+
+if (!activePlayer) {
+
+  localStorage.removeItem(
+    "zlataUdiceActiveProfile"
+  );
+
+
+  window.location.href =
+    "profily.html";
+
+}
+
+else {
+
+  document
+    .getElementById(
+      "playerInfo"
+    )
+    .textContent =
+      activePlayer.avatar +
+      " " +
+      activePlayer.name;
+
+}
+
+
+/* =========================================
+   KLÍČ PRO CHYBY HRÁČE
+========================================= */
+
+const mistakesKey =
+  "zlataUdicePlantMistakes_" +
+  activeProfileId;
+
+
+/* =========================================
+   PROMĚNNÉ
+========================================= */
+
+let mistakes = [];
+
+let currentPlant = null;
+
+let previousPlantId = null;
+
+
+const practiceArea =
+  document.getElementById(
+    "practiceArea"
+  );
+
+
+const emptyArea =
+  document.getElementById(
+    "emptyArea"
+  );
+
+
+const mistakeCount =
+  document.getElementById(
+    "mistakeCount"
+  );
+
+
+const mistakeCountText =
+  document.getElementById(
+    "mistakeCountText"
+  );
+
+
+const mistakeCountBox =
+  document.getElementById(
+    "mistakeCountBox"
+  );
+
+
+const questionArea =
+  document.getElementById(
+    "questionArea"
+  );
+
+
+const answerArea =
+  document.getElementById(
+    "answerArea"
+  );
+
+
+const plantName =
+  document.getElementById(
+    "plantName"
+  );
+
+
+const photoArea =
+  document.getElementById(
+    "photoArea"
+  );
+
+
+/* =========================================
+   ID ROSTLINY
+
+   Číslované:
+   použije číslo karty.
+
+   Nečíslované:
+   použije název rostliny.
+========================================= */
+
+function getPlantId(item) {
+
+  if (
+    item.card !== undefined &&
+    item.card !== null &&
+    String(item.card).trim() !== ""
+  ) {
+
+    return String(
+      item.card
+    );
+
+  }
+
+
+  return item.name;
+
+}
+
+
+/* =========================================
+   NAČTENÍ CHYB
+========================================= */
+
+function loadMistakes() {
+
+  const saved =
+    localStorage.getItem(
+      mistakesKey
+    );
+
+
+  if (!saved) {
+
+    mistakes = [];
+
+    return;
+
+  }
+
+
+  try {
+
+    const parsed =
+      JSON.parse(
+        saved
+      );
+
+
+    mistakes =
+      Array.isArray(
+        parsed
+      )
+        ? parsed
+        : [];
+
+  }
+
+  catch {
+
+    mistakes = [];
+
+  }
+
+}
+
+
+/* =========================================
+   ULOŽENÍ CHYB
+========================================= */
+
+function saveMistakes() {
+
+  localStorage.setItem(
+    mistakesKey,
+    JSON.stringify(
+      mistakes
+    )
+  );
+
+}
+
+
+/* =========================================
+   POČÍTADLO
+========================================= */
+
+function updateCount() {
+
+  const count =
+    mistakes.length;
+
+
+  mistakeCount.textContent =
+    count;
+
+
+  if (count === 1) {
+
+    mistakeCountText.textContent =
+      "rostlina k procvičení";
+
+  }
+
+  else if (
+    count >= 2 &&
+    count <= 4
+  ) {
+
+    mistakeCountText.textContent =
+      "rostliny k procvičení";
+
+  }
+
+  else {
+
+    mistakeCountText.textContent =
+      "rostlin k procvičení";
+
+  }
+
+}
+
+
+/* =========================================
+   TEXT -> NÁZEV SOUBORU
+========================================= */
+
+function createFileName(text) {
+
+  return text
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+
+}
+
+
+/* =========================================
+   PLACEHOLDER
+========================================= */
+
+function showPlaceholder() {
+
+  photoArea.innerHTML = `
+
+    <div class="photo-icon">
+      🖼️
+    </div>
+
+    <strong>
+      Fotografii doplníme
+    </strong>
+
+    <span>
+      Pro tuto rostlinu zatím fotografii nemáme.
+    </span>
+
+  `;
+
+}
+
+
+/* =========================================
+   FOTOGRAFIE
+========================================= */
+
+function showPhoto(item) {
+
+  showPlaceholder();
+
+
+  const baseName =
+    createFileName(
+      item.name
+    );
+
+
+  const possibleImages = [];
+
+
+  if (item.image) {
+
+    possibleImages.push(
+      item.image
+    );
+
+  }
+
+
+  possibleImages.push(
+
+    baseName + ".webp",
+    baseName + "-2.webp",
+    baseName + "-3.webp",
+
+    baseName + ".jpg",
+    baseName + "-2.jpg",
+    baseName + "-3.jpg",
+
+    baseName + ".jpeg",
+    baseName + "-2.jpeg",
+
+    baseName + ".png",
+    baseName + "-2.png"
+
+  );
+
+
+  const uniqueImages =
+    [...new Set(
+      possibleImages
+    )];
+
+
+  let attempt = 0;
+
+
+  function tryNextImage() {
+
+    if (
+      attempt >=
+      uniqueImages.length
+    ) {
+
+      return;
+
+    }
+
+
+    const img =
+      new Image();
+
+
+    img.onload =
+      function() {
+
+        if (
+          !currentPlant ||
+          currentPlant.name !==
+          item.name
+        ) {
+
+          return;
+
+        }
+
+
+        img.alt =
+          item.name;
+
+
+        photoArea.innerHTML =
+          "";
+
+
+        photoArea.appendChild(
+          img
+        );
+
+      };
+
+
+    img.onerror =
+      function() {
+
+        attempt++;
+
+
+        tryNextImage();
+
+      };
+
+
+    img.src =
+      uniqueImages[
+        attempt
+      ];
+
+  }
+
+
+  tryNextImage();
+
+}
+
+
+/* =========================================
+   VÝBĚR ROSTLINY
+========================================= */
+
+function choosePlant() {
+
+  /*
+    Zastaví předchozí MP3.
+  */
+
+  stopSound();
+
+
+  updateCount();
+
+
+  /* Pokud už není co procvičovat */
+
+  if (
+    mistakes.length === 0
+  ) {
+
+    practiceArea.style.display =
+      "none";
+
+
+    mistakeCountBox.style.display =
+      "none";
+
+
+    emptyArea.style.display =
+      "block";
+
+
+    document
+      .getElementById(
+        "emptyText"
+      )
+      .textContent =
+        activePlayer.name +
+        " teď nemá žádnou rostlinu, " +
+        "kterou by bylo potřeba znovu procvičit. 🎉";
+
+
+    return;
+
+  }
+
+
+  practiceArea.style.display =
+    "block";
+
+
+  mistakeCountBox.style.display =
+    "block";
+
+
+  emptyArea.style.display =
+    "none";
+
+
+  let possiblePlants =
+    mistakes;
+
+
+  /*
+    Pokud je více problémových rostlin,
+    neukazujeme stejnou dvakrát za sebou.
+  */
+
+  if (
+    mistakes.length > 1 &&
+    previousPlantId !== null
+  ) {
+
+    const filtered =
+      mistakes.filter(
+        item =>
+          getPlantId(
+            item
+          ) !==
+          previousPlantId
+      );
+
+
+    if (
+      filtered.length > 0
+    ) {
+
+      possiblePlants =
+        filtered;
+
+    }
+
+  }
+
+
+  const randomIndex =
+    Math.floor(
+      Math.random() *
+      possiblePlants.length
+    );
+
+
+  currentPlant =
+    possiblePlants[
+      randomIndex
+    ];
+
+
+  previousPlantId =
+    getPlantId(
+      currentPlant
+    );
+
+
+  plantName.textContent =
+    currentPlant.name;
+
+
+  showPhoto(
+    currentPlant
+  );
+
+
+  questionArea.style.display =
+    "block";
+
+
+  answerArea.style.display =
+    "none";
+
+}
+
+
+/* =========================================
+   ZOBRAZIT ODPOVĚĎ
+========================================= */
+
+function showAnswer() {
+
+  questionArea.style.display =
+    "none";
+
+
+  answerArea.style.display =
+    "block";
+
+}
+
+
+/* =========================================
+   ZVUK
+========================================= */
+
+function playName() {
+
+  if (!currentPlant) {
+
+    return;
+
+  }
+
+
+  /*
+    Například:
+
+    Blatouch bahenní
+
+    ->
+
+    audio/rostliny/blatouch-bahenni.mp3
+  */
+
+
+  playNamedSound(
+    currentPlant.name,
+    "audio/rostliny"
+  );
+
+}
+
+
+/* =========================================
+   JEŠTĚ NEVÍM
+========================================= */
+
+function stillDontKnow() {
+
+  stopSound();
+
+
+  /*
+    Rostlinu necháme v seznamu.
+    Pouze vybereme další.
+  */
+
+  choosePlant();
+
+}
+
+
+/* =========================================
+   UŽ UMÍM
+========================================= */
+
+function nowIKnow() {
+
+  if (!currentPlant) {
+
+    return;
+
+  }
+
+
+  stopSound();
+
+
+  const plantId =
+    getPlantId(
+      currentPlant
+    );
+
+
+  mistakes =
+    mistakes.filter(
+      item =>
+        getPlantId(
+          item
+        ) !==
+        plantId
+    );
+
+
+  saveMistakes();
+
+
+  /*
+    Po odstranění vybereme další.
+    Pokud byla poslední, zobrazí se
+    obrazovka Paráda.
+  */
+
+  choosePlant();
+
+}
+
+
+/* =========================================
+   START
+========================================= */
+
+loadMistakes();
+
+choosePlant();
+
+</script>
+
+</body>
+
+</html>
 ```
