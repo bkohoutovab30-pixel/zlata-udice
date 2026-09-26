@@ -1,14 +1,30 @@
+```html
 <!DOCTYPE html>
 <html lang="cs">
+
 <head>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="robots" content="noindex, nofollow">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="robots"
+    content="noindex, nofollow"
+  >
 
   <title>Co mi nejde – Ryby | Zlatá udice</title>
 
+
   <style>
-    * { box-sizing: border-box; }
+
+    * {
+      box-sizing: border-box;
+    }
+
 
     body {
       margin: 0;
@@ -17,12 +33,14 @@
       color: #17324d;
     }
 
+
     .app {
       max-width: 600px;
       margin: auto;
       min-height: 100vh;
       padding: 20px;
     }
+
 
     .topbar {
       display: flex;
@@ -31,11 +49,13 @@
       margin-bottom: 16px;
     }
 
+
     .back {
       color: #567;
       text-decoration: none;
       font-weight: bold;
     }
+
 
     .player {
       font-size: 14px;
@@ -43,24 +63,29 @@
       color: #567;
     }
 
+
     .header {
       text-align: center;
       margin-bottom: 20px;
     }
 
+
     .header-icon {
       font-size: 42px;
     }
+
 
     .header h1 {
       margin: 5px 0;
       font-size: 28px;
     }
 
+
     .header p {
       margin: 0;
       color: #678;
     }
+
 
     .mistake-count {
       background: white;
@@ -71,14 +96,17 @@
       box-shadow: 0 3px 10px rgba(0,0,0,0.05);
     }
 
+
     .mistake-count strong {
       font-size: 22px;
       margin-right: 5px;
     }
 
+
     .mistake-count span {
       color: #678;
     }
+
 
     .fish-card {
       background: white;
@@ -87,6 +115,7 @@
       box-shadow: 0 4px 15px rgba(0,0,0,0.08);
       text-align: center;
     }
+
 
     .photo {
       width: 100%;
@@ -104,6 +133,7 @@
       overflow: hidden;
     }
 
+
     .photo img {
       display: block;
       width: 100%;
@@ -112,16 +142,19 @@
       border-radius: 14px;
     }
 
+
     .photo-icon {
       font-size: 60px;
       margin-bottom: 10px;
     }
+
 
     .question {
       font-size: 20px;
       font-weight: bold;
       margin: 5px 0 18px;
     }
+
 
     .show-name {
       border: none;
@@ -134,14 +167,17 @@
       cursor: pointer;
     }
 
+
     .answer {
       display: none;
     }
+
 
     .fish-name {
       font-size: 30px;
       margin: 5px 0 14px;
     }
+
 
     .sound-button {
       border: none;
@@ -155,16 +191,24 @@
       margin-bottom: 22px;
     }
 
+
+    .sound-button:active {
+      transform: scale(0.97);
+    }
+
+
     .answer-question {
       color: #678;
       margin-bottom: 12px;
     }
+
 
     .answer-buttons {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 12px;
     }
+
 
     .answer-button {
       border: none;
@@ -175,15 +219,18 @@
       cursor: pointer;
     }
 
+
     .wrong {
       background: #fde8e8;
       color: #9b2929;
     }
 
+
     .correct {
       background: #e2f4e8;
       color: #27683a;
     }
+
 
     .empty {
       display: none;
@@ -194,21 +241,25 @@
       box-shadow: 0 4px 15px rgba(0,0,0,0.08);
     }
 
+
     .empty-icon {
       font-size: 60px;
       margin-bottom: 10px;
     }
+
 
     .empty h2 {
       margin: 5px 0 10px;
       font-size: 26px;
     }
 
+
     .empty p {
       color: #678;
       line-height: 1.5;
       margin-bottom: 22px;
     }
+
 
     .practice-link {
       display: inline-block;
@@ -220,6 +271,7 @@
       font-weight: bold;
     }
 
+
     .info {
       margin-top: 18px;
       text-align: center;
@@ -227,23 +279,45 @@
       font-size: 13px;
       line-height: 1.5;
     }
+
   </style>
+
 </head>
+
 
 <body>
 
+
 <main class="app">
 
+
   <div class="topbar">
-    <a class="back" href="ryby.html">← Ryby</a>
-    <div class="player" id="playerInfo"></div>
+
+    <a
+      class="back"
+      href="ryby.html"
+    >
+      ← Ryby
+    </a>
+
+    <div
+      class="player"
+      id="playerInfo"
+    >
+    </div>
+
   </div>
+
 
   <div class="header">
 
-    <div class="header-icon">❤️🐟</div>
+    <div class="header-icon">
+      ❤️🐟
+    </div>
 
-    <h1>Co mi nejde</h1>
+    <h1>
+      Co mi nejde
+    </h1>
 
     <p>
       Procvičuj ryby, které ti dělají problém
@@ -251,9 +325,15 @@
 
   </div>
 
-  <div class="mistake-count" id="mistakeCountBox">
 
-    <strong id="mistakeCount">0</strong>
+  <div
+    class="mistake-count"
+    id="mistakeCountBox"
+  >
+
+    <strong id="mistakeCount">
+      0
+    </strong>
 
     <span id="mistakeCountText">
       ryb k procvičení
@@ -261,11 +341,19 @@
 
   </div>
 
+
   <div id="practiceArea">
+
 
     <div class="fish-card">
 
-      <div class="photo" id="photoArea"></div>
+
+      <div
+        class="photo"
+        id="photoArea"
+      >
+      </div>
+
 
       <div id="questionArea">
 
@@ -275,37 +363,52 @@
 
         <button
           class="show-name"
-          onclick="showAnswer()">
+          onclick="showAnswer()"
+        >
           👁️ Zobrazit název
         </button>
 
       </div>
 
-      <div class="answer" id="answerArea">
 
-        <h2 class="fish-name" id="fishName"></h2>
+      <div
+        class="answer"
+        id="answerArea"
+      >
+
+        <h2
+          class="fish-name"
+          id="fishName"
+        >
+        </h2>
+
 
         <button
           class="sound-button"
-          onclick="playName()">
+          onclick="playName()"
+        >
           🔊 Přehrát název
         </button>
+
 
         <div class="answer-question">
           Jak to tentokrát dopadlo?
         </div>
 
+
         <div class="answer-buttons">
 
           <button
             class="answer-button wrong"
-            onclick="stillDontKnow()">
+            onclick="stillDontKnow()"
+          >
             ❌ Ještě nevím
           </button>
 
           <button
             class="answer-button correct"
-            onclick="nowIKnow()">
+            onclick="nowIKnow()"
+          >
             ✅ Už umím
           </button>
 
@@ -313,20 +416,33 @@
 
       </div>
 
+
     </div>
 
+
     <div class="info">
+
       Po kliknutí na „Už umím“ se ryba
       z problémových ryb tohoto hráče odstraní.
+
     </div>
+
 
   </div>
 
-  <div class="empty" id="emptyArea">
 
-    <div class="empty-icon">🏆</div>
+  <div
+    class="empty"
+    id="emptyArea"
+  >
 
-    <h2>Paráda!</h2>
+    <div class="empty-icon">
+      🏆
+    </div>
+
+    <h2>
+      Paráda!
+    </h2>
 
     <p id="emptyText">
       Teď tu nemáš žádnou rybu,
@@ -335,161 +451,269 @@
 
     <a
       class="practice-link"
-      href="ryby-procvicovani.html">
+      href="ryby-procvicovani.html"
+    >
       🎯 Procvičovat další ryby
     </a>
 
   </div>
 
+
 </main>
+
+
+<!-- ========================================
+     SPOLEČNÝ SYSTÉM ZVUKU
+======================================== -->
+
+
+<script src="zvuk.js"></script>
+
 
 <script>
 
-/* PROFIL */
+
+/* =========================================
+   PROFIL
+========================================= */
+
 
 const activeProfileId =
   localStorage.getItem(
     "zlataUdiceActiveProfile"
   );
 
+
 if (!activeProfileId) {
-  window.location.href = "profily.html";
+
+  window.location.href =
+    "profily.html";
+
 }
 
+
 function getProfiles() {
+
 
   const saved =
     localStorage.getItem(
       "zlataUdiceProfiles"
     );
 
-  if (!saved) return [];
+
+  if (!saved) {
+
+    return [];
+
+  }
+
 
   try {
-    return JSON.parse(saved);
+
+    return JSON.parse(
+      saved
+    );
+
   }
+
   catch {
+
     return [];
+
   }
+
 }
+
 
 const activePlayer =
   getProfiles().find(
     profile =>
-      profile.id === activeProfileId
+      profile.id ===
+      activeProfileId
   );
 
+
 if (!activePlayer) {
+
 
   localStorage.removeItem(
     "zlataUdiceActiveProfile"
   );
 
+
   window.location.href =
     "profily.html";
 
 }
+
 else {
 
-  document.getElementById(
-    "playerInfo"
-  ).textContent =
-    activePlayer.avatar +
-    " " +
-    activePlayer.name;
+
+  document
+    .getElementById(
+      "playerInfo"
+    )
+    .textContent =
+      activePlayer.avatar +
+      " " +
+      activePlayer.name;
+
 }
 
 
-/* DATA HRÁČE */
+/* =========================================
+   DATA HRÁČE
+========================================= */
+
 
 const mistakesKey =
   "zlataUdiceFishMistakes_" +
   activeProfileId;
+
 
 let mistakes = [];
 
 let currentFish = null;
 let previousCard = null;
 
+
 const practiceArea =
-  document.getElementById("practiceArea");
+  document.getElementById(
+    "practiceArea"
+  );
+
 
 const emptyArea =
-  document.getElementById("emptyArea");
+  document.getElementById(
+    "emptyArea"
+  );
+
 
 const mistakeCount =
-  document.getElementById("mistakeCount");
+  document.getElementById(
+    "mistakeCount"
+  );
+
 
 const mistakeCountText =
-  document.getElementById("mistakeCountText");
+  document.getElementById(
+    "mistakeCountText"
+  );
+
 
 const mistakeCountBox =
-  document.getElementById("mistakeCountBox");
+  document.getElementById(
+    "mistakeCountBox"
+  );
+
 
 const questionArea =
-  document.getElementById("questionArea");
+  document.getElementById(
+    "questionArea"
+  );
+
 
 const answerArea =
-  document.getElementById("answerArea");
+  document.getElementById(
+    "answerArea"
+  );
+
 
 const fishName =
-  document.getElementById("fishName");
+  document.getElementById(
+    "fishName"
+  );
+
 
 const photoArea =
-  document.getElementById("photoArea");
+  document.getElementById(
+    "photoArea"
+  );
 
 
-/* NAČTENÍ CHYB */
+/* =========================================
+   NAČTENÍ CHYB
+========================================= */
+
 
 function loadMistakes() {
 
+
   const saved =
-    localStorage.getItem(mistakesKey);
+    localStorage.getItem(
+      mistakesKey
+    );
+
 
   if (!saved) {
 
     mistakes = [];
+
     return;
+
   }
+
 
   try {
 
+
     const parsed =
-      JSON.parse(saved);
+      JSON.parse(
+        saved
+      );
+
 
     mistakes =
-      Array.isArray(parsed)
+      Array.isArray(
+        parsed
+      )
         ? parsed
         : [];
 
   }
+
   catch {
 
     mistakes = [];
+
   }
+
 }
 
 
-/* ULOŽENÍ */
+/* =========================================
+   ULOŽENÍ
+========================================= */
+
 
 function saveMistakes() {
 
+
   localStorage.setItem(
     mistakesKey,
-    JSON.stringify(mistakes)
+    JSON.stringify(
+      mistakes
+    )
   );
+
 }
 
 
-/* POČÍTADLO */
+/* =========================================
+   POČÍTADLO
+========================================= */
+
 
 function updateCount() {
+
 
   const count =
     mistakes.length;
 
+
   mistakeCount.textContent =
     count;
+
 
   if (count === 1) {
 
@@ -497,6 +721,7 @@ function updateCount() {
       "ryba k procvičení";
 
   }
+
   else if (
     count >= 2 &&
     count <= 4
@@ -506,53 +731,106 @@ function updateCount() {
       "ryby k procvičení";
 
   }
+
   else {
 
     mistakeCountText.textContent =
       "ryb k procvičení";
+
   }
+
 }
 
 
-/* NÁZEV SOUBORU */
+/* =========================================
+   NÁZEV SOUBORU PRO OBRÁZEK
+========================================= */
+
 
 function createImageName(name) {
 
+
   return name
+
     .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
+
+    .replace(
+      /[\u0300-\u036f]/g,
+      ""
+    )
+
     .toLowerCase()
 
-    /* stejné pravidlo jako v Učení */
+    /*
+      Stejné pravidlo jako v Učení.
+      Obě formy pstruha používají
+      společný obrázek pstruh-obecny.
+    */
 
-    .replace(/\s*-\s*f\.\s*.*$/, "")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
+    .replace(
+      /\s*-\s*f\.\s*.*$/,
+      ""
+    )
+
+    .replace(
+      /[^a-z0-9]+/g,
+      "-"
+    )
+
+    .replace(
+      /^-+|-+$/g,
+      ""
+    );
+
 }
 
 
-/* PLACEHOLDER */
+/* =========================================
+   PLACEHOLDER
+========================================= */
+
 
 function showPlaceholder() {
 
+
   photoArea.innerHTML = `
-    <div class="photo-icon">🖼️</div>
-    <strong>Fotografii doplníme</strong>
-    <span>Pro tuto rybu zatím fotografii nemáme.</span>
+
+    <div class="photo-icon">
+      🖼️
+    </div>
+
+    <strong>
+      Fotografii doplníme
+    </strong>
+
+    <span>
+      Pro tuto rybu zatím fotografii nemáme.
+    </span>
+
   `;
+
 }
 
 
-/* FOTOGRAFIE */
+/* =========================================
+   FOTOGRAFIE
+========================================= */
+
 
 function showPhoto(item) {
 
+
   showPlaceholder();
 
+
   const baseName =
-    createImageName(item.name);
+    createImageName(
+      item.name
+    );
+
 
   const possibleImages = [
+
     baseName + ".webp",
     baseName + "-2.webp",
     baseName + "-3.webp",
@@ -566,124 +844,174 @@ function showPhoto(item) {
 
     baseName + ".png",
     baseName + "-2.png"
+
   ];
+
 
   let attempt = 0;
 
+
   function tryNextImage() {
 
+
     if (
-      attempt >= possibleImages.length
+      attempt >=
+      possibleImages.length
     ) {
+
       return;
+
     }
+
 
     const img =
       new Image();
 
-    /*
-      Události musí být nastavené
-      před img.src.
-    */
 
     img.onload = function() {
 
-      /*
-        Když se mezitím změnila ryba,
-        starý obrázek nevložíme.
-      */
 
       if (
         !currentFish ||
-        currentFish.name !== item.name
+        currentFish.name !==
+        item.name
       ) {
+
         return;
+
       }
+
 
       img.alt =
         item.name;
 
+
       photoArea.innerHTML =
         "";
+
 
       photoArea.appendChild(
         img
       );
+
     };
+
 
     img.onerror = function() {
 
+
       attempt++;
 
+
       tryNextImage();
+
     };
+
 
     img.src =
       possibleImages[attempt];
+
   }
 
+
   tryNextImage();
+
 }
 
 
-/* VÝBĚR RYBY */
+/* =========================================
+   VÝBĚR RYBY
+========================================= */
+
 
 function chooseFish() {
 
-  if ("speechSynthesis" in window) {
-    window.speechSynthesis.cancel();
-  }
+
+  /*
+    Zastaví předchozí MP3
+    i případný záložní hlas.
+  */
+
+
+  stopSound();
+
 
   updateCount();
 
-  if (mistakes.length === 0) {
+
+  if (
+    mistakes.length === 0
+  ) {
+
 
     practiceArea.style.display =
       "none";
 
+
     mistakeCountBox.style.display =
       "none";
+
 
     emptyArea.style.display =
       "block";
 
-    document.getElementById(
-      "emptyText"
-    ).textContent =
-      activePlayer.name +
-      " teď nemá žádnou rybu, " +
-      "kterou by bylo potřeba znovu procvičit. 🎉";
+
+    document
+      .getElementById(
+        "emptyText"
+      )
+      .textContent =
+        activePlayer.name +
+        " teď nemá žádnou rybu, " +
+        "kterou by bylo potřeba znovu procvičit. 🎉";
+
 
     return;
+
   }
+
 
   practiceArea.style.display =
     "block";
 
+
   mistakeCountBox.style.display =
     "block";
+
 
   emptyArea.style.display =
     "none";
 
+
   let possibleFish =
     mistakes;
+
 
   if (
     mistakes.length > 1 &&
     previousCard !== null
   ) {
 
+
     const filtered =
       mistakes.filter(
         item =>
-          item.card !== previousCard
+          item.card !==
+          previousCard
       );
 
-    if (filtered.length > 0) {
-      possibleFish = filtered;
+
+    if (
+      filtered.length > 0
+    ) {
+
+      possibleFish =
+        filtered;
+
     }
+
   }
+
 
   const randomIndex =
     Math.floor(
@@ -691,135 +1019,159 @@ function chooseFish() {
       possibleFish.length
     );
 
+
   currentFish =
-    possibleFish[randomIndex];
+    possibleFish[
+      randomIndex
+    ];
+
 
   previousCard =
     currentFish.card;
 
+
   fishName.textContent =
     currentFish.name;
+
 
   showPhoto(
     currentFish
   );
 
+
   questionArea.style.display =
     "block";
 
+
   answerArea.style.display =
     "none";
+
 }
 
 
-/* ODHALENÍ */
+/* =========================================
+   ODHALENÍ
+========================================= */
+
 
 function showAnswer() {
 
+
   questionArea.style.display =
     "none";
 
+
   answerArea.style.display =
     "block";
+
 }
 
 
-/* ZVUK */
+/* =========================================
+   ZVUK
+========================================= */
+
 
 function playName() {
 
-  if (
-    !currentFish ||
-    !("speechSynthesis" in window)
-  ) {
+
+  if (!currentFish) {
+
     return;
+
   }
 
-  window.speechSynthesis.cancel();
 
-  const speech =
-    new SpeechSynthesisUtterance(
-      currentFish.name
-    );
+  /*
+    Použijeme stejné české MP3
+    jako v Učení a Procvičování.
 
-  speech.lang =
-    "cs-CZ";
+    Například:
+    audio/ryby/amur-bily.mp3
 
-  speech.rate =
-    0.85;
+    Pokud MP3 chybí,
+    zvuk.js použije záložní hlas.
+  */
 
-  speech.pitch =
-    1;
 
-  const voices =
-    window.speechSynthesis.getVoices();
-
-  const czechVoice =
-    voices.find(
-      voice =>
-        voice.lang &&
-        voice.lang
-          .toLowerCase()
-          .startsWith("cs")
-    );
-
-  if (czechVoice) {
-    speech.voice = czechVoice;
-  }
-
-  window.speechSynthesis.speak(
-    speech
+  playNamedSound(
+    currentFish.name,
+    "audio/ryby"
   );
+
 }
 
 
-/* JEŠTĚ NEVÍM */
+/* =========================================
+   JEŠTĚ NEVÍM
+========================================= */
+
 
 function stillDontKnow() {
 
-  if ("speechSynthesis" in window) {
-    window.speechSynthesis.cancel();
-  }
+
+  stopSound();
+
 
   /*
     Nic nemažeme.
     Ryba zůstává v Co mi nejde.
   */
 
+
   chooseFish();
+
 }
 
 
-/* UŽ UMÍM */
+/* =========================================
+   UŽ UMÍM
+========================================= */
+
 
 function nowIKnow() {
 
+
   if (!currentFish) {
+
     return;
+
   }
 
-  if ("speechSynthesis" in window) {
-    window.speechSynthesis.cancel();
-  }
+
+  stopSound();
+
 
   mistakes =
     mistakes.filter(
       item =>
-        item.card !== currentFish.card
+        item.card !==
+        currentFish.card
     );
+
 
   saveMistakes();
 
+
   chooseFish();
+
 }
 
 
-/* START */
+/* =========================================
+   START
+========================================= */
+
 
 loadMistakes();
+
 chooseFish();
+
 
 </script>
 
+
 </body>
+
 </html>
+```
