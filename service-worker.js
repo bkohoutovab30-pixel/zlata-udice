@@ -1,9 +1,11 @@
 /* =========================================================
    ZLATÁ UDICE 2026
-   SERVICE WORKER – OFFLINE REŽIM
+   SERVICE WORKER – OFFLINE REŽIM v5
 ========================================================= */
 
-const CACHE_NAME = "zlata-udice-v4";
+const APP_CACHE = "zlata-udice-app-v5";
+const AUDIO_CACHE = "zlata-udice-audio-v5";
+const IMAGE_CACHE = "zlata-udice-images-v5";
 
 
 /* =========================================================
@@ -63,18 +65,14 @@ const APP_FILES = [
 self.addEventListener("install", event => {
 
   console.log(
-    "Zlatá udice: instaluji offline režim v4."
+    "Zlatá udice: instaluji offline režim v5."
   );
 
   event.waitUntil(
 
     caches
-      .open(CACHE_NAME)
+      .open(APP_CACHE)
       .then(cache => {
-
-        console.log(
-          "Zlatá udice: ukládám základ aplikace."
-        );
 
         return cache.addAll(APP_FILES);
 
@@ -89,14 +87,16 @@ self.addEventListener("install", event => {
 
 /* =========================================================
    AKTIVACE
-   SMAZÁNÍ STARÝCH CACHE
 ========================================================= */
 
 self.addEventListener("activate", event => {
 
-  console.log(
-    "Zlatá udice: aktivuji offline režim v4."
-  );
+  const allowedCaches = [
+    APP_CACHE,
+    AUDIO_CACHE,
+    IMAGE_CACHE
+  ];
+
 
   event.waitUntil(
 
@@ -108,12 +108,9 @@ self.addEventListener("activate", event => {
 
           cacheNames.map(cacheName => {
 
-            if (cacheName !== CACHE_NAME) {
-
-              console.log(
-                "Mažu starou cache:",
-                cacheName
-              );
+            if (
+              !allowedCaches.includes(cacheName)
+            ) {
 
               return caches.delete(
                 cacheName
@@ -139,16 +136,280 @@ self.addEventListener("activate", event => {
 
 
 /* =========================================================
-   NAČÍTÁNÍ SOUBORŮ
+   POMOCNÉ FUNKCE
+========================================================= */
+
+function isAudioRequest(request) {
+
+  const url =
+    request.url.toLowerCase();
+
+
+  return (
+    request.destination === "audio" ||
+    url.endsWith(".mp3") ||
+    url.endsWith(".wav") ||
+    url.endsWith(".ogg") ||
+    url.endsWith(".m4a")
+  );
+
+}
+
+
+function isImageRequest(request) {
+
+  const url =
+    request.url.toLowerCase();
+
+
+  return (
+    request.destination === "image" ||
+    url.endsWith(".jpg") ||
+    url.endsWith(".jpeg") ||
+    url.endsWith(".png") ||
+    url.endsWith(".webp")
+  );
+
+}
+
+
+/* =========================================================
+   AUDIO – CACHE FIRST
+========================================================= */
+
+async function handleAudio(request) {
+
+  const cache =
+    await caches.open(
+      AUDIO_CACHE
+    );
+
+
+  const cached =
+    await cache.match(
+      request
+    );
+
+
+  /*
+    Zvuk už máme uložený.
+    Internet vůbec nepotřebujeme.
+  */
+
+  if (cached) {
+
+    return cached;
+
+  }
+
+
+  /*
+    Zvuk ještě nemáme.
+    Stáhneme ho a uložíme.
+  */
+
+  try {
+
+    const response =
+      await fetch(request);
+
+
+    if (
+      response &&
+      response.ok
+    ) {
+
+      await cache.put(
+        request,
+        response.clone()
+      );
+
+    }
+
+
+    return response;
+
+  }
+  catch (error) {
+
+    console.log(
+      "Zvuk není dostupný offline:",
+      request.url
+    );
+
+
+    return new Response(
+      "",
+      {
+        status: 503,
+        statusText:
+          "Audio není dostupné offline"
+      }
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   OBRÁZKY – CACHE FIRST
+========================================================= */
+
+async function handleImage(request) {
+
+  const cache =
+    await caches.open(
+      IMAGE_CACHE
+    );
+
+
+  const cached =
+    await cache.match(
+      request
+    );
+
+
+  if (cached) {
+
+    return cached;
+
+  }
+
+
+  try {
+
+    const response =
+      await fetch(request);
+
+
+    if (
+      response &&
+      response.ok
+    ) {
+
+      await cache.put(
+        request,
+        response.clone()
+      );
+
+    }
+
+
+    return response;
+
+  }
+  catch (error) {
+
+    return new Response(
+      "",
+      {
+        status: 503,
+        statusText:
+          "Obrázek není dostupný offline"
+      }
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   OSTATNÍ SOUBORY
+========================================================= */
+
+async function handleAppRequest(request) {
+
+  const cached =
+    await caches.match(
+      request
+    );
+
+
+  if (cached) {
+
+    return cached;
+
+  }
+
+
+  try {
+
+    const response =
+      await fetch(request);
+
+
+    /*
+      Ukládáme pouze úspěšné odpovědi
+      ze stejné domény.
+    */
+
+    if (
+      response &&
+      response.ok
+    ) {
+
+      const url =
+        new URL(
+          request.url
+        );
+
+
+      if (
+        url.origin ===
+        self.location.origin
+      ) {
+
+        const cache =
+          await caches.open(
+            APP_CACHE
+          );
+
+
+        await cache.put(
+          request,
+          response.clone()
+        );
+
+      }
+
+    }
+
+
+    return response;
+
+  }
+  catch (error) {
+
+    return new Response(
+      "Obsah není dostupný offline.",
+      {
+        status: 503,
+        headers: {
+          "Content-Type":
+            "text/plain; charset=utf-8"
+        }
+      }
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   FETCH
 ========================================================= */
 
 self.addEventListener("fetch", event => {
 
+  const request =
+    event.request;
 
-  /* Pouze GET požadavky */
 
   if (
-    event.request.method !== "GET"
+    request.method !== "GET"
   ) {
 
     return;
@@ -158,11 +419,9 @@ self.addEventListener("fetch", event => {
 
   const url =
     new URL(
-      event.request.url
+      request.url
     );
 
-
-  /* Pouze HTTP / HTTPS */
 
   if (
     url.protocol !== "http:" &&
@@ -174,94 +433,40 @@ self.addEventListener("fetch", event => {
   }
 
 
+  /* ZVUK */
+
+  if (
+    isAudioRequest(request)
+  ) {
+
+    event.respondWith(
+      handleAudio(request)
+    );
+
+    return;
+
+  }
+
+
+  /* OBRÁZEK */
+
+  if (
+    isImageRequest(request)
+  ) {
+
+    event.respondWith(
+      handleImage(request)
+    );
+
+    return;
+
+  }
+
+
+  /* OSTATNÍ */
+
   event.respondWith(
-
-    caches
-      .match(event.request)
-
-      .then(cachedResponse => {
-
-
-        /* =============================
-           SOUBOR UŽ MÁME
-        ============================= */
-
-        if (cachedResponse) {
-
-          return cachedResponse;
-
-        }
-
-
-        /* =============================
-           SOUBOR JEŠTĚ NEMÁME
-        ============================= */
-
-        return fetch(event.request)
-
-          .then(networkResponse => {
-
-
-            if (
-              !networkResponse ||
-              networkResponse.status !== 200
-            ) {
-
-              return networkResponse;
-
-            }
-
-
-            /*
-              Ukládáme pouze soubory
-              ze stejné domény.
-            */
-
-            if (
-              url.origin ===
-              self.location.origin
-            ) {
-
-
-              const responseClone =
-                networkResponse.clone();
-
-
-              caches
-                .open(CACHE_NAME)
-
-                .then(cache => {
-
-                  cache.put(
-                    event.request,
-                    responseClone
-                  );
-
-                });
-
-            }
-
-
-            return networkResponse;
-
-          })
-
-
-          .catch(error => {
-
-
-            console.log(
-              "Offline soubor není dostupný:",
-              event.request.url
-            );
-
-
-            throw error;
-
-          });
-
-      })
-
+    handleAppRequest(request)
   );
 
 });
