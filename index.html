@@ -7,6 +7,10 @@
 
   <title>Zlatá udice – trénink</title>
 
+  <!-- PWA / OFFLINE -->
+  <link rel="manifest" href="./manifest.json">
+  <meta name="theme-color" content="#062d59">
+
   <style>
     * {
       box-sizing: border-box;
@@ -354,6 +358,42 @@ function loadActivePlayer() {
 ========================= */
 
 loadActivePlayer();
+
+
+/* =========================
+   OFFLINE REŽIM
+   SERVICE WORKER
+========================= */
+
+if ("serviceWorker" in navigator) {
+
+  window.addEventListener(
+    "load",
+    function () {
+
+      navigator.serviceWorker
+        .register("./service-worker.js")
+        .then(function (registration) {
+
+          console.log(
+            "Offline režim Zlaté udice je aktivní.",
+            registration.scope
+          );
+
+        })
+        .catch(function (error) {
+
+          console.error(
+            "Service worker se nepodařilo spustit:",
+            error
+          );
+
+        });
+
+    }
+  );
+
+}
 
 </script>
 
