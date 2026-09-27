@@ -3,7 +3,7 @@
    SERVICE WORKER – OFFLINE REŽIM
 ========================================================= */
 
-const CACHE_NAME = "zlata-udice-v3";
+const CACHE_NAME = "zlata-udice-v4";
 
 
 /* =========================================================
@@ -35,6 +35,7 @@ const APP_FILES = [
   "./rostliny-chyby.html",
 
   /* ŽIVOČICHOVÉ */
+  "./zivocichove-uceni.html",
   "./zivocichove-procvicovani.html",
   "./zivocichove-chyby.html",
 
@@ -46,7 +47,7 @@ const APP_FILES = [
   "./rostliny-data.js",
   "./zivocichove-data.js",
 
-  /* SPOLEČNÝ ZVUK */
+  /* ZVUK */
   "./zvuk.js",
 
   /* PWA */
@@ -61,11 +62,14 @@ const APP_FILES = [
 
 self.addEventListener("install", event => {
 
-  console.log("Zlatá udice: instaluji offline režim v3.");
+  console.log(
+    "Zlatá udice: instaluji offline režim v4."
+  );
 
   event.waitUntil(
 
-    caches.open(CACHE_NAME)
+    caches
+      .open(CACHE_NAME)
       .then(cache => {
 
         console.log(
@@ -85,16 +89,19 @@ self.addEventListener("install", event => {
 
 /* =========================================================
    AKTIVACE
-   SMAZÁNÍ STARÝCH VERZÍ CACHE
+   SMAZÁNÍ STARÝCH CACHE
 ========================================================= */
 
 self.addEventListener("activate", event => {
 
-  console.log("Zlatá udice: aktivuji offline režim v3.");
+  console.log(
+    "Zlatá udice: aktivuji offline režim v4."
+  );
 
   event.waitUntil(
 
-    caches.keys()
+    caches
+      .keys()
       .then(cacheNames => {
 
         return Promise.all(
@@ -108,7 +115,9 @@ self.addEventListener("activate", event => {
                 cacheName
               );
 
-              return caches.delete(cacheName);
+              return caches.delete(
+                cacheName
+              );
 
             }
 
@@ -118,7 +127,11 @@ self.addEventListener("activate", event => {
 
       })
 
-      .then(() => self.clients.claim())
+      .then(() => {
+
+        return self.clients.claim();
+
+      })
 
   );
 
@@ -131,49 +144,63 @@ self.addEventListener("activate", event => {
 
 self.addEventListener("fetch", event => {
 
-  /* Řešíme pouze GET */
-  if (event.request.method !== "GET") {
+
+  /* Pouze GET požadavky */
+
+  if (
+    event.request.method !== "GET"
+  ) {
+
     return;
+
   }
 
 
-  /* Řešíme pouze http / https */
-  const url = new URL(event.request.url);
+  const url =
+    new URL(
+      event.request.url
+    );
+
+
+  /* Pouze HTTP / HTTPS */
 
   if (
     url.protocol !== "http:" &&
     url.protocol !== "https:"
   ) {
+
     return;
+
   }
 
 
   event.respondWith(
 
-    caches.match(event.request)
+    caches
+      .match(event.request)
+
       .then(cachedResponse => {
 
-        /*
-          Pokud máme soubor uložený,
-          vrátíme offline kopii.
-        */
+
+        /* =============================
+           SOUBOR UŽ MÁME
+        ============================= */
 
         if (cachedResponse) {
+
           return cachedResponse;
+
         }
 
 
-        /*
-          Pokud ho ještě nemáme,
-          stáhneme ho z internetu.
-        */
+        /* =============================
+           SOUBOR JEŠTĚ NEMÁME
+        ============================= */
 
         return fetch(event.request)
+
           .then(networkResponse => {
 
-            /*
-              Neukládáme chybové odpovědi.
-            */
 
             if (
               !networkResponse ||
@@ -187,16 +214,22 @@ self.addEventListener("fetch", event => {
 
             /*
               Ukládáme pouze soubory
-              ze Zlaté udice / stejné domény.
+              ze stejné domény.
             */
 
-            if (url.origin === self.location.origin) {
+            if (
+              url.origin ===
+              self.location.origin
+            ) {
+
 
               const responseClone =
                 networkResponse.clone();
 
 
-              caches.open(CACHE_NAME)
+              caches
+                .open(CACHE_NAME)
+
                 .then(cache => {
 
                   cache.put(
@@ -210,6 +243,20 @@ self.addEventListener("fetch", event => {
 
 
             return networkResponse;
+
+          })
+
+
+          .catch(error => {
+
+
+            console.log(
+              "Offline soubor není dostupný:",
+              event.request.url
+            );
+
+
+            throw error;
 
           });
 
