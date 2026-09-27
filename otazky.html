@@ -67,7 +67,7 @@ h1 {
   color: #607890;
 }
 
-/* VÝBĚR OBLASTI */
+/* VÝBĚR */
 
 .filter-card {
   background: white;
@@ -95,10 +95,6 @@ select {
   color: #062d59;
   background: white;
   outline: none;
-}
-
-select:focus {
-  border-color: #8bbfd8;
 }
 
 .mode-buttons {
@@ -183,7 +179,6 @@ select:focus {
   font-size: 25px;
   line-height: 1.35;
   font-weight: 700;
-  color: #062d59;
 }
 
 .sound-btn {
@@ -438,9 +433,12 @@ select:focus {
 
 </div>
 
+
 <script src="otazky-data.js"></script>
 
+
 <script>
+
 document.addEventListener("DOMContentLoaded", function () {
 
   const categorySelect =
@@ -469,20 +467,23 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
   let currentQuestions = [];
+
   let currentIndex = 0;
 
   let correctCount = 0;
+
   let wrongCount = 0;
 
   let locked = false;
+
   let currentAudio = null;
 
   let mode = "all";
 
 
-  /* ===============================
+  /* ==================================
      CO MI NEJDE
-     =============================== */
+     ================================== */
 
   let problemQuestions = [];
 
@@ -502,9 +503,12 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
 
-  /* ===============================
-     NAČTENÍ DATABÁZE
-     =============================== */
+  /* ==================================
+     DATABÁZE
+
+     Každá odpověď si nese své
+     PŮVODNÍ číslo 1, 2 nebo 3.
+     ================================== */
 
   function prepareQuestions() {
 
@@ -526,19 +530,36 @@ document.addEventListener("DOMContentLoaded", function () {
 
       return {
 
-        section: Number(q[0]),
+        section:
+          Number(q[0]),
 
-        number: Number(q[1]),
+        number:
+          Number(q[1]),
 
-        question: q[2],
+        question:
+          q[2],
 
         answers: [
-          q[3],
-          q[4],
-          q[5]
+
+          {
+            text: q[3],
+            originalNumber: 1
+          },
+
+          {
+            text: q[4],
+            originalNumber: 2
+          },
+
+          {
+            text: q[5],
+            originalNumber: 3
+          }
+
         ],
 
-        correct: Number(q[6])
+        correct:
+          Number(q[6])
 
       };
 
@@ -551,9 +572,9 @@ document.addEventListener("DOMContentLoaded", function () {
     prepareQuestions();
 
 
-  /* ===============================
+  /* ==================================
      NÁZVY OBLASTÍ
-     =============================== */
+     ================================== */
 
   function getSectionName(section) {
 
@@ -578,9 +599,9 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
 
-  /* ===============================
+  /* ==================================
      ID OTÁZKY
-     =============================== */
+     ================================== */
 
   function questionID(q) {
 
@@ -593,13 +614,15 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
 
-  /* ===============================
-     NÁHODNÉ PROMÍCHÁNÍ
-     =============================== */
+  /* ==================================
+     PROMÍCHÁNÍ POLE
+     Fisher-Yates
+     ================================== */
 
   function shuffle(array) {
 
-    const copy = [...array];
+    const copy =
+      [...array];
 
     for (
       let i = copy.length - 1;
@@ -609,16 +632,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const j =
         Math.floor(
-          Math.random() * (i + 1)
+          Math.random() *
+          (i + 1)
         );
 
-      [
-        copy[i],
-        copy[j]
-      ] = [
-        copy[j],
-        copy[i]
-      ];
+      const temp =
+        copy[i];
+
+      copy[i] =
+        copy[j];
+
+      copy[j] =
+        temp;
 
     }
 
@@ -627,13 +652,14 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
 
-  /* ===============================
-     START
-     =============================== */
+  /* ==================================
+     START TESTU
+     ================================== */
 
   function startPractice() {
 
     stopAudio();
+
 
     const selected =
       categorySelect.value;
@@ -645,42 +671,76 @@ document.addEventListener("DOMContentLoaded", function () {
     if (mode === "wrong") {
 
       source =
-        allQuestions.filter(function(q) {
+        allQuestions.filter(
+          function(q) {
 
-          return problemQuestions.includes(
-            questionID(q)
-          );
+            return problemQuestions.includes(
+              questionID(q)
+            );
 
-        });
+          }
+        );
 
     } else {
 
-      source = [...allQuestions];
+      source =
+        [...allQuestions];
 
     }
 
 
-    if (selected !== "all") {
+    if (
+      selected !== "all"
+    ) {
 
       const section =
         Number(selected);
 
       source =
-        source.filter(function(q) {
+        source.filter(
+          function(q) {
 
-          return q.section === section;
+            return (
+              q.section ===
+              section
+            );
 
-        });
+          }
+        );
 
     }
 
 
     /*
-      PROMÍCHÁME POŘADÍ OTÁZEK
+      PROMÍCHÁNÍ OTÁZEK
     */
 
     currentQuestions =
       shuffle(source);
+
+
+    /*
+      PROMÍCHÁNÍ ODPOVĚDÍ
+      PRO KAŽDOU OTÁZKU
+
+      Tohle je důležitá část.
+    */
+
+    currentQuestions =
+      currentQuestions.map(
+        function(q) {
+
+          return {
+
+            ...q,
+
+            answers:
+              shuffle(q.answers)
+
+          };
+
+        }
+      );
 
 
     currentIndex = 0;
@@ -696,9 +756,9 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
 
-  /* ===============================
-     ZOBRAZENÍ OTÁZKY
-     =============================== */
+  /* ==================================
+     ZOBRAZIT OTÁZKU
+     ================================== */
 
   function showQuestion() {
 
@@ -711,7 +771,9 @@ document.addEventListener("DOMContentLoaded", function () {
       currentQuestions.length === 0
     ) {
 
-      if (mode === "wrong") {
+      if (
+        mode === "wrong"
+      ) {
 
         questionCard.innerHTML = `
 
@@ -774,47 +836,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     const q =
-      currentQuestions[currentIndex];
-
-
-    /*
-      =====================================
-      PROMÍCHÁNÍ ODPOVĚDÍ
-
-      Každá odpověď si zachová svoje
-      původní číslo.
-
-      Díky tomu aplikace stále ví:
-      - která odpověď je správná
-      - který MP3 soubor k ní patří
-      =====================================
-    */
-
-    const shuffledAnswers =
-      shuffle(
-
-        q.answers.map(
-          function(answer,index) {
-
-            return {
-
-              text: answer,
-
-              originalNumber:
-                index + 1
-
-            };
-
-          }
-        )
-
-      );
+      currentQuestions[
+        currentIndex
+      ];
 
 
     let answersHTML = "";
 
 
-    shuffledAnswers.forEach(
+    /*
+      Odpovědi UŽ JSOU PROMÍCHANÉ.
+
+      originalNumber ale pořád říká,
+      která odpověď to skutečně je.
+    */
+
+    q.answers.forEach(
       function(answer) {
 
         answersHTML += `
@@ -824,6 +861,7 @@ document.addEventListener("DOMContentLoaded", function () {
             <button
               class="answer-btn"
               data-answer="${answer.originalNumber}"
+              type="button"
             >
               ${escapeHTML(answer.text)}
             </button>
@@ -838,6 +876,7 @@ document.addEventListener("DOMContentLoaded", function () {
             </button>
 
           </div>
+
         `;
 
       }
@@ -847,21 +886,36 @@ document.addEventListener("DOMContentLoaded", function () {
     questionCard.innerHTML = `
 
       <div class="category">
+
         ${escapeHTML(
-          getSectionName(q.section)
+          getSectionName(
+            q.section
+          )
         )}
+
       </div>
 
+
       <div class="question-number">
+
         Otázka
-        ${currentIndex + 1}/${currentQuestions.length}
+        ${currentIndex + 1}
+        /
+        ${currentQuestions.length}
+
       </div>
+
 
       <div class="question-row">
 
         <div class="question-text">
-          ${escapeHTML(q.question)}
+
+          ${escapeHTML(
+            q.question
+          )}
+
         </div>
+
 
         <button
           class="sound-btn"
@@ -874,9 +928,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
       </div>
 
+
       <div class="answers">
+
         ${answersHTML}
+
       </div>
+
 
       <div
         class="feedback"
@@ -886,7 +944,9 @@ document.addEventListener("DOMContentLoaded", function () {
     `;
 
 
-    /* KLIKNUTÍ NA ODPOVĚĎ */
+    /* ===============================
+       KLIK NA ODPOVĚĎ
+       =============================== */
 
     document
       .querySelectorAll(
@@ -912,7 +972,9 @@ document.addEventListener("DOMContentLoaded", function () {
       );
 
 
-    /* ZVUK OTÁZKY */
+    /* ===============================
+       ZVUK OTÁZKY
+       =============================== */
 
     document
       .getElementById(
@@ -928,7 +990,9 @@ document.addEventListener("DOMContentLoaded", function () {
       );
 
 
-    /* ZVUK ODPOVĚDÍ */
+    /* ===============================
+       ZVUK ODPOVĚDÍ
+       =============================== */
 
     document
       .querySelectorAll(
@@ -941,11 +1005,15 @@ document.addEventListener("DOMContentLoaded", function () {
             "click",
             function() {
 
-              playAnswerAudio(
-                q,
+              const originalNumber =
                 Number(
                   button.dataset.audioAnswer
-                )
+                );
+
+
+              playAnswerAudio(
+                q,
+                originalNumber
               );
 
             }
@@ -957,14 +1025,17 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
 
-  /* ===============================
-     ZVUKY
-     =============================== */
+  /* ==================================
+     ZVUK
+     ================================== */
 
   function padQuestionNumber(number) {
 
     return String(number)
-      .padStart(3,"0");
+      .padStart(
+        3,
+        "0"
+      );
 
   }
 
@@ -972,14 +1043,21 @@ document.addEventListener("DOMContentLoaded", function () {
   function questionAudioPath(q) {
 
     return (
+
       "OTÁZKY 1/" +
+
       "otazka-" +
+
       q.section +
+
       "-" +
+
       padQuestionNumber(
         q.number
       ) +
+
       ".mp3"
+
     );
 
   }
@@ -987,20 +1065,29 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function answerAudioPath(
     q,
-    answerNumber
+    originalNumber
   ) {
 
     return (
+
       "OTÁZKY 1/" +
+
       "odpoved-" +
+
       q.section +
+
       "-" +
+
       padQuestionNumber(
         q.number
       ) +
+
       "-" +
-      answerNumber +
+
+      originalNumber +
+
       ".mp3"
+
     );
 
   }
@@ -1008,13 +1095,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function stopAudio() {
 
-    if (currentAudio) {
+    if (
+      currentAudio
+    ) {
 
       currentAudio.pause();
 
-      currentAudio.currentTime = 0;
+      currentAudio.currentTime =
+        0;
 
-      currentAudio = null;
+      currentAudio =
+        null;
 
     }
 
@@ -1025,10 +1116,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     stopAudio();
 
+
     console.log(
       "Přehrávám:",
       path
     );
+
 
     currentAudio =
       new Audio(
@@ -1047,7 +1140,8 @@ document.addEventListener("DOMContentLoaded", function () {
             error
           );
 
-          currentAudio = null;
+          currentAudio =
+            null;
 
         }
       );
@@ -1066,22 +1160,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function playAnswerAudio(
     q,
-    answerNumber
+    originalNumber
   ) {
 
     playAudio(
       answerAudioPath(
         q,
-        answerNumber
+        originalNumber
       )
     );
 
   }
 
 
-  /* ===============================
-     VYHODNOCENÍ ODPOVĚDI
-     =============================== */
+  /* ==================================
+     VYHODNOCENÍ
+     ================================== */
 
   function checkAnswer(
     selectedAnswer
@@ -1098,7 +1192,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     const q =
-      currentQuestions[currentIndex];
+      currentQuestions[
+        currentIndex
+      ];
 
 
     const buttons =
@@ -1116,24 +1212,25 @@ document.addEventListener("DOMContentLoaded", function () {
     buttons.forEach(
       function(button) {
 
-        button.disabled = true;
+        button.disabled =
+          true;
 
 
-        const answerNumber =
+        const originalNumber =
           Number(
             button.dataset.answer
           );
 
 
         /*
-          SPRÁVNÁ ODPOVĚĎ
-
-          Nezáleží na tom,
-          na jaké pozici se zobrazila.
+          Správná odpověď se hledá
+          podle PŮVODNÍHO čísla,
+          ne podle její pozice
+          na obrazovce.
         */
 
         if (
-          answerNumber ===
+          originalNumber ===
           q.correct
         ) {
 
@@ -1144,13 +1241,10 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
 
-        /*
-          ŠPATNĚ ZVOLENÁ ODPOVĚĎ
-        */
-
         if (
-          answerNumber ===
-          selectedAnswer &&
+          originalNumber ===
+          selectedAnswer
+          &&
           selectedAnswer !==
           q.correct
         ) {
@@ -1165,6 +1259,8 @@ document.addEventListener("DOMContentLoaded", function () {
     );
 
 
+    /* SPRÁVNĚ */
+
     if (
       selectedAnswer ===
       q.correct
@@ -1172,62 +1268,75 @@ document.addEventListener("DOMContentLoaded", function () {
 
       correctCount++;
 
+
       feedback.textContent =
         "✓ Správně";
+
 
       feedback.className =
         "feedback good";
 
 
       /*
-        Pokud procvičuje
-        "Co mi nejde"
-        a odpoví správně,
-        otázku odstraníme
-        z problematických.
+        Pokud jsme v režimu
+        Co mi nejde,
+        správně zvládnutou
+        otázku odstraníme.
       */
 
-      if (mode === "wrong") {
+      if (
+        mode === "wrong"
+      ) {
 
         problemQuestions =
           problemQuestions.filter(
             function(id) {
 
-              return id !==
-                questionID(q);
+              return (
+                id !==
+                questionID(q)
+              );
 
             }
           );
+
 
         saveProblemQuestions();
 
       }
 
-    } else {
+    }
+
+
+    /* ŠPATNĚ */
+
+    else {
 
       wrongCount++;
+
 
       feedback.textContent =
         "✕ Nesprávně";
 
+
       feedback.className =
         "feedback bad";
 
-
-      /*
-        Přidáme otázku
-        do "Co mi nejde".
-      */
 
       const id =
         questionID(q);
 
 
       if (
-        !problemQuestions.includes(id)
+        !problemQuestions.includes(
+          id
+        )
       ) {
 
-        problemQuestions.push(id);
+        problemQuestions.push(
+          id
+        );
+
 
         saveProblemQuestions();
 
@@ -1240,7 +1349,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /*
-      AUTOMATICKY DALŠÍ OTÁZKA
+      DALŠÍ OTÁZKA
+      ZA 1,4 SEKUNDY
     */
 
     setTimeout(
@@ -1257,27 +1367,31 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
 
-  /* ===============================
-     ULOŽENÍ "CO MI NEJDE"
-     =============================== */
+  /* ==================================
+     ULOŽENÍ CO MI NEJDE
+     ================================== */
 
   function saveProblemQuestions() {
 
     localStorage.setItem(
+
       "zlataUdiceProblemQuestions",
+
       JSON.stringify(
         problemQuestions
       )
+
     );
+
 
     updateStats();
 
   }
 
 
-  /* ===============================
+  /* ==================================
      STATISTIKY
-     =============================== */
+     ================================== */
 
   function updateStats() {
 
@@ -1285,11 +1399,14 @@ document.addEventListener("DOMContentLoaded", function () {
       correctCount +
       wrongCount;
 
+
     correctCountEl.textContent =
       correctCount;
 
+
     wrongCountEl.textContent =
       wrongCount;
+
 
     problemCountEl.textContent =
       problemQuestions.length;
@@ -1297,9 +1414,9 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
 
-  /* ===============================
-     KONEC PROCVIČOVÁNÍ
-     =============================== */
+  /* ==================================
+     HOTOVO
+     ================================== */
 
   function showFinished() {
 
@@ -1313,12 +1430,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const percent =
       total > 0
-        ? Math.round(
-            correctCount /
-            total *
-            100
-          )
-        : 0;
+
+      ? Math.round(
+          correctCount /
+          total *
+          100
+        )
+
+      : 0;
 
 
     questionCard.innerHTML = `
@@ -1335,6 +1454,7 @@ document.addEventListener("DOMContentLoaded", function () {
           🎣
         </div>
 
+
         <div style="
           font-size:28px;
           font-weight:700;
@@ -1342,6 +1462,7 @@ document.addEventListener("DOMContentLoaded", function () {
         ">
           Hotovo!
         </div>
+
 
         <div style="
           font-size:20px;
@@ -1369,6 +1490,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         </div>
 
+
         <button
           class="restart-btn"
           id="restartButton"
@@ -1378,6 +1500,7 @@ document.addEventListener("DOMContentLoaded", function () {
         </button>
 
       </div>
+
     `;
 
 
@@ -1387,35 +1510,50 @@ document.addEventListener("DOMContentLoaded", function () {
       )
       .addEventListener(
         "click",
-        startPractice
+        function() {
+
+          /*
+            startPractice znovu
+            promíchá otázky
+            I ODPOVĚDI.
+          */
+
+          startPractice();
+
+        }
       );
 
   }
 
 
-  /* ===============================
-     BEZPEČNÉ ZOBRAZENÍ TEXTU
-     =============================== */
+  /* ==================================
+     BEZPEČNÝ TEXT
+     ================================== */
 
   function escapeHTML(value) {
 
     return String(value)
+
       .replaceAll(
         "&",
         "&amp;"
       )
+
       .replaceAll(
         "<",
         "&lt;"
       )
+
       .replaceAll(
         ">",
         "&gt;"
       )
+
       .replaceAll(
         '"',
         "&quot;"
       )
+
       .replaceAll(
         "'",
         "&#039;"
@@ -1424,23 +1562,27 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
 
-  /* ===============================
+  /* ==================================
      VŠECHNY OTÁZKY
-     =============================== */
+     ================================== */
 
   allMode.addEventListener(
     "click",
     function() {
 
-      mode = "all";
+      mode =
+        "all";
+
 
       allMode.classList.add(
         "active"
       );
 
+
       wrongMode.classList.remove(
         "active"
       );
+
 
       startPractice();
 
@@ -1448,23 +1590,27 @@ document.addEventListener("DOMContentLoaded", function () {
   );
 
 
-  /* ===============================
+  /* ==================================
      CO MI NEJDE
-     =============================== */
+     ================================== */
 
   wrongMode.addEventListener(
     "click",
     function() {
 
-      mode = "wrong";
+      mode =
+        "wrong";
+
 
       wrongMode.classList.add(
         "active"
       );
 
+
       allMode.classList.remove(
         "active"
       );
+
 
       startPractice();
 
@@ -1472,19 +1618,23 @@ document.addEventListener("DOMContentLoaded", function () {
   );
 
 
-  /* ===============================
+  /* ==================================
      ZMĚNA OBLASTI
-     =============================== */
+     ================================== */
 
   categorySelect.addEventListener(
     "change",
-    startPractice
+    function() {
+
+      startPractice();
+
+    }
   );
 
 
-  /* ===============================
+  /* ==================================
      SPUŠTĚNÍ
-     =============================== */
+     ================================== */
 
   if (
     allQuestions.length === 0
@@ -1495,6 +1645,7 @@ document.addEventListener("DOMContentLoaded", function () {
       <div class="loading">
         Nepodařilo se načíst databázi otázek.
       </div>
+
     `;
 
     return;
