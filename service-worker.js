@@ -1,18 +1,19 @@
-const CACHE_NAME = "zlata-udice-v1";
+const CACHE_NAME = "zlata-udice-v2";
 
 /*
   ZÁKLADNÍ SOUBORY APLIKACE
 
-  Sem dáváme pouze soubory,
-  které potřebujeme pro spuštění aplikace.
-
-  MP3 a obrázky budeme řešit zvlášť,
-  protože jich bude velké množství.
+  Tyto soubory se stáhnou automaticky,
+  jakmile uživatel aplikaci poprvé otevře online.
 */
 
 const APP_FILES = [
   "./",
   "./index.html",
+  "./profily.html",
+  "./ryby.html",
+  "./rostliny.html",
+  "./zivocichove.html",
   "./otazky.html",
   "./otazky-data.js",
   "./manifest.json"
@@ -21,17 +22,17 @@ const APP_FILES = [
 
 /* ========================================
    INSTALACE SERVICE WORKERU
-   ======================================== */
+======================================== */
 
-self.addEventListener("install", event => {
+self.addEventListener("install", function(event) {
 
-  console.log("Instaluji Zlatou udici offline...");
+  console.log("Instaluji offline režim Zlaté udice...");
 
   event.waitUntil(
 
     caches
       .open(CACHE_NAME)
-      .then(cache => {
+      .then(function(cache) {
 
         return cache.addAll(APP_FILES);
 
@@ -46,19 +47,19 @@ self.addEventListener("install", event => {
 
 /* ========================================
    AKTIVACE
-   ======================================== */
+======================================== */
 
-self.addEventListener("activate", event => {
+self.addEventListener("activate", function(event) {
 
   event.waitUntil(
 
     caches
       .keys()
-      .then(cacheNames => {
+      .then(function(cacheNames) {
 
         return Promise.all(
 
-          cacheNames.map(name => {
+          cacheNames.map(function(name) {
 
             if (name !== CACHE_NAME) {
 
@@ -86,13 +87,11 @@ self.addEventListener("activate", event => {
 
 /* ========================================
    NAČÍTÁNÍ SOUBORŮ
-   ======================================== */
+======================================== */
 
-self.addEventListener("fetch", event => {
+self.addEventListener("fetch", function(event) {
 
-  if (
-    event.request.method !== "GET"
-  ) {
+  if (event.request.method !== "GET") {
     return;
   }
 
@@ -101,11 +100,11 @@ self.addEventListener("fetch", event => {
 
     caches
       .match(event.request)
-      .then(cachedResponse => {
+      .then(function(cachedResponse) {
 
         /*
-          Pokud soubor máme offline,
-          použijeme ho.
+          1. Pokud už soubor máme uložený,
+             použijeme offline kopii.
         */
 
         if (cachedResponse) {
@@ -116,19 +115,19 @@ self.addEventListener("fetch", event => {
 
 
         /*
-          Jinak ho stáhneme z internetu.
+          2. Pokud ho nemáme,
+             stáhneme ho z internetu.
         */
 
         return fetch(event.request)
-          .then(networkResponse => {
+          .then(function(networkResponse) {
 
             /*
-              Kopii automaticky uložíme.
+              Úspěšně stažený soubor
+              si zároveň uložíme.
 
-              To se nám bude hodit hlavně
-              u MP3 a obrázků:
-              co už dítě jednou otevřelo,
-              bude dostupné i offline.
+              Takto se mohou průběžně ukládat
+              například MP3 a později obrázky.
             */
 
             if (
@@ -142,7 +141,7 @@ self.addEventListener("fetch", event => {
 
               caches
                 .open(CACHE_NAME)
-                .then(cache => {
+                .then(function(cache) {
 
                   cache.put(
                     event.request,
@@ -157,17 +156,14 @@ self.addEventListener("fetch", event => {
             return networkResponse;
 
           })
-          .catch(() => {
-
-            /*
-              Internet není dostupný
-              a soubor ještě není v cache.
-            */
+          .catch(function(error) {
 
             console.log(
               "Soubor není dostupný offline:",
               event.request.url
             );
+
+            throw error;
 
           });
 
