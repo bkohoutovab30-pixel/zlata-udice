@@ -1,0 +1,13 @@
+{
+  "name": "Zlatá udice 2026",
+  "short_name": "Zlatá udice",
+  "description": "Výuková aplikace pro přípravu na soutěž Zlatá udice",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#eef8fc",
+  "theme_color": "#062d59",
+  "lang": "cs",
+  "orientation": "portrait-primary",
+  "icons": []
+}
