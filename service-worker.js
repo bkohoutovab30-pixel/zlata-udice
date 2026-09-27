@@ -1,38 +1,76 @@
-const CACHE_NAME = "zlata-udice-v2";
+/* =========================================================
+   ZLATÁ UDICE 2026
+   SERVICE WORKER – OFFLINE REŽIM
+========================================================= */
 
-/*
-  ZÁKLADNÍ SOUBORY APLIKACE
+const CACHE_NAME = "zlata-udice-v3";
 
-  Tyto soubory se stáhnou automaticky,
-  jakmile uživatel aplikaci poprvé otevře online.
-*/
+
+/* =========================================================
+   ZÁKLADNÍ SOUBORY APLIKACE
+========================================================= */
 
 const APP_FILES = [
+
   "./",
   "./index.html",
+
+  /* PROFILY */
   "./profily.html",
+
+  /* HLAVNÍ STRÁNKY */
   "./ryby.html",
   "./rostliny.html",
   "./zivocichove.html",
   "./otazky.html",
+
+  /* RYBY */
+  "./ryby-uceni.html",
+  "./ryby-procvicovani.html",
+  "./ryby-chyby.html",
+
+  /* ROSTLINY */
+  "./rostliny-uceni.html",
+  "./rostliny-procvicovani.html",
+  "./rostliny-chyby.html",
+
+  /* ŽIVOČICHOVÉ */
+  "./zivocichove-procvicovani.html",
+  "./zivocichove-chyby.html",
+
+  /* OTÁZKY */
+  "./otazky-procvicovani.html",
+
+  /* DATA */
   "./otazky-data.js",
+  "./rostliny-data.js",
+  "./zivocichove-data.js",
+
+  /* SPOLEČNÝ ZVUK */
+  "./zvuk.js",
+
+  /* PWA */
   "./manifest.json"
+
 ];
 
 
-/* ========================================
-   INSTALACE SERVICE WORKERU
-======================================== */
+/* =========================================================
+   INSTALACE
+========================================================= */
 
-self.addEventListener("install", function(event) {
+self.addEventListener("install", event => {
 
-  console.log("Instaluji offline režim Zlaté udice...");
+  console.log("Zlatá udice: instaluji offline režim v3.");
 
   event.waitUntil(
 
-    caches
-      .open(CACHE_NAME)
-      .then(function(cache) {
+    caches.open(CACHE_NAME)
+      .then(cache => {
+
+        console.log(
+          "Zlatá udice: ukládám základ aplikace."
+        );
 
         return cache.addAll(APP_FILES);
 
@@ -45,30 +83,32 @@ self.addEventListener("install", function(event) {
 });
 
 
-/* ========================================
+/* =========================================================
    AKTIVACE
-======================================== */
+   SMAZÁNÍ STARÝCH VERZÍ CACHE
+========================================================= */
 
-self.addEventListener("activate", function(event) {
+self.addEventListener("activate", event => {
+
+  console.log("Zlatá udice: aktivuji offline režim v3.");
 
   event.waitUntil(
 
-    caches
-      .keys()
-      .then(function(cacheNames) {
+    caches.keys()
+      .then(cacheNames => {
 
         return Promise.all(
 
-          cacheNames.map(function(name) {
+          cacheNames.map(cacheName => {
 
-            if (name !== CACHE_NAME) {
+            if (cacheName !== CACHE_NAME) {
 
               console.log(
                 "Mažu starou cache:",
-                name
+                cacheName
               );
 
-              return caches.delete(name);
+              return caches.delete(cacheName);
 
             }
 
@@ -78,70 +118,86 @@ self.addEventListener("activate", function(event) {
 
       })
 
-  );
+      .then(() => self.clients.claim())
 
-  self.clients.claim();
+  );
 
 });
 
 
-/* ========================================
+/* =========================================================
    NAČÍTÁNÍ SOUBORŮ
-======================================== */
+========================================================= */
 
-self.addEventListener("fetch", function(event) {
+self.addEventListener("fetch", event => {
 
+  /* Řešíme pouze GET */
   if (event.request.method !== "GET") {
+    return;
+  }
+
+
+  /* Řešíme pouze http / https */
+  const url = new URL(event.request.url);
+
+  if (
+    url.protocol !== "http:" &&
+    url.protocol !== "https:"
+  ) {
     return;
   }
 
 
   event.respondWith(
 
-    caches
-      .match(event.request)
-      .then(function(cachedResponse) {
+    caches.match(event.request)
+      .then(cachedResponse => {
 
         /*
-          1. Pokud už soubor máme uložený,
-             použijeme offline kopii.
+          Pokud máme soubor uložený,
+          vrátíme offline kopii.
         */
 
         if (cachedResponse) {
-
           return cachedResponse;
-
         }
 
 
         /*
-          2. Pokud ho nemáme,
-             stáhneme ho z internetu.
+          Pokud ho ještě nemáme,
+          stáhneme ho z internetu.
         */
 
         return fetch(event.request)
-          .then(function(networkResponse) {
+          .then(networkResponse => {
 
             /*
-              Úspěšně stažený soubor
-              si zároveň uložíme.
-
-              Takto se mohou průběžně ukládat
-              například MP3 a později obrázky.
+              Neukládáme chybové odpovědi.
             */
 
             if (
-              networkResponse &&
-              networkResponse.status === 200
+              !networkResponse ||
+              networkResponse.status !== 200
             ) {
+
+              return networkResponse;
+
+            }
+
+
+            /*
+              Ukládáme pouze soubory
+              ze Zlaté udice / stejné domény.
+            */
+
+            if (url.origin === self.location.origin) {
 
               const responseClone =
                 networkResponse.clone();
 
 
-              caches
-                .open(CACHE_NAME)
-                .then(function(cache) {
+              caches.open(CACHE_NAME)
+                .then(cache => {
 
                   cache.put(
                     event.request,
@@ -154,16 +210,6 @@ self.addEventListener("fetch", function(event) {
 
 
             return networkResponse;
-
-          })
-          .catch(function(error) {
-
-            console.log(
-              "Soubor není dostupný offline:",
-              event.request.url
-            );
-
-            throw error;
 
           });
 
