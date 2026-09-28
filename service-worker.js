@@ -1,728 +1,762 @@
-<!DOCTYPE html>
-<html lang="cs">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="robots" content="noindex, nofollow">
-
-  <title>Zlatá udice – trénink</title>
-
-  <link rel="manifest" href="./manifest.json">
-  <meta name="theme-color" content="#062d59">
-
-  <style>
-
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #eef7fb;
-      color: #17324d;
-    }
-
-    .app {
-      max-width: 600px;
-      margin: auto;
-      min-height: 100vh;
-      padding: 20px;
-    }
-
-    /* =========================================
-       HRÁČ
-    ========================================= */
-
-    .player-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: white;
-      border-radius: 15px;
-      padding: 11px 14px;
-      margin-bottom: 25px;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.05);
-    }
-
-    .player {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-weight: bold;
-    }
-
-    .player-avatar {
-      font-size: 24px;
-    }
-
-    .change-player {
-      color: #567;
-      text-decoration: none;
-      font-size: 13px;
-      font-weight: bold;
-    }
-
-    /* =========================================
-       HLAVIČKA
-    ========================================= */
-
-    .header {
-      text-align: center;
-      margin-bottom: 35px;
-    }
-
-    .header h1 {
-      margin-bottom: 8px;
-      font-size: 34px;
-    }
-
-    .header p {
-      margin: 0;
-      color: #567;
-      font-size: 17px;
-    }
-
-    /* =========================================
-       MENU
-    ========================================= */
-
-    .menu {
-      display: grid;
-      gap: 15px;
-    }
-
-    .card {
-      display: block;
-      background: white;
-      border-radius: 18px;
-      padding: 22px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-      cursor: pointer;
-      transition: 0.2s;
-      text-decoration: none;
-      color: #17324d;
-    }
-
-    .card:hover {
-      transform: translateY(-2px);
-    }
-
-    .card:active {
-      transform: scale(0.99);
-    }
-
-    .icon {
-      font-size: 38px;
-      margin-bottom: 8px;
-    }
-
-    .card h2 {
-      margin: 0 0 5px 0;
-      font-size: 22px;
-    }
-
-    .card p {
-      margin: 0;
-      color: #678;
-      line-height: 1.4;
-    }
-
-    .test {
-      margin-top: 12px;
-      background: #17324d;
-      color: white;
-    }
-
-    .test p {
-      color: #dce8f2;
-    }
-
-    /* =========================================
-       OFFLINE
-    ========================================= */
-
-    .offline-box {
-      margin-top: 22px;
-      background: white;
-      border-radius: 18px;
-      padding: 20px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-      text-align: center;
-    }
-
-    .offline-box h2 {
-      margin: 0 0 8px;
-      font-size: 20px;
-    }
-
-    .offline-box p {
-      margin: 0 0 15px;
-      color: #678;
-      line-height: 1.4;
-      font-size: 14px;
-    }
-
-    .offline-button {
-      width: 100%;
-      border: none;
-      border-radius: 14px;
-      background: #17324d;
-      color: white;
-      padding: 15px;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .offline-button:disabled {
-      opacity: 0.55;
-      cursor: default;
-    }
-
-    .offline-status {
-      margin-top: 14px;
-      color: #567;
-      font-size: 14px;
-      line-height: 1.5;
-      min-height: 20px;
-    }
-
-    .progress-bar {
-      width: 100%;
-      height: 10px;
-      background: #dfeef5;
-      border-radius: 20px;
-      overflow: hidden;
-      margin-top: 15px;
-      display: none;
-    }
-
-    .progress-fill {
-      width: 0%;
-      height: 100%;
-      background: #17324d;
-      transition: width 0.15s;
-    }
-
-    .offline-groups {
-      margin-top: 12px;
-      font-size: 12px;
-      color: #789;
-    }
-
-  </style>
-</head>
-
-
-<body>
-
-<main class="app">
-
-  <!-- =========================================
-       HRÁČ
-  ========================================= -->
-
-  <div class="player-bar">
-
-    <div class="player">
-
-      <span
-        class="player-avatar"
-        id="playerAvatar">
-      </span>
-
-      <span id="playerName"></span>
-
-    </div>
-
-    <a
-      class="change-player"
-      href="profily.html">
-      Změnit hráče
-    </a>
-
-  </div>
-
-
-  <!-- =========================================
-       HLAVIČKA
-  ========================================= -->
-
-  <div class="header">
-
-    <h1>
-      🎣 Zlatá udice
-    </h1>
-
-    <p>
-      Uč se, procvičuj a připrav se na soutěž
-    </p>
-
-  </div>
-
-
-  <!-- =========================================
-       MENU
-  ========================================= -->
-
-  <div class="menu">
-
-    <a
-      class="card"
-      href="ryby.html">
-
-      <div class="icon">
-        🐟
-      </div>
-
-      <h2>
-        Ryby
-      </h2>
-
-      <p>
-        Poznávání ryb našich vod
-      </p>
-
-    </a>
-
-
-    <a
-      class="card"
-      href="rostliny.html">
-
-      <div class="icon">
-        🌿
-      </div>
-
-      <h2>
-        Rostliny
-      </h2>
-
-      <p>
-        Poznávání rostlin kolem vody
-      </p>
-
-    </a>
-
-
-    <a
-      class="card"
-      href="zivocichove.html">
-
-      <div class="icon">
-        🦆
-      </div>
-
-      <h2>
-        Živočichové
-      </h2>
-
-      <p>
-        Poznávání živočichů kolem našich vod
-      </p>
-
-    </a>
-
-
-    <a
-      class="card test"
-      href="otazky.html">
-
-      <div class="icon">
-        📝
-      </div>
-
-      <h2>
-        Testové otázky
-      </h2>
-
-      <p>
-        Procvičuj otázky Zlaté udice 2026
-      </p>
-
-    </a>
-
-  </div>
-
-
-  <!-- =========================================
-       OFFLINE
-  ========================================= -->
-
-  <div class="offline-box">
-
-    <h2>
-      📥 Offline použití
-    </h2>
-
-    <p>
-      Stáhni si zvuky ryb, rostlin a živočichů,
-      aby fungovaly i bez internetu.
-    </p>
-
-    <button
-      class="offline-button"
-      id="offlineButton"
-      type="button"
-      onclick="downloadOfflineSounds()">
-
-      📥 Stáhnout zvuky pro offline použití
-
-    </button>
-
-
-    <div
-      class="progress-bar"
-      id="progressBar">
-
-      <div
-        class="progress-fill"
-        id="progressFill">
-      </div>
-
-    </div>
-
-
-    <div
-      class="offline-status"
-      id="offlineStatus">
-    </div>
-
-
-    <div class="offline-groups">
-      🐟 Ryby
-      &nbsp;•&nbsp;
-      🌿 Rostliny
-      &nbsp;•&nbsp;
-      🦆 Živočichové
-    </div>
-
-  </div>
-
-</main>
-
-
-<!-- =========================================
-     SPOLEČNÁ DATA
-========================================= -->
-
-<script src="ryby-data.js"></script>
-
-<script src="rostliny-data.js"></script>
-
-<script src="zivocichove-data.js"></script>
-
-
-<!-- =========================================
-     SPOLEČNÝ ZVUK
-========================================= -->
-
-<script src="zvuk.js"></script>
-
-
-<script>
-
 /* =========================================================
-   PROFILY
+   ZLATÁ UDICE 2026
+   SERVICE WORKER – OFFLINE REŽIM v6
 ========================================================= */
 
-function getProfiles() {
+const APP_CACHE = "zlata-udice-app-v6";
+const AUDIO_CACHE = "zlata-udice-audio-v6";
+const IMAGE_CACHE = "zlata-udice-images-v6";
 
-  const saved =
-    localStorage.getItem(
-      "zlataUdiceProfiles"
+
+/* =========================================================
+   ZÁKLADNÍ SOUBORY APLIKACE
+========================================================= */
+
+const APP_FILES = [
+
+  "./",
+  "./index.html",
+
+  /* PROFILY */
+  "./profily.html",
+
+  /* HLAVNÍ STRÁNKY */
+  "./ryby.html",
+  "./rostliny.html",
+  "./zivocichove.html",
+  "./otazky.html",
+
+  /* RYBY */
+  "./ryby-uceni.html",
+  "./ryby-procvicovani.html",
+  "./ryby-chyby.html",
+
+  /* ROSTLINY */
+  "./rostliny-uceni.html",
+  "./rostliny-procvicovani.html",
+  "./rostliny-chyby.html",
+
+  /* ŽIVOČICHOVÉ */
+  "./zivocichove-uceni.html",
+  "./zivocichove-procvicovani.html",
+  "./zivocichove-chyby.html",
+
+  /* OTÁZKY */
+  "./otazky-procvicovani.html",
+
+  /* DATA */
+  "./ryby-data.js",
+  "./rostliny-data.js",
+  "./zivocichove-data.js",
+  "./otazky-data.js",
+
+  /* ZVUK */
+  "./zvuk.js",
+
+  /* PWA */
+  "./manifest.json"
+
+];
+
+
+/* =========================================================
+   INSTALACE
+========================================================= */
+
+self.addEventListener(
+  "install",
+  event => {
+
+    console.log(
+      "Zlatá udice: instaluji offline režim v6."
     );
 
 
-  if (!saved) {
+    event.waitUntil(
 
-    return [];
+      caches
+        .open(APP_CACHE)
+
+        .then(
+          async cache => {
+
+            /*
+              Soubory ukládáme jednotlivě.
+
+              Výhoda:
+              pokud by jeden soubor chyběl,
+              nespadne kvůli tomu instalace
+              celého Service Workeru.
+            */
+
+            for (
+              const file of APP_FILES
+            ) {
+
+              try {
+
+                await cache.add(
+                  file
+                );
+
+              }
+
+              catch (error) {
+
+                console.warn(
+                  "Nepodařilo se uložit do APP cache:",
+                  file,
+                  error
+                );
+
+              }
+
+            }
+
+          }
+        )
+
+    );
+
+
+    /*
+      Nová verze nemusí čekat,
+      až se zavřou všechny staré stránky.
+    */
+
+    self.skipWaiting();
+
+  }
+);
+
+
+/* =========================================================
+   AKTIVACE
+========================================================= */
+
+self.addEventListener(
+  "activate",
+  event => {
+
+    const allowedCaches = [
+
+      APP_CACHE,
+      AUDIO_CACHE,
+      IMAGE_CACHE
+
+    ];
+
+
+    event.waitUntil(
+
+      caches
+        .keys()
+
+        .then(
+          cacheNames => {
+
+            return Promise.all(
+
+              cacheNames.map(
+                cacheName => {
+
+                  /*
+                    Staré cache v1, v2, v3,
+                    v4, v5 atd. odstraníme.
+                  */
+
+                  if (
+                    !allowedCaches.includes(
+                      cacheName
+                    )
+                  ) {
+
+                    console.log(
+                      "Mažu starou cache:",
+                      cacheName
+                    );
+
+
+                    return caches.delete(
+                      cacheName
+                    );
+
+                  }
+
+                }
+              )
+
+            );
+
+          }
+        )
+
+        .then(
+          () => {
+
+            /*
+              Nový Service Worker převezme
+              otevřenou aplikaci.
+            */
+
+            return self.clients.claim();
+
+          }
+        )
+
+    );
+
+  }
+);
+
+
+/* =========================================================
+   POMOCNÁ FUNKCE
+   ODSTRANĚNÍ QUERY PARAMETRŮ
+========================================================= */
+
+function cleanRequest(
+  request
+) {
+
+  const url =
+    new URL(
+      request.url
+    );
+
+
+  /*
+    Například:
+
+    audio/ryby/kapr-obecny.mp3?offline=1
+
+    převedeme na:
+
+    audio/ryby/kapr-obecny.mp3
+  */
+
+  url.search = "";
+
+
+  return new Request(
+    url.toString(),
+    {
+      method: "GET"
+    }
+  );
+
+}
+
+
+/* =========================================================
+   JE TO AUDIO?
+========================================================= */
+
+function isAudioRequest(
+  request
+) {
+
+  const url =
+    new URL(
+      request.url
+    );
+
+
+  const pathname =
+    url.pathname
+      .toLowerCase();
+
+
+  return (
+
+    request.destination ===
+      "audio"
+
+    ||
+
+    pathname.endsWith(
+      ".mp3"
+    )
+
+    ||
+
+    pathname.endsWith(
+      ".wav"
+    )
+
+    ||
+
+    pathname.endsWith(
+      ".ogg"
+    )
+
+    ||
+
+    pathname.endsWith(
+      ".m4a"
+    )
+
+  );
+
+}
+
+
+/* =========================================================
+   JE TO OBRÁZEK?
+========================================================= */
+
+function isImageRequest(
+  request
+) {
+
+  const url =
+    new URL(
+      request.url
+    );
+
+
+  const pathname =
+    url.pathname
+      .toLowerCase();
+
+
+  return (
+
+    request.destination ===
+      "image"
+
+    ||
+
+    pathname.endsWith(
+      ".jpg"
+    )
+
+    ||
+
+    pathname.endsWith(
+      ".jpeg"
+    )
+
+    ||
+
+    pathname.endsWith(
+      ".png"
+    )
+
+    ||
+
+    pathname.endsWith(
+      ".webp"
+    )
+
+  );
+
+}
+
+
+/* =========================================================
+   AUDIO
+   CACHE FIRST
+========================================================= */
+
+async function handleAudio(
+  request
+) {
+
+  const cache =
+    await caches.open(
+      AUDIO_CACHE
+    );
+
+
+  /*
+    Použijeme URL bez query parametrů.
+  */
+
+  const clean =
+    cleanRequest(
+      request
+    );
+
+
+  /*
+    Nejdříve hledáme zvuk v cache.
+  */
+
+  const cached =
+    await cache.match(
+      clean
+    );
+
+
+  if (
+    cached
+  ) {
+
+    return cached;
 
   }
 
+
+  /*
+    Zvuk v cache není.
+
+    Zkusíme internet.
+  */
 
   try {
 
-    return JSON.parse(
-      saved
-    );
-
-  }
-
-  catch {
-
-    return [];
-
-  }
-
-}
-
-
-/* =========================================================
-   AKTIVNÍ HRÁČ
-========================================================= */
-
-function loadActivePlayer() {
-
-  const activeId =
-    localStorage.getItem(
-      "zlataUdiceActiveProfile"
-    );
-
-
-  if (!activeId) {
-
-    window.location.href =
-      "profily.html";
-
-    return;
-
-  }
-
-
-  const profiles =
-    getProfiles();
-
-
-  const player =
-    profiles.find(
-      profile =>
-        profile.id === activeId
-    );
-
-
-  if (!player) {
-
-    localStorage.removeItem(
-      "zlataUdiceActiveProfile"
-    );
-
-
-    window.location.href =
-      "profily.html";
-
-    return;
-
-  }
-
-
-  document
-    .getElementById(
-      "playerName"
-    )
-    .textContent =
-      player.name;
-
-
-  document
-    .getElementById(
-      "playerAvatar"
-    )
-    .textContent =
-      player.avatar;
-
-}
-
-
-/* =========================================================
-   TEXT -> NÁZEV MP3
-========================================================= */
-
-function soundFileName(text) {
-
-  return String(text)
-
-    .normalize("NFD")
-
-    .replace(
-      /[\u0300-\u036f]/g,
-      ""
-    )
-
-    .toLowerCase()
-
-    .replace(
-      /[^a-z0-9]+/g,
-      "-"
-    )
-
-    .replace(
-      /^-+|-+$/g,
-      ""
-    );
-
-}
-
-
-/* =========================================================
-   PŘIDÁNÍ ZVUKŮ
-========================================================= */
-
-function addSounds(
-  result,
-  list,
-  folder
-) {
-
-  if (
-    !Array.isArray(list)
-  ) {
-
-    return;
-
-  }
-
-
-  list.forEach(
-    function(item) {
-
-      if (
-        !item ||
-        !item.name
-      ) {
-
-        return;
-
-      }
-
-
-      /*
-        Pokud má položka přímo zadaný
-        název zvukového souboru,
-        použijeme jej.
-      */
-
-      let fileName;
-
-
-      if (
-        item.soundName
-      ) {
-
-        fileName =
-          item.soundName;
-
-      }
-
-      else {
-
-        fileName =
-          soundFileName(
-            item.name
-          );
-
-      }
-
-
-      result.push(
-        folder +
-        "/" +
-        fileName +
-        ".mp3"
+    const response =
+      await fetch(
+        clean
       );
 
-    }
-  );
 
-}
+    /*
+      Uložíme pouze skutečně
+      existující soubor.
+    */
 
-
-/* =========================================================
-   SEZNAM VŠECH MP3
-========================================================= */
-
-function createOfflineSoundList() {
-
-  const files = [];
-
-
-  if (
-    typeof fish !==
-    "undefined"
-  ) {
-
-    addSounds(
-      files,
-      fish,
-      "audio/ryby"
-    );
-
-  }
-
-
-  if (
-    typeof plants !==
-    "undefined"
-  ) {
-
-    addSounds(
-      files,
-      plants,
-      "audio/rostliny"
-    );
-
-  }
-
-
-  if (
-    typeof animals !==
-    "undefined"
-  ) {
-
-    addSounds(
-      files,
-      animals,
-      "audio/zivocichove"
-    );
-
-  }
-
-
-  /*
-    Odstraníme duplicity.
-  */
-
-  return [
-    ...new Set(
-      files
-    )
-  ];
-
-}
-
-
-/* =========================================================
-   TIMEOUT
-========================================================= */
-
-function timeoutPromise(
-  milliseconds
-) {
-
-  return new Promise(
-    function(
-      resolve
+    if (
+      response &&
+      response.ok
     ) {
 
-      setTimeout(
-        resolve,
-        milliseconds
+      await cache.put(
+        clean,
+        response.clone()
       );
 
     }
-  );
+
+
+    return response;
+
+  }
+
+
+  catch (
+    error
+  ) {
+
+    console.warn(
+      "Zvuk není dostupný offline:",
+      clean.url
+    );
+
+
+    return new Response(
+      "",
+      {
+        status: 503,
+        statusText:
+          "Audio není dostupné offline"
+      }
+    );
+
+  }
 
 }
 
 
 /* =========================================================
-   SERVICE WORKER
+   OBRÁZKY
+   CACHE FIRST
 ========================================================= */
 
-async function prepareServiceWorker() {
+async function handleImage(
+  request
+) {
+
+  const cache =
+    await caches.open(
+      IMAGE_CACHE
+    );
+
+
+  const clean =
+    cleanRequest(
+      request
+    );
+
 
   /*
-    Pokud prohlížeč Service Worker neumí,
-    vrátíme false.
+    Nejprve cache.
+  */
+
+  const cached =
+    await cache.match(
+      clean
+    );
+
+
+  if (
+    cached
+  ) {
+
+    return cached;
+
+  }
+
+
+  /*
+    Potom internet.
+  */
+
+  try {
+
+    const response =
+      await fetch(
+        clean
+      );
+
+
+    if (
+      response &&
+      response.ok
+    ) {
+
+      await cache.put(
+        clean,
+        response.clone()
+      );
+
+    }
+
+
+    return response;
+
+  }
+
+
+  catch (
+    error
+  ) {
+
+    console.warn(
+      "Obrázek není dostupný offline:",
+      clean.url
+    );
+
+
+    return new Response(
+      "",
+      {
+        status: 503,
+        statusText:
+          "Obrázek není dostupný offline"
+      }
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   HTML / JS / JSON / OSTATNÍ SOUBORY
+========================================================= */
+
+async function handleAppRequest(
+  request
+) {
+
+  /*
+    Nejdříve se podíváme do cache.
+  */
+
+  const cached =
+    await caches.match(
+      request
+    );
+
+
+  if (
+    cached
+  ) {
+
+    return cached;
+
+  }
+
+
+  /*
+    Pokud soubor není v cache,
+    zkusíme internet.
+  */
+
+  try {
+
+    const response =
+      await fetch(
+        request
+      );
+
+
+    /*
+      Úspěšnou odpověď ze stejné
+      domény uložíme.
+    */
+
+    if (
+      response &&
+      response.ok
+    ) {
+
+      const url =
+        new URL(
+          request.url
+        );
+
+
+      if (
+        url.origin ===
+        self.location.origin
+      ) {
+
+        const cache =
+          await caches.open(
+            APP_CACHE
+          );
+
+
+        await cache.put(
+          request,
+          response.clone()
+        );
+
+      }
+
+    }
+
+
+    return response;
+
+  }
+
+
+  catch (
+    error
+  ) {
+
+    /*
+      Pokud jsme úplně offline
+      a požadavek není v cache.
+    */
+
+    return new Response(
+      "Obsah není dostupný offline.",
+      {
+        status: 503,
+
+        headers: {
+
+          "Content-Type":
+            "text/plain; charset=utf-8"
+
+        }
+      }
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   FETCH
+========================================================= */
+
+self.addEventListener(
+  "fetch",
+  event => {
+
+    const request =
+      event.request;
+
+
+    /*
+      Řešíme pouze GET.
+    */
+
+    if (
+      request.method !==
+      "GET"
+    ) {
+
+      return;
+
+    }
+
+
+    const url =
+      new URL(
+        request.url
+      );
+
+
+    /*
+      Ignorujeme jiné protokoly.
+    */
+
+    if (
+      url.protocol !==
+        "http:"
+
+      &&
+
+      url.protocol !==
+        "https:"
+    ) {
+
+      return;
+
+    }
+
+
+    /* =====================================================
+       AUDIO
+    ===================================================== */
+
+    if (
+      isAudioRequest(
+        request
+      )
+    ) {
+
+      event.respondWith(
+        handleAudio(
+          request
+        )
+      );
+
+
+      return;
+
+    }
+
+
+    /* =====================================================
+       OBRÁZKY
+    ===================================================== */
+
+    if (
+      isImageRequest(
+        request
+      )
+    ) {
+
+      event.respondWith(
+        handleImage(
+          request
+        )
+      );
+
+
+      return;
+
+    }
+
+
+    /* =====================================================
+       O
