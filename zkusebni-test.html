@@ -17,6 +17,7 @@
   <title>Zkušební test | Zlatá udice 2026</title>
 
   <style>
+
     * {
       box-sizing: border-box;
     }
@@ -95,11 +96,14 @@
       padding: 16px;
       margin: 18px 0;
       text-align: left;
-      line-height: 1.6;
+      line-height: 1.65;
     }
 
-    .rules strong {
-      color: #17324d;
+    .rules-title {
+      text-align: center;
+      font-size: 19px;
+      font-weight: bold;
+      margin-bottom: 12px;
     }
 
     .start-button,
@@ -142,6 +146,14 @@
       width: 0%;
       background: #17324d;
       transition: width 0.25s;
+    }
+
+    .phase {
+      text-align: center;
+      margin: 0 0 12px;
+      color: #789;
+      font-size: 13px;
+      font-weight: bold;
     }
 
     .category {
@@ -207,6 +219,12 @@
       gap: 12px;
     }
 
+    .answer-row {
+      display: grid;
+      grid-template-columns: 1fr 52px;
+      gap: 8px;
+    }
+
     .answer-button {
       width: 100%;
       border: 2px solid #d7e5ec;
@@ -223,6 +241,15 @@
     .answer-button.selected {
       border-color: #17324d;
       background: #eaf3f7;
+    }
+
+    .answer-sound {
+      border: none;
+      border-radius: 14px;
+      background: #e6f2f7;
+      color: #17324d;
+      font-size: 20px;
+      cursor: pointer;
     }
 
     .written-answer {
@@ -292,7 +319,6 @@
     .big-score {
       font-size: 38px;
       font-weight: bold;
-      color: #17324d;
     }
 
     .percentage {
@@ -311,14 +337,14 @@
     .summary-card {
       background: #f3f8fb;
       border-radius: 14px;
-      padding: 14px;
+      padding: 14px 8px;
       text-align: center;
     }
 
     .summary-card strong {
       display: block;
-      font-size: 23px;
-      margin-bottom: 3px;
+      font-size: 22px;
+      margin-bottom: 4px;
     }
 
     .summary-card span {
@@ -336,18 +362,8 @@
       border-radius: 16px;
       padding: 16px;
       margin-bottom: 13px;
-      background: #f7fafb;
-      border-left: 5px solid #d7e5ec;
-    }
-
-    .review-item.correct {
-      background: #edf8f0;
-      border-left-color: #65a876;
-    }
-
-    .review-item.wrong {
       background: #fff1f1;
-      border-left-color: #c77;
+      border-left: 5px solid #c77;
     }
 
     .review-number {
@@ -381,6 +397,15 @@
       margin-top: 9px;
     }
 
+    .review-photo {
+      width: 100%;
+      max-height: 300px;
+      object-fit: contain;
+      background: white;
+      border-radius: 12px;
+      margin: 10px 0 14px;
+    }
+
     .perfect-box {
       background: #edf8f0;
       border-radius: 16px;
@@ -400,6 +425,7 @@
     }
 
     @media (max-width: 520px) {
+
       .app {
         padding: 14px;
       }
@@ -422,16 +448,26 @@
       .question-text {
         font-size: 19px;
       }
+
+      .summary-grid {
+        grid-template-columns: 1fr 1fr;
+      }
     }
+
   </style>
 </head>
+
 
 <body>
 
 <main class="app">
 
   <div class="topbar">
-    <a class="back" href="index.html">
+
+    <a
+      class="back"
+      href="index.html"
+    >
       ← Zpět
     </a>
 
@@ -439,10 +475,12 @@
       class="player"
       id="playerInfo"
     ></div>
+
   </div>
 
 
   <div class="header">
+
     <div class="header-icon">
       🏆🎣
     </div>
@@ -452,8 +490,9 @@
     </h1>
 
     <p>
-      Vyzkoušej si test nanečisto
+      Krajské kolo – Zlatá udice 2026
     </p>
+
   </div>
 
 
@@ -469,22 +508,36 @@
     </h2>
 
     <p>
-      Test náhodně vybere otázky z jednotlivých okruhů
-      a poznávačky ryb, rostlin a živočichů.
+      Vyzkoušej si kompletní soutěžní test nanečisto.
     </p>
 
     <div class="rules">
-      <strong>Pravidla testu</strong><br><br>
 
-      🧠 Teoretické otázky – výběr ze 3 možností<br>
-      🐟 Poznávání ryb – odpověď napíšeš<br>
-      🌿 Poznávání rostlin – odpověď napíšeš<br>
-      🦆 Poznávání živočichů – odpověď napíšeš<br><br>
+      <div class="rules-title">
+        📋 Krajské kolo
+      </div>
 
-      ⭐ Každá správná odpověď = <strong>2 body</strong><br>
-      ✍️ U poznávaček je potřeba správný celý název.<br><br>
+      <strong>🧠 Teoretický test – 50 otázek / 100 bodů</strong><br>
 
-      Výsledek a všechny chyby uvidíš až po dokončení testu.
+      • Přírodovědné znalosti – 18<br>
+      • Chov ryb – 9<br>
+      • Zákon o rybářství – 11<br>
+      • Stanovy ČRS – 4<br>
+      • Rybolovná technika – 5<br>
+      • Závodní lov ryb udicí – 3<br><br>
+
+      <strong>📷 Poznávačka – 50 fotografií / 100 bodů</strong><br>
+
+      🐟 Ryby – 20<br>
+      🌿 Rostliny – 15<br>
+      🦆 Živočichové – 15<br><br>
+
+      ⭐ Každá položka = <strong>2 body</strong><br>
+      🏆 Maximum = <strong>200 bodů</strong><br><br>
+
+      U poznávačky napiš celý správný název.
+      Výsledek a chyby uvidíš až na konci.
+
     </div>
 
     <button
@@ -505,25 +558,28 @@
     id="testCard"
   >
 
+    <div
+      class="phase"
+      id="phaseInfo"
+    ></div>
+
     <div class="progress-wrap">
 
       <div class="progress-info">
 
-        <span id="questionCounter">
-          Otázka 1
-        </span>
+        <span id="questionCounter"></span>
 
-        <span id="scorePossible">
-          2 body
-        </span>
+        <span id="scorePossible"></span>
 
       </div>
 
       <div class="progress-bar">
+
         <div
           class="progress-fill"
           id="progressFill"
         ></div>
+
       </div>
 
     </div>
@@ -551,6 +607,7 @@
       class="sound-row hidden"
       id="soundRow"
     >
+
       <button
         class="sound-button"
         id="questionSoundButton"
@@ -558,6 +615,7 @@
       >
         🔊 Přečíst otázku
       </button>
+
     </div>
 
 
@@ -629,7 +687,7 @@
       type="button"
       onclick="startTest()"
     >
-      🔄 Nový test
+      🔄 Spustit nový test
     </button>
 
   </div>
@@ -637,46 +695,47 @@
 </main>
 
 
-<!--
-  Uprav názvy souborů pouze tehdy,
-  pokud je máš v GitHubu pojmenované jinak.
--->
+<!-- DATA -->
 
 <script src="otazky-data.js"></script>
 <script src="ryby-data.js"></script>
 <script src="rostliny-data.js"></script>
 <script src="zivocichove-data.js"></script>
 
-<!-- pokud už používáš společný zvuk -->
-<script src="audio.js"></script>
+<!--
+  Ty jsi mi posílala společný soubor zvuku jako zvuk.js.
+  Pokud ho máš skutečně pojmenovaný audio.js,
+  změň následující řádek zpět na audio.js.
+-->
+
+<script src="zvuk.js"></script>
 
 
 <script>
 
 /* ========================================
-   NASTAVENÍ TESTU
+   KRAJSKÉ KOLO – NASTAVENÍ
 ======================================== */
 
-/*
-  Zde můžeš později jednoduše změnit
-  počet otázek.
-
-  Aktuálně:
-
-  12 teoretických
-  4 ryby
-  2 rostliny
-  2 živočichové
-
-  = 20 položek
-  = maximálně 40 bodů
-*/
-
 const TEST_CONFIG = {
-  theory: 12,
-  fish: 4,
-  plants: 2,
-  animals: 2
+
+  theorySections: {
+
+    1: 18,
+    2: 9,
+    3: 11,
+    4: 4,
+    5: 5,
+    6: 3
+
+  },
+
+  fish: 20,
+
+  plants: 15,
+
+  animals: 15
+
 };
 
 
@@ -718,6 +777,9 @@ const scorePossible =
 const progressFill =
   document.getElementById("progressFill");
 
+const phaseInfo =
+  document.getElementById("phaseInfo");
+
 const category =
   document.getElementById("category");
 
@@ -756,7 +818,7 @@ const resultIcon =
 
 
 /* ========================================
-   PROFIL
+   PROFILY
 ======================================== */
 
 function getProfiles() {
@@ -771,10 +833,14 @@ function getProfiles() {
   }
 
   try {
+
     return JSON.parse(saved);
+
   }
   catch {
+
     return [];
+
   }
 }
 
@@ -788,10 +854,12 @@ const activeProfileId =
 const activePlayer =
   getProfiles().find(
     function(profile) {
+
       return (
         profile.id ===
         activeProfileId
       );
+
     }
   );
 
@@ -804,6 +872,7 @@ if (activePlayer) {
     (activePlayer.avatar || "") +
     " " +
     (activePlayer.name || "");
+
 }
 
 
@@ -815,6 +884,7 @@ function shuffle(array) {
 
   const copy = [...array];
 
+
   for (
     let i = copy.length - 1;
     i > 0;
@@ -823,8 +893,10 @@ function shuffle(array) {
 
     const j =
       Math.floor(
-        Math.random() * (i + 1)
+        Math.random() *
+        (i + 1)
       );
+
 
     [
       copy[i],
@@ -834,7 +906,9 @@ function shuffle(array) {
       copy[j],
       copy[i]
     ];
+
   }
+
 
   return copy;
 }
@@ -847,11 +921,26 @@ function shuffle(array) {
 function createFileName(name) {
 
   return String(name)
+
     .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
+
+    .replace(
+      /[\u0300-\u036f]/g,
+      ""
+    )
+
     .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
+
+    .replace(
+      /[^a-z0-9]+/g,
+      "-"
+    )
+
+    .replace(
+      /^-+|-+$/g,
+      ""
+    );
+
 }
 
 
@@ -862,124 +951,140 @@ function createFileName(name) {
 function normalizeAnswer(text) {
 
   return String(text || "")
+
     .trim()
+
     .toLowerCase()
+
     .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[–—]/g, "-")
-    .replace(/\s+/g, " ");
+
+    .replace(
+      /[\u0300-\u036f]/g,
+      ""
+    )
+
+    .replace(
+      /[–—]/g,
+      "-"
+    )
+
+    .replace(
+      /\s+/g,
+      " "
+    );
+
 }
 
 
 /* ========================================
-   VÝBĚR TEORIE PODLE OKRUHŮ
+   VÝBĚR TEORETICKÝCH OTÁZEK
+
+   PŘESNĚ:
+   18 + 9 + 11 + 4 + 5 + 3 = 50
 ======================================== */
 
 function createTheoryQuestions() {
 
   const result = [];
 
-  /*
-    Nechceme, aby se test skládal
-    náhodou jen z jednoho tématu.
 
-    Nejdříve vezmeme po jedné otázce
-    z každého okruhu.
-  */
+  Object.keys(
+    TEST_CONFIG.theorySections
+  ).forEach(
+    function(sectionKey) {
 
-  const sectionNumbers =
-    Object.keys(questionSections)
-      .map(Number);
+      const sectionNumber =
+        Number(sectionKey);
 
 
-  sectionNumbers.forEach(
-    function(sectionNumber) {
+      const requiredCount =
+        TEST_CONFIG
+          .theorySections[
+            sectionNumber
+          ];
 
-      const sectionQuestions =
+
+      const available =
         questions.filter(
-          function(item) {
+          function(question) {
+
             return (
-              item.section ===
+              question.section ===
               sectionNumber
             );
+
           }
         );
 
-      if (sectionQuestions.length) {
 
-        result.push(
-          shuffle(sectionQuestions)[0]
+      const selected =
+        shuffle(
+          available
+        ).slice(
+          0,
+          requiredCount
         );
-      }
+
+
+      selected.forEach(
+        function(item) {
+
+          const correct =
+            item.answers.find(
+              function(answer) {
+
+                return answer.correct;
+
+              }
+            );
+
+
+          result.push({
+
+            type:
+              "theory",
+
+            category:
+              item.sectionName,
+
+            question:
+              item.question,
+
+            answers:
+              item.answers,
+
+            correctAnswer:
+              correct
+                ? correct.text
+                : "",
+
+            audio:
+              item.questionAudio,
+
+            sourceId:
+              item.id,
+
+            section:
+              item.section
+
+          });
+
+        }
+      );
+
     }
   );
 
 
   /*
-    Doplnění zbytku teoretických otázek.
+    Teoretické otázky promícháme.
+
+    Poměr jednotlivých okruhů
+    přitom zůstává zachován.
   */
 
-  const alreadyUsed =
-    new Set(
-      result.map(
-        function(item) {
-          return item.id;
-        }
-      )
-    );
+  return shuffle(result);
 
-
-  const remaining =
-    shuffle(
-      questions.filter(
-        function(item) {
-          return !alreadyUsed.has(item.id);
-        }
-      )
-    );
-
-
-  while (
-    result.length < TEST_CONFIG.theory &&
-    remaining.length
-  ) {
-
-    result.push(
-      remaining.shift()
-    );
-  }
-
-
-  return result.map(
-    function(item) {
-
-      return {
-        type: "theory",
-
-        category:
-          item.sectionName,
-
-        question:
-          item.question,
-
-        answers:
-          item.answers,
-
-        correctAnswer:
-          item.answers.find(
-            function(answer) {
-              return answer.correct;
-            }
-          ).text,
-
-        audio:
-          item.questionAudio,
-
-        sourceId:
-          item.id
-      };
-    }
-  );
 }
 
 
@@ -995,12 +1100,19 @@ function createRecognitionQuestions(
 ) {
 
   return shuffle(source)
-    .slice(0, count)
+
+    .slice(
+      0,
+      count
+    )
+
     .map(
       function(item) {
 
         return {
-          type: type,
+
+          type:
+            type,
 
           category:
             categoryName,
@@ -1013,14 +1125,23 @@ function createRecognitionQuestions(
 
           correctAnswer:
             item.name
+
         };
+
       }
     );
+
 }
 
 
 /* ========================================
-   VYTVOŘENÍ TESTU
+   VYTVOŘENÍ CELÉHO TESTU
+
+   POŘADÍ:
+   1. teorie
+   2. ryby
+   3. rostliny
+   4. živočichové
 ======================================== */
 
 function buildTest() {
@@ -1056,21 +1177,23 @@ function buildTest() {
     );
 
 
-  /*
-    Vše promícháme.
-  */
+  return [
 
-  return shuffle([
     ...theoryQuestions,
+
     ...fishQuestions,
+
     ...plantQuestions,
+
     ...animalQuestions
-  ]);
+
+  ];
+
 }
 
 
 /* ========================================
-   START TESTU
+   START
 ======================================== */
 
 function startTest() {
@@ -1079,12 +1202,15 @@ function startTest() {
     typeof window.stopSound ===
     "function"
   ) {
+
     window.stopSound();
+
   }
 
 
   testQuestions =
     buildTest();
+
 
   currentIndex = 0;
 
@@ -1097,8 +1223,10 @@ function startTest() {
     "hidden"
   );
 
+
   resultBox.style.display =
     "none";
+
 
   testCard.classList.remove(
     "hidden"
@@ -1112,6 +1240,55 @@ function startTest() {
     top: 0,
     behavior: "smooth"
   });
+
+}
+
+
+/* ========================================
+   FÁZE TESTU
+======================================== */
+
+function getPhaseInfo(index) {
+
+  if (index < 50) {
+
+    return (
+      "🧠 TEORETICKÝ TEST • " +
+      (index + 1) +
+      " / 50"
+    );
+
+  }
+
+
+  if (index < 70) {
+
+    return (
+      "🐟 RYBY • " +
+      (index - 49) +
+      " / 20"
+    );
+
+  }
+
+
+  if (index < 85) {
+
+    return (
+      "🌿 ROSTLINY • " +
+      (index - 69) +
+      " / 15"
+    );
+
+  }
+
+
+  return (
+    "🦆 ŽIVOČICHOVÉ • " +
+    (index - 84) +
+    " / 15"
+  );
+
 }
 
 
@@ -1125,11 +1302,15 @@ function showQuestion() {
     typeof window.stopSound ===
     "function"
   ) {
+
     window.stopSound();
+
   }
 
 
-  selectedAnswer = null;
+  selectedAnswer =
+    null;
+
 
   nextButton.disabled =
     true;
@@ -1144,15 +1325,13 @@ function showQuestion() {
 
 
   questionCounter.textContent =
-    "Otázka " +
+    "Položka " +
     number +
-    " z " +
-    testQuestions.length;
+    " ze 100";
 
 
   scorePossible.textContent =
-    (number * POINTS_PER_QUESTION) +
-    " / " +
+    "max. " +
     (testQuestions.length *
       POINTS_PER_QUESTION) +
     " bodů";
@@ -1160,10 +1339,17 @@ function showQuestion() {
 
   progressFill.style.width =
     (
-      (number / testQuestions.length) *
+      number /
+      testQuestions.length *
       100
     ) +
     "%";
+
+
+  phaseInfo.textContent =
+    getPhaseInfo(
+      currentIndex
+    );
 
 
   category.textContent =
@@ -1181,6 +1367,7 @@ function showQuestion() {
   photoArea.innerHTML =
     "";
 
+
   photoArea.style.display =
     "none";
 
@@ -1190,23 +1377,21 @@ function showQuestion() {
   );
 
 
-  /*
-    TEORETICKÁ OTÁZKA
-  */
+  if (
+    item.type ===
+    "theory"
+  ) {
 
-  if (item.type === "theory") {
-
-    showTheoryQuestion(item);
+    showTheoryQuestion(
+      item
+    );
 
   }
-
-  /*
-    POZNÁVAČKA
-  */
-
   else {
 
-    showRecognitionQuestion(item);
+    showRecognitionQuestion(
+      item
+    );
 
   }
 
@@ -1226,6 +1411,7 @@ function showQuestion() {
       "Další →";
 
   }
+
 }
 
 
@@ -1235,12 +1421,6 @@ function showQuestion() {
 
 function showTheoryQuestion(item) {
 
-  /*
-    Zvuk se NIKDY nespustí automaticky.
-
-    Pouze po kliknutí.
-  */
-
   soundRow.classList.remove(
     "hidden"
   );
@@ -1248,6 +1428,11 @@ function showTheoryQuestion(item) {
 
   questionSoundButton.onclick =
     function() {
+
+      /*
+        Zvuk otázky se spustí
+        JEN po kliknutí.
+      */
 
       if (
         typeof window.playText ===
@@ -1260,30 +1445,44 @@ function showTheoryQuestion(item) {
         );
 
       }
-
       else if (
         "speechSynthesis" in window
       ) {
 
         window.speechSynthesis.cancel();
 
+
         const speech =
           new SpeechSynthesisUtterance(
             item.question
           );
 
+
         speech.lang =
           "cs-CZ";
+
 
         window.speechSynthesis.speak(
           speech
         );
+
       }
+
     };
 
 
   item.answers.forEach(
     function(answer) {
+
+      const row =
+        document.createElement(
+          "div"
+        );
+
+
+      row.className =
+        "answer-row";
+
 
       const button =
         document.createElement(
@@ -1313,9 +1512,12 @@ function showTheoryQuestion(item) {
             .forEach(
               function(otherButton) {
 
-                otherButton.classList.remove(
-                  "selected"
-                );
+                otherButton
+                  .classList
+                  .remove(
+                    "selected"
+                  );
+
               }
             );
 
@@ -1331,14 +1533,98 @@ function showTheoryQuestion(item) {
 
           nextButton.disabled =
             false;
+
         };
 
 
-      answersArea.appendChild(
+      /*
+        SAMOSTATNÝ ZVUK ODPOVĚDI
+      */
+
+      const soundButton =
+        document.createElement(
+          "button"
+        );
+
+
+      soundButton.type =
+        "button";
+
+
+      soundButton.className =
+        "answer-sound";
+
+
+      soundButton.textContent =
+        "🔊";
+
+
+      soundButton.setAttribute(
+        "aria-label",
+        "Přečíst odpověď"
+      );
+
+
+      soundButton.onclick =
+        function(event) {
+
+          event.stopPropagation();
+
+
+          if (
+            typeof window.playText ===
+            "function"
+          ) {
+
+            window.playText(
+              answer.text,
+              answer.audio
+            );
+
+          }
+          else if (
+            "speechSynthesis" in window
+          ) {
+
+            window.speechSynthesis.cancel();
+
+
+            const speech =
+              new SpeechSynthesisUtterance(
+                answer.text
+              );
+
+
+            speech.lang =
+              "cs-CZ";
+
+
+            window.speechSynthesis.speak(
+              speech
+            );
+
+          }
+
+        };
+
+
+      row.appendChild(
         button
       );
+
+
+      row.appendChild(
+        soundButton
+      );
+
+
+      answersArea.appendChild(
+        row
+      );
+
     }
   );
+
 }
 
 
@@ -1393,6 +1679,7 @@ function showRecognitionQuestion(item) {
 
       nextButton.disabled =
         input.value.trim() === "";
+
     }
   );
 
@@ -1402,12 +1689,15 @@ function showRecognitionQuestion(item) {
     function(event) {
 
       if (
-        event.key === "Enter" &&
+        event.key ===
+        "Enter" &&
         input.value.trim() !== ""
       ) {
 
         saveAndNext();
+
       }
+
     }
   );
 
@@ -1440,6 +1730,7 @@ function showRecognitionQuestion(item) {
 
     hint.textContent =
       "Napiš celý název rostliny.";
+
   }
 
 
@@ -1449,19 +1740,21 @@ function showRecognitionQuestion(item) {
 
 
   /*
-    U poznávačky záměrně není
-    automatické čtení názvu.
+    TADY NENÍ ŽÁDNÝ ZVUK.
 
-    Jinak by aplikace prozradila odpověď.
+    Název poznávaného druhu
+    se nesmí automaticky přečíst.
   */
-
 
   setTimeout(
     function() {
+
       input.focus();
+
     },
     100
   );
+
 }
 
 
@@ -1469,28 +1762,20 @@ function showRecognitionQuestion(item) {
    OBRÁZEK POZNÁVAČKY
 ======================================== */
 
-function showRecognitionPhoto(testItem) {
+function getImageCandidates(
+  testItem
+) {
 
   const item =
     testItem.item;
 
 
-  photoArea.innerHTML =
-    '<div class="photo-placeholder">' +
-      '<div class="photo-icon">🖼️</div>' +
-      '<strong>Načítám fotografii...</strong>' +
-    '</div>';
-
-
   let baseName;
 
 
-  /*
-    Ryby mohou mít imageName.
-  */
-
   if (
-    testItem.type === "fish" &&
+    testItem.type ===
+    "fish" &&
     item.imageName
   ) {
 
@@ -1504,31 +1789,30 @@ function showRecognitionPhoto(testItem) {
       createFileName(
         item.name
       );
+
   }
 
 
-  const possibleImages = [];
+  const possibleImages =
+    [];
 
-
-  /*
-    Pokud je obrázek přímo uvedený
-    v databázi.
-  */
 
   if (item.image) {
 
     possibleImages.push(
       item.image
     );
+
   }
 
 
   /*
-    Stejný systém jako v ostatních
-    částech aplikace.
+    Zkoušíme několik běžných cest,
+    aby test fungoval i podle toho,
+    jak máš fotografie uložené.
   */
 
-  possibleImages.push(
+  const fileNames = [
 
     baseName + ".webp",
     baseName + "-2.webp",
@@ -1546,7 +1830,107 @@ function showRecognitionPhoto(testItem) {
     baseName + "-2.png",
     baseName + "-3.png"
 
+  ];
+
+
+  let folders = [""];
+
+
+  if (
+    testItem.type ===
+    "fish"
+  ) {
+
+    folders = [
+      "",
+      "ryby/",
+      "images/ryby/",
+      "obrazky/ryby/"
+    ];
+
+  }
+
+
+  if (
+    testItem.type ===
+    "plant"
+  ) {
+
+    folders = [
+      "",
+      "rostliny/",
+      "images/rostliny/",
+      "obrazky/rostliny/"
+    ];
+
+  }
+
+
+  if (
+    testItem.type ===
+    "animal"
+  ) {
+
+    folders = [
+      "",
+      "zivocichove/",
+      "images/zivocichove/",
+      "obrazky/zivocichove/"
+    ];
+
+  }
+
+
+  folders.forEach(
+    function(folder) {
+
+      fileNames.forEach(
+        function(fileName) {
+
+          possibleImages.push(
+            folder +
+            fileName
+          );
+
+        }
+      );
+
+    }
   );
+
+
+  /*
+    Odstranění případných duplicit.
+  */
+
+  return [
+    ...new Set(
+      possibleImages
+    )
+  ];
+
+}
+
+
+/* ========================================
+   NAČTENÍ FOTOGRAFIE
+======================================== */
+
+function showRecognitionPhoto(
+  testItem
+) {
+
+  photoArea.innerHTML =
+    '<div class="photo-placeholder">' +
+      '<div class="photo-icon">🖼️</div>' +
+      '<strong>Načítám fotografii...</strong>' +
+    '</div>';
+
+
+  const possibleImages =
+    getImageCandidates(
+      testItem
+    );
 
 
   let attempt = 0;
@@ -1566,7 +1950,14 @@ function showRecognitionPhoto(testItem) {
         '</div>';
 
       return;
+
     }
+
+
+    const imagePath =
+      possibleImages[
+        attempt
+      ];
 
 
     const img =
@@ -1576,27 +1967,21 @@ function showRecognitionPhoto(testItem) {
     img.onload =
       function() {
 
-        /*
-          Kontrola, zda mezitím
-          nebyla zobrazena jiná otázka.
-        */
-
         if (
-          testQuestions[currentIndex] !==
+          testQuestions[
+            currentIndex
+          ] !==
           testItem
         ) {
+
           return;
+
         }
 
 
         img.className =
           "test-photo";
 
-
-        /*
-          DŮLEŽITÉ:
-          alt nesmí prozradit odpověď.
-        */
 
         img.alt =
           "Poznávací fotografie";
@@ -1609,6 +1994,17 @@ function showRecognitionPhoto(testItem) {
         photoArea.appendChild(
           img
         );
+
+
+        /*
+          Cestu uložíme,
+          abychom stejnou fotografii
+          mohli ukázat ve výsledcích.
+        */
+
+        testItem.usedImage =
+          imagePath;
+
       };
 
 
@@ -1618,20 +2014,23 @@ function showRecognitionPhoto(testItem) {
         attempt++;
 
         tryNextImage();
+
       };
 
 
     img.src =
-      possibleImages[attempt];
+      imagePath;
+
   }
 
 
   tryNextImage();
+
 }
 
 
 /* ========================================
-   KONTROLA SPRÁVNOSTI
+   SPRÁVNOST
 ======================================== */
 
 function isCorrectAnswer(
@@ -1639,39 +2038,41 @@ function isCorrectAnswer(
   answer
 ) {
 
-  /*
-    Teorie:
-    přesná vybraná odpověď.
-  */
-
   if (
-    item.type === "theory"
+    item.type ===
+    "theory"
   ) {
 
     return (
       answer ===
       item.correctAnswer
     );
+
   }
 
 
   /*
-    Poznávačky:
+    U poznávačky:
 
-    Ignorujeme:
-    - velikost písmen
-    - diakritiku
-    - vícenásobné mezery
+    - nezáleží na velkých písmenech
+    - tolerujeme chybějící diakritiku
+    - tolerujeme vícenásobné mezery
 
-    Ale název musí být celý.
+    Název ale musí být celý.
   */
 
   return (
-    normalizeAnswer(answer) ===
+
+    normalizeAnswer(
+      answer
+    ) ===
+
     normalizeAnswer(
       item.correctAnswer
     )
+
   );
+
 }
 
 
@@ -1683,14 +2084,20 @@ function saveAndNext() {
 
   if (
     selectedAnswer === null ||
-    String(selectedAnswer).trim() === ""
+    String(
+      selectedAnswer
+    ).trim() === ""
   ) {
+
     return;
+
   }
 
 
   const item =
-    testQuestions[currentIndex];
+    testQuestions[
+      currentIndex
+    ];
 
 
   const correct =
@@ -1715,7 +2122,9 @@ function saveAndNext() {
       item.question,
 
     userAnswer:
-      String(selectedAnswer).trim(),
+      String(
+        selectedAnswer
+      ).trim(),
 
     correctAnswer:
       item.correctAnswer,
@@ -1728,10 +2137,11 @@ function saveAndNext() {
         ? POINTS_PER_QUESTION
         : 0,
 
-    itemName:
-      item.item
-        ? item.item.name
-        : null
+    image:
+      item.usedImage || "",
+
+    sourceId:
+      item.sourceId || ""
 
   });
 
@@ -1751,11 +2161,56 @@ function saveAndNext() {
 
     showQuestion();
 
+
     window.scrollTo({
       top: 0,
       behavior: "smooth"
     });
+
   }
+
+}
+
+
+/* ========================================
+   SOUČET KATEGORIE
+======================================== */
+
+function getCategoryScore(type) {
+
+  const items =
+    testResults.filter(
+      function(item) {
+
+        return (
+          item.type === type
+        );
+
+      }
+    );
+
+
+  return {
+
+    score:
+      items.reduce(
+        function(sum, item) {
+
+          return (
+            sum +
+            item.points
+          );
+
+        },
+        0
+      ),
+
+    max:
+      items.length *
+      POINTS_PER_QUESTION
+
+  };
+
 }
 
 
@@ -1769,7 +2224,9 @@ function finishTest() {
     typeof window.stopSound ===
     "function"
   ) {
+
     window.stopSound();
+
   }
 
 
@@ -1785,7 +2242,12 @@ function finishTest() {
   const score =
     testResults.reduce(
       function(sum, item) {
-        return sum + item.points;
+
+        return (
+          sum +
+          item.points
+        );
+
       },
       0
     );
@@ -1799,22 +2261,11 @@ function finishTest() {
   const percentage =
     maxScore
       ? Math.round(
-          (score / maxScore) * 100
+          score /
+          maxScore *
+          100
         )
       : 0;
-
-
-  const correctCount =
-    testResults.filter(
-      function(item) {
-        return item.correct;
-      }
-    ).length;
-
-
-  const wrongCount =
-    testResults.length -
-    correctCount;
 
 
   finalScore.textContent =
@@ -1829,19 +2280,25 @@ function finishTest() {
     " %";
 
 
-  if (percentage === 100) {
+  if (
+    percentage === 100
+  ) {
 
     resultIcon.textContent =
       "🏆";
 
   }
-  else if (percentage >= 80) {
+  else if (
+    percentage >= 80
+  ) {
 
     resultIcon.textContent =
       "🥇";
 
   }
-  else if (percentage >= 60) {
+  else if (
+    percentage >= 60
+  ) {
 
     resultIcon.textContent =
       "🎣";
@@ -1851,38 +2308,59 @@ function finishTest() {
 
     resultIcon.textContent =
       "📚";
+
   }
+
+
+  const theory =
+    getCategoryScore(
+      "theory"
+    );
+
+
+  const fishScore =
+    getCategoryScore(
+      "fish"
+    );
+
+
+  const plantScore =
+    getCategoryScore(
+      "plant"
+    );
+
+
+  const animalScore =
+    getCategoryScore(
+      "animal"
+    );
 
 
   summaryGrid.innerHTML =
 
-    '<div class="summary-card">' +
-      '<strong>' +
-        correctCount +
-      '</strong>' +
-      '<span>správně</span>' +
-    '</div>' +
+    createSummaryCard(
+      "🧠 Test",
+      theory.score,
+      theory.max
+    ) +
 
-    '<div class="summary-card">' +
-      '<strong>' +
-        wrongCount +
-      '</strong>' +
-      '<span>špatně</span>' +
-    '</div>' +
+    createSummaryCard(
+      "🐟 Ryby",
+      fishScore.score,
+      fishScore.max
+    ) +
 
-    '<div class="summary-card">' +
-      '<strong>' +
-        score +
-      '</strong>' +
-      '<span>získaných bodů</span>' +
-    '</div>' +
+    createSummaryCard(
+      "🌿 Rostliny",
+      plantScore.score,
+      plantScore.max
+    ) +
 
-    '<div class="summary-card">' +
-      '<strong>' +
-        maxScore +
-      '</strong>' +
-      '<span>maximum</span>' +
-    '</div>';
+    createSummaryCard(
+      "🦆 Živočichové",
+      animalScore.score,
+      animalScore.max
+    );
 
 
   createReview();
@@ -1892,11 +2370,43 @@ function finishTest() {
     top: 0,
     behavior: "smooth"
   });
+
 }
 
 
 /* ========================================
-   ROZBOR ODPOVĚDÍ
+   KARTA VÝSLEDKU
+======================================== */
+
+function createSummaryCard(
+  title,
+  score,
+  max
+) {
+
+  return (
+
+    '<div class="summary-card">' +
+
+      '<strong>' +
+        score +
+        " / " +
+        max +
+      '</strong>' +
+
+      '<span>' +
+        title +
+      '</span>' +
+
+    '</div>'
+
+  );
+
+}
+
+
+/* ========================================
+   ROZBOR CHYB
 ======================================== */
 
 function createReview() {
@@ -1908,14 +2418,12 @@ function createReview() {
   const wrongAnswers =
     testResults.filter(
       function(item) {
+
         return !item.correct;
+
       }
     );
 
-
-  /*
-    VŠECHNO SPRÁVNĚ
-  */
 
   if (
     wrongAnswers.length === 0
@@ -1932,7 +2440,7 @@ function createReview() {
 
 
     perfect.innerHTML =
-      "🎉 Bez chyby! Všechny odpovědi byly správně.";
+      "🎉 Bez chyby! Získal jsi všech 200 bodů.";
 
 
     reviewArea.appendChild(
@@ -1941,6 +2449,7 @@ function createReview() {
 
 
     return;
+
   }
 
 
@@ -1955,7 +2464,7 @@ function createReview() {
 
 
   title.textContent =
-    "❌ Co bylo špatně";
+    "❌ Přehled chyb";
 
 
   reviewArea.appendChild(
@@ -1973,8 +2482,12 @@ function createReview() {
 
 
       box.className =
-        "review-item wrong";
+        "review-item";
 
+
+      /*
+        ČÍSLO + KATEGORIE
+      */
 
       const number =
         document.createElement(
@@ -1987,7 +2500,7 @@ function createReview() {
 
 
       number.textContent =
-        "OTÁZKA " +
+        "POLOŽKA " +
         item.number +
         " • " +
         item.category;
@@ -1997,6 +2510,10 @@ function createReview() {
         number
       );
 
+
+      /*
+        OTÁZKA
+      */
 
       const question =
         document.createElement(
@@ -2008,13 +2525,9 @@ function createReview() {
         "review-question";
 
 
-      /*
-        U poznávačky zobrazíme,
-        že šlo o poznávání.
-      */
-
       if (
-        item.type === "theory"
+        item.type ===
+        "theory"
       ) {
 
         question.textContent =
@@ -2024,7 +2537,8 @@ function createReview() {
       else {
 
         question.textContent =
-          "Poznávání podle fotografie";
+          "Co je na této fotografii?";
+
       }
 
 
@@ -2034,7 +2548,43 @@ function createReview() {
 
 
       /*
-        ZVOLENÁ / NAPSANÁ ODPOVĚĎ
+        U CHYBNÉ POZNÁVAČKY
+        UKÁŽEME ZNOVU FOTOGRAFII
+      */
+
+      if (
+        item.type !==
+        "theory" &&
+        item.image
+      ) {
+
+        const img =
+          document.createElement(
+            "img"
+          );
+
+
+        img.src =
+          item.image;
+
+
+        img.className =
+          "review-photo";
+
+
+        img.alt =
+          "Fotografie z chybné odpovědi";
+
+
+        box.appendChild(
+          img
+        );
+
+      }
+
+
+      /*
+        TVOJE ODPOVĚĎ
       */
 
       const userLine =
@@ -2085,6 +2635,10 @@ function createReview() {
       );
 
 
+      /*
+        BODY
+      */
+
       const points =
         document.createElement(
           "div"
@@ -2096,9 +2650,7 @@ function createReview() {
 
 
       points.textContent =
-        "0 / " +
-        POINTS_PER_QUESTION +
-        " body";
+        "0 / 2 body";
 
 
       box.appendChild(
@@ -2109,161 +2661,10 @@ function createReview() {
       reviewArea.appendChild(
         box
       );
+
     }
   );
 
-
-  /*
-    Pod chyby přidáme i přehled
-    správných odpovědí.
-  */
-
-  const correctAnswers =
-    testResults.filter(
-      function(item) {
-        return item.correct;
-      }
-    );
-
-
-  if (
-    correctAnswers.length
-  ) {
-
-    const correctTitle =
-      document.createElement(
-        "h3"
-      );
-
-
-    correctTitle.className =
-      "review-title";
-
-
-    correctTitle.textContent =
-      "✅ Správné odpovědi";
-
-
-    reviewArea.appendChild(
-      correctTitle
-    );
-
-
-    correctAnswers.forEach(
-      function(item) {
-
-        const box =
-          document.createElement(
-            "div"
-          );
-
-
-        box.className =
-          "review-item correct";
-
-
-        const number =
-          document.createElement(
-            "div"
-          );
-
-
-        number.className =
-          "review-number";
-
-
-        number.textContent =
-          "OTÁZKA " +
-          item.number +
-          " • " +
-          item.category;
-
-
-        box.appendChild(
-          number
-        );
-
-
-        const question =
-          document.createElement(
-            "div"
-          );
-
-
-        question.className =
-          "review-question";
-
-
-        if (
-          item.type === "theory"
-        ) {
-
-          question.textContent =
-            item.question;
-
-        }
-        else {
-
-          question.textContent =
-            "Poznávání podle fotografie";
-        }
-
-
-        box.appendChild(
-          question
-        );
-
-
-        const answer =
-          document.createElement(
-            "div"
-          );
-
-
-        answer.className =
-          "review-line correct-answer";
-
-
-        answer.innerHTML =
-          "<strong>Odpověď:</strong> " +
-          escapeHtml(
-            item.correctAnswer
-          );
-
-
-        box.appendChild(
-          answer
-        );
-
-
-        const points =
-          document.createElement(
-            "div"
-          );
-
-
-        points.className =
-          "points";
-
-
-        points.textContent =
-          POINTS_PER_QUESTION +
-          " / " +
-          POINTS_PER_QUESTION +
-          " body";
-
-
-        box.appendChild(
-          points
-        );
-
-
-        reviewArea.appendChild(
-          box
-        );
-      }
-    );
-  }
 }
 
 
@@ -2284,11 +2685,75 @@ function escapeHtml(text) {
 
 
   return div.innerHTML;
+
 }
 
 
 /* ========================================
-   KONTROLA DAT
+   KONTROLA POČTŮ
+======================================== */
+
+function checkSectionCounts() {
+
+  const errors = [];
+
+
+  Object.keys(
+    TEST_CONFIG.theorySections
+  ).forEach(
+    function(key) {
+
+      const section =
+        Number(key);
+
+
+      const required =
+        TEST_CONFIG
+          .theorySections[
+            section
+          ];
+
+
+      const available =
+        questions.filter(
+          function(item) {
+
+            return (
+              item.section ===
+              section
+            );
+
+          }
+        ).length;
+
+
+      if (
+        available <
+        required
+      ) {
+
+        errors.push(
+          "Okruh " +
+          section +
+          ": potřeba " +
+          required +
+          ", dostupných " +
+          available
+        );
+
+      }
+
+    }
+  );
+
+
+  return errors;
+
+}
+
+
+/* ========================================
+   KONTROLA DAT PŘI STARTU
 ======================================== */
 
 (function checkData() {
@@ -2297,50 +2762,69 @@ function escapeHtml(text) {
 
 
   if (
-    typeof questions === "undefined" ||
-    !Array.isArray(questions) ||
+    typeof questions ===
+    "undefined" ||
+    !Array.isArray(
+      questions
+    ) ||
     questions.length === 0
   ) {
 
     problems.push(
       "otázky"
     );
+
   }
 
 
   if (
-    typeof fish === "undefined" ||
-    !Array.isArray(fish) ||
-    fish.length === 0
+    typeof fish ===
+    "undefined" ||
+    !Array.isArray(
+      fish
+    ) ||
+    fish.length <
+      TEST_CONFIG.fish
   ) {
 
     problems.push(
       "ryby"
     );
+
   }
 
 
   if (
-    typeof plants === "undefined" ||
-    !Array.isArray(plants) ||
-    plants.length === 0
+    typeof plants ===
+    "undefined" ||
+    !Array.isArray(
+      plants
+    ) ||
+    plants.length <
+      TEST_CONFIG.plants
   ) {
 
     problems.push(
       "rostliny"
     );
+
   }
 
 
   if (
-    typeof animals === "undefined" ||
-    !Array.isArray(animals) ||
-    animals.length === 0
+    typeof animals ===
+    "undefined" ||
+    !Array.isArray(
+      animals
+    ) ||
+    animals.length <
+      TEST_CONFIG.animals
   ) {
 
     problems.push(
       "živočichy"
     );
+
   }
 
 
@@ -2350,11 +2834,100 @@ function escapeHtml(text) {
 
     startBox.innerHTML =
       "<h2>⚠️ Chybí data</h2>" +
-      "<p>Nepodařilo se načíst: " +
+      "<p>Nepodařilo se správně načíst: " +
       problems.join(", ") +
       ".</p>" +
-      "<p>Zkontroluj názvy JS souborů dole v kódu.</p>";
+      "<p>Zkontroluj názvy JS souborů.</p>";
+
+    return;
+
   }
+
+
+  const sectionErrors =
+    checkSectionCounts();
+
+
+  if (
+    sectionErrors.length
+  ) {
+
+    startBox.innerHTML =
+      "<h2>⚠️ Nedostatek otázek</h2>" +
+      "<p>" +
+      sectionErrors.join("<br>") +
+      "</p>";
+
+    return;
+
+  }
+
+
+  /*
+    Kontrola celkového počtu.
+
+    Správně musí být:
+    50 teorie + 20 ryb +
+    15 rostlin + 15 živočichů
+    = 100 položek.
+  */
+
+  const theoryTotal =
+    Object.values(
+      TEST_CONFIG.theorySections
+    ).reduce(
+      function(sum, count) {
+
+        return sum + count;
+
+      },
+      0
+    );
+
+
+  console.log(
+    "Teorie:",
+    theoryTotal
+  );
+
+
+  console.log(
+    "Ryby:",
+    TEST_CONFIG.fish
+  );
+
+
+  console.log(
+    "Rostliny:",
+    TEST_CONFIG.plants
+  );
+
+
+  console.log(
+    "Živočichové:",
+    TEST_CONFIG.animals
+  );
+
+
+  console.log(
+    "Celkem položek:",
+    theoryTotal +
+    TEST_CONFIG.fish +
+    TEST_CONFIG.plants +
+    TEST_CONFIG.animals
+  );
+
+
+  console.log(
+    "Maximum bodů:",
+    (
+      theoryTotal +
+      TEST_CONFIG.fish +
+      TEST_CONFIG.plants +
+      TEST_CONFIG.animals
+    ) *
+    POINTS_PER_QUESTION
+  );
 
 })();
 
