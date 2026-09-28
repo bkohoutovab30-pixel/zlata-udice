@@ -705,3 +705,486 @@ function showPhoto(item) {
         attempt++;
 
        
+        tryNextImage();
+
+      };
+
+
+    img.src =
+      possibleImages[
+        attempt
+      ];
+
+  }
+
+
+  tryNextImage();
+
+}
+
+
+/* =========================================
+   NOVÁ NÁHODNÁ RYBA
+========================================= */
+
+function chooseFish() {
+
+  if (
+    typeof fish === "undefined" ||
+    fish.length === 0
+  ) {
+
+    fishName.textContent =
+      "Ryby se nepodařilo načíst";
+
+    return;
+
+  }
+
+
+  let newFish;
+
+
+  if (fish.length === 1) {
+
+    newFish = 0;
+
+  }
+
+  else {
+
+    do {
+
+      newFish =
+        Math.floor(
+          Math.random() *
+          fish.length
+        );
+
+    }
+    while (
+      newFish === previousFish
+    );
+
+  }
+
+
+  currentFish =
+    newFish;
+
+
+  previousFish =
+    currentFish;
+
+
+  questionArea.style.display =
+    "block";
+
+
+  answerArea.style.display =
+    "none";
+
+
+  const item =
+    fish[currentFish];
+
+
+  fishName.textContent =
+    item.name;
+
+
+  showPhoto(
+    item
+  );
+
+}
+
+
+/* =========================================
+   ZOBRAZIT ODPOVĚĎ
+========================================= */
+
+function showAnswer() {
+
+  if (
+    typeof fish === "undefined" ||
+    fish.length === 0
+  ) {
+
+    return;
+
+  }
+
+
+  const item =
+    fish[currentFish];
+
+
+  fishName.textContent =
+    item.name;
+
+
+  questionArea.style.display =
+    "none";
+
+
+  answerArea.style.display =
+    "block";
+
+}
+
+
+/* =========================================
+   PŘEHRÁT NÁZEV
+========================================= */
+
+function playName() {
+
+  if (
+    typeof fish === "undefined" ||
+    fish.length === 0
+  ) {
+
+    return;
+
+  }
+
+
+  const item =
+    fish[currentFish];
+
+
+  playNamedSound(
+    item.name,
+    "audio/ryby"
+  );
+
+}
+
+
+/* =========================================
+   NAČTENÍ CHYB
+========================================= */
+
+function getMistakes() {
+
+  const saved =
+    localStorage.getItem(
+      mistakesKey
+    );
+
+
+  if (!saved) {
+
+    return [];
+
+  }
+
+
+  try {
+
+    const data =
+      JSON.parse(
+        saved
+      );
+
+
+    return Array.isArray(data)
+      ? data
+      : [];
+
+  }
+
+  catch {
+
+    return [];
+
+  }
+
+}
+
+
+/* =========================================
+   ULOŽENÍ CHYB
+========================================= */
+
+function saveMistakes(
+  mistakes
+) {
+
+  localStorage.setItem(
+    mistakesKey,
+    JSON.stringify(
+      mistakes
+    )
+  );
+
+}
+
+
+/* =========================================
+   PŘIDAT DO "CO MI NEJDE"
+========================================= */
+
+function addMistake(
+  item
+) {
+
+  const mistakes =
+    getMistakes();
+
+
+  const exists =
+    mistakes.some(
+      mistake =>
+        mistake.name ===
+        item.name
+    );
+
+
+  if (!exists) {
+
+    mistakes.push({
+      card:
+        item.card || "",
+
+      name:
+        item.name
+    });
+
+
+    saveMistakes(
+      mistakes
+    );
+
+  }
+
+}
+
+
+/* =========================================
+   ODEBRAT Z "CO MI NEJDE"
+========================================= */
+
+function removeMistake(
+  item
+) {
+
+  const mistakes =
+    getMistakes();
+
+
+  const updated =
+    mistakes.filter(
+      mistake =>
+        mistake.name !==
+        item.name
+    );
+
+
+  saveMistakes(
+    updated
+  );
+
+}
+
+
+/* =========================================
+   PRŮBĚŽNÉ VÝSLEDKY HRÁČE
+========================================= */
+
+function getProgress() {
+
+  const saved =
+    localStorage.getItem(
+      progressKey
+    );
+
+
+  if (!saved) {
+
+    return {
+      total: 0,
+      correct: 0,
+      wrong: 0
+    };
+
+  }
+
+
+  try {
+
+    const data =
+      JSON.parse(
+        saved
+      );
+
+
+    return {
+      total:
+        Number(
+          data.total
+        ) || 0,
+
+      correct:
+        Number(
+          data.correct
+        ) || 0,
+
+      wrong:
+        Number(
+          data.wrong
+        ) || 0
+    };
+
+  }
+
+  catch {
+
+    return {
+      total: 0,
+      correct: 0,
+      wrong: 0
+    };
+
+  }
+
+}
+
+
+/* =========================================
+   ULOŽIT PRŮBĚŽNÉ VÝSLEDKY
+========================================= */
+
+function saveProgress(
+  progress
+) {
+
+  localStorage.setItem(
+    progressKey,
+    JSON.stringify(
+      progress
+    )
+  );
+
+}
+
+
+/* =========================================
+   ODPOVĚĎ VÍM / NEVÍM
+========================================= */
+
+function answer(
+  isCorrect
+) {
+
+  if (
+    typeof fish === "undefined" ||
+    fish.length === 0
+  ) {
+
+    return;
+
+  }
+
+
+  stopSound();
+
+
+  const item =
+    fish[currentFish];
+
+
+  sessionTotal++;
+
+
+  if (isCorrect) {
+
+    sessionCorrect++;
+
+
+    removeMistake(
+      item
+    );
+
+  }
+
+  else {
+
+    sessionWrong++;
+
+
+    addMistake(
+      item
+    );
+
+  }
+
+
+  const progress =
+    getProgress();
+
+
+  progress.total++;
+
+
+  if (isCorrect) {
+
+    progress.correct++;
+
+  }
+
+  else {
+
+    progress.wrong++;
+
+  }
+
+
+  saveProgress(
+    progress
+  );
+
+
+  updateScore();
+
+
+  chooseFish();
+
+}
+
+
+/* =========================================
+   POČÍTADLA
+========================================= */
+
+function updateScore() {
+
+  totalScore.textContent =
+    sessionTotal;
+
+
+  correctScore.textContent =
+    sessionCorrect;
+
+
+  wrongScore.textContent =
+    sessionWrong;
+
+}
+
+
+/* =========================================
+   START
+========================================= */
+
+updateScore();
+
+
+chooseFish();
+
+</script>
+
+</body>
+
+</html>
