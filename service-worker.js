@@ -1,11 +1,11 @@
 /* =========================================================
    ZLATÁ UDICE 2026
-   SERVICE WORKER – OFFLINE REŽIM v5
+   SERVICE WORKER – OFFLINE REŽIM v6
 ========================================================= */
 
-const APP_CACHE = "zlata-udice-app-v5";
-const AUDIO_CACHE = "zlata-udice-audio-v5";
-const IMAGE_CACHE = "zlata-udice-images-v5";
+const APP_CACHE = "zlata-udice-app-v6";
+const AUDIO_CACHE = "zlata-udice-audio-v6";
+const IMAGE_CACHE = "zlata-udice-images-v6";
 
 
 /* =========================================================
@@ -45,9 +45,10 @@ const APP_FILES = [
   "./otazky-procvicovani.html",
 
   /* DATA */
-  "./otazky-data.js",
+  "./ryby-data.js",
   "./rostliny-data.js",
   "./zivocichove-data.js",
+  "./otazky-data.js",
 
   /* ZVUK */
   "./zvuk.js",
@@ -62,77 +63,93 @@ const APP_FILES = [
    INSTALACE
 ========================================================= */
 
-self.addEventListener("install", event => {
+self.addEventListener(
+  "install",
+  event => {
 
-  console.log(
-    "Zlatá udice: instaluji offline režim v5."
-  );
+    console.log(
+      "Zlatá udice: instaluji offline režim v6."
+    );
 
-  event.waitUntil(
 
-    caches
-      .open(APP_CACHE)
-      .then(cache => {
+    event.waitUntil(
 
-        return cache.addAll(APP_FILES);
+      caches
+        .open(APP_CACHE)
+        .then(cache => {
 
-      })
+          return cache.addAll(
+            APP_FILES
+          );
 
-  );
+        })
 
-  self.skipWaiting();
+    );
 
-});
+
+    self.skipWaiting();
+
+  }
+);
 
 
 /* =========================================================
    AKTIVACE
 ========================================================= */
 
-self.addEventListener("activate", event => {
+self.addEventListener(
+  "activate",
+  event => {
 
-  const allowedCaches = [
-    APP_CACHE,
-    AUDIO_CACHE,
-    IMAGE_CACHE
-  ];
+    const allowedCaches = [
+
+      APP_CACHE,
+      AUDIO_CACHE,
+      IMAGE_CACHE
+
+    ];
 
 
-  event.waitUntil(
+    event.waitUntil(
 
-    caches
-      .keys()
-      .then(cacheNames => {
+      caches
+        .keys()
+        .then(cacheNames => {
 
-        return Promise.all(
+          return Promise.all(
 
-          cacheNames.map(cacheName => {
+            cacheNames.map(
+              cacheName => {
 
-            if (
-              !allowedCaches.includes(cacheName)
-            ) {
+                if (
+                  !allowedCaches.includes(
+                    cacheName
+                  )
+                ) {
 
-              return caches.delete(
-                cacheName
-              );
+                  return caches.delete(
+                    cacheName
+                  );
 
-            }
+                }
 
-          })
+              }
+            )
 
-        );
+          );
 
-      })
+        })
 
-      .then(() => {
+        .then(() => {
 
-        return self.clients.claim();
+          return self.clients.claim();
 
-      })
+        })
 
-  );
+    );
 
-});
+  }
+);
 
 
 /* =========================================================
@@ -142,15 +159,25 @@ self.addEventListener("activate", event => {
 function isAudioRequest(request) {
 
   const url =
-    request.url.toLowerCase();
+    new URL(request.url);
+
+
+  const pathname =
+    url.pathname.toLowerCase();
 
 
   return (
+
     request.destination === "audio" ||
-    url.endsWith(".mp3") ||
-    url.endsWith(".wav") ||
-    url.endsWith(".ogg") ||
-    url.endsWith(".m4a")
+
+    pathname.endsWith(".mp3") ||
+
+    pathname.endsWith(".wav") ||
+
+    pathname.endsWith(".ogg") ||
+
+    pathname.endsWith(".m4a")
+
   );
 
 }
@@ -159,15 +186,25 @@ function isAudioRequest(request) {
 function isImageRequest(request) {
 
   const url =
-    request.url.toLowerCase();
+    new URL(request.url);
+
+
+  const pathname =
+    url.pathname.toLowerCase();
 
 
   return (
+
     request.destination === "image" ||
-    url.endsWith(".jpg") ||
-    url.endsWith(".jpeg") ||
-    url.endsWith(".png") ||
-    url.endsWith(".webp")
+
+    pathname.endsWith(".jpg") ||
+
+    pathname.endsWith(".jpeg") ||
+
+    pathname.endsWith(".png") ||
+
+    pathname.endsWith(".webp")
+
   );
 
 }
@@ -185,16 +222,15 @@ async function handleAudio(request) {
     );
 
 
-  const cached =
+  /*
+    Nejprve hledáme přesný požadavek.
+  */
+
+  let cached =
     await cache.match(
       request
     );
 
-
-  /*
-    Zvuk už máme uložený.
-    Internet vůbec nepotřebujeme.
-  */
 
   if (cached) {
 
@@ -204,14 +240,52 @@ async function handleAudio(request) {
 
 
   /*
-    Zvuk ještě nemáme.
-    Stáhneme ho a uložíme.
+    Když by adresa obsahovala parametr,
+    zkusíme také čistou adresu bez parametrů.
+  */
+
+  const requestUrl =
+    new URL(
+      request.url
+    );
+
+
+  requestUrl.search = "";
+
+
+  const cleanRequest =
+    new Request(
+      requestUrl.toString(),
+      {
+        method: "GET"
+      }
+    );
+
+
+  cached =
+    await cache.match(
+      cleanRequest
+    );
+
+
+  if (cached) {
+
+    return cached;
+
+  }
+
+
+  /*
+    Zvuk ještě uložený není.
+    Pokusíme se ho stáhnout.
   */
 
   try {
 
     const response =
-      await fetch(request);
+      await fetch(
+        request
+      );
 
 
     if (
@@ -219,8 +293,15 @@ async function handleAudio(request) {
       response.ok
     ) {
 
+      /*
+        Uložíme ho pod čistou adresou.
+
+        Díky tomu ho později najdeme
+        bez ohledu na případné parametry.
+      */
+
       await cache.put(
-        request,
+        cleanRequest,
         response.clone()
       );
 
@@ -230,6 +311,7 @@ async function handleAudio(request) {
     return response;
 
   }
+
   catch (error) {
 
     console.log(
@@ -266,7 +348,10 @@ async function handleImage(request) {
 
   const cached =
     await cache.match(
-      request
+      request,
+      {
+        ignoreSearch: true
+      }
     );
 
 
@@ -280,7 +365,9 @@ async function handleImage(request) {
   try {
 
     const response =
-      await fetch(request);
+      await fetch(
+        request
+      );
 
 
     if (
@@ -299,7 +386,14 @@ async function handleImage(request) {
     return response;
 
   }
+
   catch (error) {
+
+    console.log(
+      "Obrázek není dostupný offline:",
+      request.url
+    );
+
 
     return new Response(
       "",
@@ -323,7 +417,10 @@ async function handleAppRequest(request) {
 
   const cached =
     await caches.match(
-      request
+      request,
+      {
+        ignoreSearch: true
+      }
     );
 
 
@@ -337,13 +434,10 @@ async function handleAppRequest(request) {
   try {
 
     const response =
-      await fetch(request);
+      await fetch(
+        request
+      );
 
-
-    /*
-      Ukládáme pouze úspěšné odpovědi
-      ze stejné domény.
-    */
 
     if (
       response &&
@@ -380,7 +474,33 @@ async function handleAppRequest(request) {
     return response;
 
   }
+
   catch (error) {
+
+    /*
+      Pokud jde o navigaci na HTML stránku
+      a konkrétní soubor se nepodařilo najít,
+      zkusíme alespoň hlavní stránku.
+    */
+
+    if (
+      request.mode === "navigate"
+    ) {
+
+      const home =
+        await caches.match(
+          "./index.html"
+        );
+
+
+      if (home) {
+
+        return home;
+
+      }
+
+    }
+
 
     return new Response(
       "Obsah není dostupný offline.",
@@ -402,71 +522,84 @@ async function handleAppRequest(request) {
    FETCH
 ========================================================= */
 
-self.addEventListener("fetch", event => {
+self.addEventListener(
+  "fetch",
+  event => {
 
-  const request =
-    event.request;
-
-
-  if (
-    request.method !== "GET"
-  ) {
-
-    return;
-
-  }
+    const request =
+      event.request;
 
 
-  const url =
-    new URL(
-      request.url
-    );
+    if (
+      request.method !== "GET"
+    ) {
+
+      return;
+
+    }
 
 
-  if (
-    url.protocol !== "http:" &&
-    url.protocol !== "https:"
-  ) {
-
-    return;
-
-  }
+    const url =
+      new URL(
+        request.url
+      );
 
 
-  /* ZVUK */
+    if (
+      url.protocol !== "http:" &&
+      url.protocol !== "https:"
+    ) {
 
-  if (
-    isAudioRequest(request)
-  ) {
+      return;
+
+    }
+
+
+    /* ZVUK */
+
+    if (
+      isAudioRequest(
+        request
+      )
+    ) {
+
+      event.respondWith(
+        handleAudio(
+          request
+        )
+      );
+
+      return;
+
+    }
+
+
+    /* OBRÁZKY */
+
+    if (
+      isImageRequest(
+        request
+      )
+    ) {
+
+      event.respondWith(
+        handleImage(
+          request
+        )
+      );
+
+      return;
+
+    }
+
+
+    /* OSTATNÍ */
 
     event.respondWith(
-      handleAudio(request)
+      handleAppRequest(
+        request
+      )
     );
 
-    return;
-
   }
-
-
-  /* OBRÁZEK */
-
-  if (
-    isImageRequest(request)
-  ) {
-
-    event.respondWith(
-      handleImage(request)
-    );
-
-    return;
-
-  }
-
-
-  /* OSTATNÍ */
-
-  event.respondWith(
-    handleAppRequest(request)
-  );
-
-});
+);
