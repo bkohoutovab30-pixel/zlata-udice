@@ -11,7 +11,6 @@
   <link rel="manifest" href="./manifest.json">
   <meta name="theme-color" content="#062d59">
 
-  <!-- Ikona pro některé prohlížeče / Apple -->
   <link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png">
   <link rel="apple-touch-icon" href="./icons/icon-192.png">
 
@@ -128,6 +127,18 @@
 
     .test p {
       color: #dce8f2;
+    }
+
+    /* ZKUŠEBNÍ TEST */
+
+    .exam {
+      margin-top: 0;
+      background: #ffffff;
+      border: 3px solid #17324d;
+    }
+
+    .exam p {
+      color: #678;
     }
 
     /* =========================================
@@ -305,6 +316,8 @@
 
   <div class="menu">
 
+    <!-- RYBY -->
+
     <a
       class="card"
       href="ryby.html">
@@ -319,6 +332,8 @@
 
     </a>
 
+
+    <!-- ROSTLINY -->
 
     <a
       class="card"
@@ -335,6 +350,8 @@
     </a>
 
 
+    <!-- ŽIVOČICHOVÉ -->
+
     <a
       class="card"
       href="zivocichove.html">
@@ -350,6 +367,8 @@
     </a>
 
 
+    <!-- TESTOVÉ OTÁZKY -->
+
     <a
       class="card test"
       href="otazky.html">
@@ -360,6 +379,25 @@
 
       <p>
         Procvičuj otázky Zlaté udice 2026
+      </p>
+
+    </a>
+
+
+    <!-- =====================================
+         ZKUŠEBNÍ TEST – KRAJSKÉ KOLO
+    ====================================== -->
+
+    <a
+      class="card exam"
+      href="zkusebni-test.html">
+
+      <div class="icon">🏆</div>
+
+      <h2>Zkušební test</h2>
+
+      <p>
+        Vyzkoušej si krajské kolo nanečisto
       </p>
 
     </a>
@@ -1055,12 +1093,6 @@ const installButton =
   );
 
 
-/*
-  Chrome tuto událost vyvolá,
-  když je aplikace připravena
-  k instalaci.
-*/
-
 window.addEventListener(
   "beforeinstallprompt",
   function(event) {
@@ -1077,10 +1109,6 @@ window.addEventListener(
   }
 );
 
-
-/*
-  Kliknutí na naše tlačítko.
-*/
 
 installButton.addEventListener(
   "click",
@@ -1124,11 +1152,6 @@ installButton.addEventListener(
 );
 
 
-/*
-  Po úspěšné instalaci
-  tlačítko schováme.
-*/
-
 window.addEventListener(
   "appinstalled",
   function() {
@@ -1148,12 +1171,6 @@ window.addEventListener(
   }
 );
 
-
-/*
-  Pokud už běží jako nainstalovaná
-  aplikace, instalační box vůbec
-  nezobrazujeme.
-*/
 
 if (
   window.matchMedia(
