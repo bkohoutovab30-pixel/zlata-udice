@@ -1,0 +1,2364 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="robots"
+    content="noindex, nofollow"
+  >
+
+  <title>Zkušební test | Zlatá udice 2026</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #eef7fb;
+      color: #17324d;
+    }
+
+    .app {
+      max-width: 700px;
+      margin: auto;
+      min-height: 100vh;
+      padding: 18px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .back {
+      color: #567;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .player {
+      color: #567;
+      font-size: 14px;
+      font-weight: bold;
+      text-align: right;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 18px;
+    }
+
+    .header-icon {
+      font-size: 45px;
+    }
+
+    .header h1 {
+      margin: 5px 0;
+      font-size: 29px;
+    }
+
+    .header p {
+      margin: 5px 0;
+      color: #678;
+      line-height: 1.4;
+    }
+
+    .start-box,
+    .test-card,
+    .result-box {
+      background: white;
+      border-radius: 22px;
+      padding: 22px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    }
+
+    .start-box {
+      text-align: center;
+    }
+
+    .rules {
+      background: #f3f8fb;
+      border-radius: 16px;
+      padding: 16px;
+      margin: 18px 0;
+      text-align: left;
+      line-height: 1.6;
+    }
+
+    .rules strong {
+      color: #17324d;
+    }
+
+    .start-button,
+    .next-button,
+    .restart-button {
+      width: 100%;
+      border: none;
+      border-radius: 14px;
+      background: #17324d;
+      color: white;
+      padding: 16px;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .progress-wrap {
+      margin-bottom: 15px;
+    }
+
+    .progress-info {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 7px;
+      color: #567;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .progress-bar {
+      height: 10px;
+      background: #dce9ef;
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: #17324d;
+      transition: width 0.25s;
+    }
+
+    .category {
+      display: inline-block;
+      background: #e6f2f7;
+      border-radius: 20px;
+      padding: 7px 12px;
+      margin-bottom: 14px;
+      color: #456;
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+    .question-text {
+      font-size: 21px;
+      line-height: 1.4;
+      font-weight: bold;
+      margin-bottom: 18px;
+    }
+
+    .photo {
+      width: 100%;
+      min-height: 280px;
+      background: #f3f7f9;
+      border-radius: 18px;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 18px;
+      overflow: hidden;
+    }
+
+    .test-photo {
+      display: block;
+      width: 100%;
+      height: auto;
+      max-height: 430px;
+      object-fit: contain;
+      border-radius: 18px;
+    }
+
+    .photo-placeholder {
+      width: 100%;
+      min-height: 280px;
+      border: 2px dashed #c7d8e2;
+      border-radius: 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      color: #789;
+      text-align: center;
+    }
+
+    .photo-icon {
+      font-size: 55px;
+      margin-bottom: 10px;
+    }
+
+    .answers {
+      display: grid;
+      gap: 12px;
+    }
+
+    .answer-button {
+      width: 100%;
+      border: 2px solid #d7e5ec;
+      background: white;
+      color: #17324d;
+      border-radius: 14px;
+      padding: 15px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .answer-button.selected {
+      border-color: #17324d;
+      background: #eaf3f7;
+    }
+
+    .written-answer {
+      width: 100%;
+      border: 2px solid #d7e5ec;
+      border-radius: 14px;
+      padding: 16px;
+      font-size: 18px;
+      color: #17324d;
+      outline: none;
+    }
+
+    .written-answer:focus {
+      border-color: #17324d;
+    }
+
+    .hint {
+      margin-top: 9px;
+      color: #789;
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .sound-row {
+      margin: 15px 0;
+      text-align: center;
+    }
+
+    .sound-button {
+      border: none;
+      border-radius: 14px;
+      background: #e6f2f7;
+      color: #17324d;
+      padding: 11px 18px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .next-button {
+      margin-top: 20px;
+    }
+
+    .next-button:disabled {
+      opacity: 0.45;
+      cursor: default;
+    }
+
+    .result-box {
+      display: none;
+    }
+
+    .score-main {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .trophy {
+      font-size: 60px;
+    }
+
+    .score-main h2 {
+      font-size: 28px;
+      margin: 8px 0;
+    }
+
+    .big-score {
+      font-size: 38px;
+      font-weight: bold;
+      color: #17324d;
+    }
+
+    .percentage {
+      color: #678;
+      margin-top: 5px;
+      font-size: 18px;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .summary-card {
+      background: #f3f8fb;
+      border-radius: 14px;
+      padding: 14px;
+      text-align: center;
+    }
+
+    .summary-card strong {
+      display: block;
+      font-size: 23px;
+      margin-bottom: 3px;
+    }
+
+    .summary-card span {
+      color: #678;
+      font-size: 13px;
+    }
+
+    .review-title {
+      margin-top: 30px;
+      margin-bottom: 12px;
+      font-size: 22px;
+    }
+
+    .review-item {
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 13px;
+      background: #f7fafb;
+      border-left: 5px solid #d7e5ec;
+    }
+
+    .review-item.correct {
+      background: #edf8f0;
+      border-left-color: #65a876;
+    }
+
+    .review-item.wrong {
+      background: #fff1f1;
+      border-left-color: #c77;
+    }
+
+    .review-number {
+      font-size: 12px;
+      color: #789;
+      font-weight: bold;
+      margin-bottom: 7px;
+    }
+
+    .review-question {
+      font-weight: bold;
+      line-height: 1.4;
+      margin-bottom: 11px;
+    }
+
+    .review-line {
+      margin: 6px 0;
+      line-height: 1.4;
+    }
+
+    .your-answer {
+      color: #a64f4f;
+    }
+
+    .correct-answer {
+      color: #387848;
+    }
+
+    .points {
+      font-weight: bold;
+      margin-top: 9px;
+    }
+
+    .perfect-box {
+      background: #edf8f0;
+      border-radius: 16px;
+      padding: 18px;
+      text-align: center;
+      margin: 20px 0;
+      color: #387848;
+      font-weight: bold;
+    }
+
+    .restart-button {
+      margin-top: 20px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @media (max-width: 520px) {
+      .app {
+        padding: 14px;
+      }
+
+      .start-box,
+      .test-card,
+      .result-box {
+        padding: 17px;
+      }
+
+      .photo,
+      .photo-placeholder {
+        min-height: 220px;
+      }
+
+      .test-photo {
+        max-height: 350px;
+      }
+
+      .question-text {
+        font-size: 19px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<main class="app">
+
+  <div class="topbar">
+    <a class="back" href="index.html">
+      ← Zpět
+    </a>
+
+    <div
+      class="player"
+      id="playerInfo"
+    ></div>
+  </div>
+
+
+  <div class="header">
+    <div class="header-icon">
+      🏆🎣
+    </div>
+
+    <h1>
+      Zkušební test
+    </h1>
+
+    <p>
+      Vyzkoušej si test nanečisto
+    </p>
+  </div>
+
+
+  <!-- START -->
+
+  <div
+    class="start-box"
+    id="startBox"
+  >
+
+    <h2>
+      Připraven?
+    </h2>
+
+    <p>
+      Test náhodně vybere otázky z jednotlivých okruhů
+      a poznávačky ryb, rostlin a živočichů.
+    </p>
+
+    <div class="rules">
+      <strong>Pravidla testu</strong><br><br>
+
+      🧠 Teoretické otázky – výběr ze 3 možností<br>
+      🐟 Poznávání ryb – odpověď napíšeš<br>
+      🌿 Poznávání rostlin – odpověď napíšeš<br>
+      🦆 Poznávání živočichů – odpověď napíšeš<br><br>
+
+      ⭐ Každá správná odpověď = <strong>2 body</strong><br>
+      ✍️ U poznávaček je potřeba správný celý název.<br><br>
+
+      Výsledek a všechny chyby uvidíš až po dokončení testu.
+    </div>
+
+    <button
+      class="start-button"
+      type="button"
+      onclick="startTest()"
+    >
+      ▶️ Spustit test
+    </button>
+
+  </div>
+
+
+  <!-- TEST -->
+
+  <div
+    class="test-card hidden"
+    id="testCard"
+  >
+
+    <div class="progress-wrap">
+
+      <div class="progress-info">
+
+        <span id="questionCounter">
+          Otázka 1
+        </span>
+
+        <span id="scorePossible">
+          2 body
+        </span>
+
+      </div>
+
+      <div class="progress-bar">
+        <div
+          class="progress-fill"
+          id="progressFill"
+        ></div>
+      </div>
+
+    </div>
+
+
+    <div
+      class="category"
+      id="category"
+    ></div>
+
+
+    <div
+      class="question-text"
+      id="questionText"
+    ></div>
+
+
+    <div
+      class="photo"
+      id="photoArea"
+    ></div>
+
+
+    <div
+      class="sound-row hidden"
+      id="soundRow"
+    >
+      <button
+        class="sound-button"
+        id="questionSoundButton"
+        type="button"
+      >
+        🔊 Přečíst otázku
+      </button>
+    </div>
+
+
+    <div
+      class="answers"
+      id="answersArea"
+    ></div>
+
+
+    <button
+      class="next-button"
+      id="nextButton"
+      type="button"
+      onclick="saveAndNext()"
+      disabled
+    >
+      Další →
+    </button>
+
+  </div>
+
+
+  <!-- VÝSLEDEK -->
+
+  <div
+    class="result-box"
+    id="resultBox"
+  >
+
+    <div class="score-main">
+
+      <div
+        class="trophy"
+        id="resultIcon"
+      >
+        🏆
+      </div>
+
+      <h2>
+        Výsledek testu
+      </h2>
+
+      <div
+        class="big-score"
+        id="finalScore"
+      ></div>
+
+      <div
+        class="percentage"
+        id="finalPercentage"
+      ></div>
+
+    </div>
+
+
+    <div
+      class="summary-grid"
+      id="summaryGrid"
+    ></div>
+
+
+    <div
+      id="reviewArea"
+    ></div>
+
+
+    <button
+      class="restart-button"
+      type="button"
+      onclick="startTest()"
+    >
+      🔄 Nový test
+    </button>
+
+  </div>
+
+</main>
+
+
+<!--
+  Uprav názvy souborů pouze tehdy,
+  pokud je máš v GitHubu pojmenované jinak.
+-->
+
+<script src="otazky-data.js"></script>
+<script src="ryby-data.js"></script>
+<script src="rostliny-data.js"></script>
+<script src="zivocichove-data.js"></script>
+
+<!-- pokud už používáš společný zvuk -->
+<script src="audio.js"></script>
+
+
+<script>
+
+/* ========================================
+   NASTAVENÍ TESTU
+======================================== */
+
+/*
+  Zde můžeš později jednoduše změnit
+  počet otázek.
+
+  Aktuálně:
+
+  12 teoretických
+  4 ryby
+  2 rostliny
+  2 živočichové
+
+  = 20 položek
+  = maximálně 40 bodů
+*/
+
+const TEST_CONFIG = {
+  theory: 12,
+  fish: 4,
+  plants: 2,
+  animals: 2
+};
+
+
+const POINTS_PER_QUESTION = 2;
+
+
+/* ========================================
+   PROMĚNNÉ
+======================================== */
+
+let testQuestions = [];
+
+let currentIndex = 0;
+
+let selectedAnswer = null;
+
+let testResults = [];
+
+
+/* ========================================
+   HTML
+======================================== */
+
+const startBox =
+  document.getElementById("startBox");
+
+const testCard =
+  document.getElementById("testCard");
+
+const resultBox =
+  document.getElementById("resultBox");
+
+const questionCounter =
+  document.getElementById("questionCounter");
+
+const scorePossible =
+  document.getElementById("scorePossible");
+
+const progressFill =
+  document.getElementById("progressFill");
+
+const category =
+  document.getElementById("category");
+
+const questionText =
+  document.getElementById("questionText");
+
+const photoArea =
+  document.getElementById("photoArea");
+
+const soundRow =
+  document.getElementById("soundRow");
+
+const questionSoundButton =
+  document.getElementById("questionSoundButton");
+
+const answersArea =
+  document.getElementById("answersArea");
+
+const nextButton =
+  document.getElementById("nextButton");
+
+const finalScore =
+  document.getElementById("finalScore");
+
+const finalPercentage =
+  document.getElementById("finalPercentage");
+
+const summaryGrid =
+  document.getElementById("summaryGrid");
+
+const reviewArea =
+  document.getElementById("reviewArea");
+
+const resultIcon =
+  document.getElementById("resultIcon");
+
+
+/* ========================================
+   PROFIL
+======================================== */
+
+function getProfiles() {
+
+  const saved =
+    localStorage.getItem(
+      "zlataUdiceProfiles"
+    );
+
+  if (!saved) {
+    return [];
+  }
+
+  try {
+    return JSON.parse(saved);
+  }
+  catch {
+    return [];
+  }
+}
+
+
+const activeProfileId =
+  localStorage.getItem(
+    "zlataUdiceActiveProfile"
+  );
+
+
+const activePlayer =
+  getProfiles().find(
+    function(profile) {
+      return (
+        profile.id ===
+        activeProfileId
+      );
+    }
+  );
+
+
+if (activePlayer) {
+
+  document.getElementById(
+    "playerInfo"
+  ).textContent =
+    (activePlayer.avatar || "") +
+    " " +
+    (activePlayer.name || "");
+}
+
+
+/* ========================================
+   NÁHODNÉ POŘADÍ
+======================================== */
+
+function shuffle(array) {
+
+  const copy = [...array];
+
+  for (
+    let i = copy.length - 1;
+    i > 0;
+    i--
+  ) {
+
+    const j =
+      Math.floor(
+        Math.random() * (i + 1)
+      );
+
+    [
+      copy[i],
+      copy[j]
+    ] =
+    [
+      copy[j],
+      copy[i]
+    ];
+  }
+
+  return copy;
+}
+
+
+/* ========================================
+   NÁZEV SOUBORU
+======================================== */
+
+function createFileName(name) {
+
+  return String(name)
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+
+/* ========================================
+   NORMALIZACE ODPOVĚDI
+======================================== */
+
+function normalizeAnswer(text) {
+
+  return String(text || "")
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[–—]/g, "-")
+    .replace(/\s+/g, " ");
+}
+
+
+/* ========================================
+   VÝBĚR TEORIE PODLE OKRUHŮ
+======================================== */
+
+function createTheoryQuestions() {
+
+  const result = [];
+
+  /*
+    Nechceme, aby se test skládal
+    náhodou jen z jednoho tématu.
+
+    Nejdříve vezmeme po jedné otázce
+    z každého okruhu.
+  */
+
+  const sectionNumbers =
+    Object.keys(questionSections)
+      .map(Number);
+
+
+  sectionNumbers.forEach(
+    function(sectionNumber) {
+
+      const sectionQuestions =
+        questions.filter(
+          function(item) {
+            return (
+              item.section ===
+              sectionNumber
+            );
+          }
+        );
+
+      if (sectionQuestions.length) {
+
+        result.push(
+          shuffle(sectionQuestions)[0]
+        );
+      }
+    }
+  );
+
+
+  /*
+    Doplnění zbytku teoretických otázek.
+  */
+
+  const alreadyUsed =
+    new Set(
+      result.map(
+        function(item) {
+          return item.id;
+        }
+      )
+    );
+
+
+  const remaining =
+    shuffle(
+      questions.filter(
+        function(item) {
+          return !alreadyUsed.has(item.id);
+        }
+      )
+    );
+
+
+  while (
+    result.length < TEST_CONFIG.theory &&
+    remaining.length
+  ) {
+
+    result.push(
+      remaining.shift()
+    );
+  }
+
+
+  return result.map(
+    function(item) {
+
+      return {
+        type: "theory",
+
+        category:
+          item.sectionName,
+
+        question:
+          item.question,
+
+        answers:
+          item.answers,
+
+        correctAnswer:
+          item.answers.find(
+            function(answer) {
+              return answer.correct;
+            }
+          ).text,
+
+        audio:
+          item.questionAudio,
+
+        sourceId:
+          item.id
+      };
+    }
+  );
+}
+
+
+/* ========================================
+   POZNÁVAČKY
+======================================== */
+
+function createRecognitionQuestions(
+  source,
+  count,
+  type,
+  categoryName
+) {
+
+  return shuffle(source)
+    .slice(0, count)
+    .map(
+      function(item) {
+
+        return {
+          type: type,
+
+          category:
+            categoryName,
+
+          question:
+            "Co je na obrázku?",
+
+          item:
+            item,
+
+          correctAnswer:
+            item.name
+        };
+      }
+    );
+}
+
+
+/* ========================================
+   VYTVOŘENÍ TESTU
+======================================== */
+
+function buildTest() {
+
+  const theoryQuestions =
+    createTheoryQuestions();
+
+
+  const fishQuestions =
+    createRecognitionQuestions(
+      fish,
+      TEST_CONFIG.fish,
+      "fish",
+      "🐟 Poznávání ryb"
+    );
+
+
+  const plantQuestions =
+    createRecognitionQuestions(
+      plants,
+      TEST_CONFIG.plants,
+      "plant",
+      "🌿 Poznávání rostlin"
+    );
+
+
+  const animalQuestions =
+    createRecognitionQuestions(
+      animals,
+      TEST_CONFIG.animals,
+      "animal",
+      "🦆 Poznávání živočichů"
+    );
+
+
+  /*
+    Vše promícháme.
+  */
+
+  return shuffle([
+    ...theoryQuestions,
+    ...fishQuestions,
+    ...plantQuestions,
+    ...animalQuestions
+  ]);
+}
+
+
+/* ========================================
+   START TESTU
+======================================== */
+
+function startTest() {
+
+  if (
+    typeof window.stopSound ===
+    "function"
+  ) {
+    window.stopSound();
+  }
+
+
+  testQuestions =
+    buildTest();
+
+  currentIndex = 0;
+
+  selectedAnswer = null;
+
+  testResults = [];
+
+
+  startBox.classList.add(
+    "hidden"
+  );
+
+  resultBox.style.display =
+    "none";
+
+  testCard.classList.remove(
+    "hidden"
+  );
+
+
+  showQuestion();
+
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+}
+
+
+/* ========================================
+   ZOBRAZENÍ OTÁZKY
+======================================== */
+
+function showQuestion() {
+
+  if (
+    typeof window.stopSound ===
+    "function"
+  ) {
+    window.stopSound();
+  }
+
+
+  selectedAnswer = null;
+
+  nextButton.disabled =
+    true;
+
+
+  const item =
+    testQuestions[currentIndex];
+
+
+  const number =
+    currentIndex + 1;
+
+
+  questionCounter.textContent =
+    "Otázka " +
+    number +
+    " z " +
+    testQuestions.length;
+
+
+  scorePossible.textContent =
+    (number * POINTS_PER_QUESTION) +
+    " / " +
+    (testQuestions.length *
+      POINTS_PER_QUESTION) +
+    " bodů";
+
+
+  progressFill.style.width =
+    (
+      (number / testQuestions.length) *
+      100
+    ) +
+    "%";
+
+
+  category.textContent =
+    item.category;
+
+
+  questionText.textContent =
+    item.question;
+
+
+  answersArea.innerHTML =
+    "";
+
+
+  photoArea.innerHTML =
+    "";
+
+  photoArea.style.display =
+    "none";
+
+
+  soundRow.classList.add(
+    "hidden"
+  );
+
+
+  /*
+    TEORETICKÁ OTÁZKA
+  */
+
+  if (item.type === "theory") {
+
+    showTheoryQuestion(item);
+
+  }
+
+  /*
+    POZNÁVAČKA
+  */
+
+  else {
+
+    showRecognitionQuestion(item);
+
+  }
+
+
+  if (
+    currentIndex ===
+    testQuestions.length - 1
+  ) {
+
+    nextButton.textContent =
+      "Dokončit test 🏁";
+
+  }
+  else {
+
+    nextButton.textContent =
+      "Další →";
+
+  }
+}
+
+
+/* ========================================
+   TEORETICKÁ OTÁZKA
+======================================== */
+
+function showTheoryQuestion(item) {
+
+  /*
+    Zvuk se NIKDY nespustí automaticky.
+
+    Pouze po kliknutí.
+  */
+
+  soundRow.classList.remove(
+    "hidden"
+  );
+
+
+  questionSoundButton.onclick =
+    function() {
+
+      if (
+        typeof window.playText ===
+        "function"
+      ) {
+
+        window.playText(
+          item.question,
+          item.audio
+        );
+
+      }
+
+      else if (
+        "speechSynthesis" in window
+      ) {
+
+        window.speechSynthesis.cancel();
+
+        const speech =
+          new SpeechSynthesisUtterance(
+            item.question
+          );
+
+        speech.lang =
+          "cs-CZ";
+
+        window.speechSynthesis.speak(
+          speech
+        );
+      }
+    };
+
+
+  item.answers.forEach(
+    function(answer) {
+
+      const button =
+        document.createElement(
+          "button"
+        );
+
+
+      button.type =
+        "button";
+
+
+      button.className =
+        "answer-button";
+
+
+      button.textContent =
+        answer.text;
+
+
+      button.onclick =
+        function() {
+
+          document
+            .querySelectorAll(
+              ".answer-button"
+            )
+            .forEach(
+              function(otherButton) {
+
+                otherButton.classList.remove(
+                  "selected"
+                );
+              }
+            );
+
+
+          button.classList.add(
+            "selected"
+          );
+
+
+          selectedAnswer =
+            answer.text;
+
+
+          nextButton.disabled =
+            false;
+        };
+
+
+      answersArea.appendChild(
+        button
+      );
+    }
+  );
+}
+
+
+/* ========================================
+   POZNÁVAČKA
+======================================== */
+
+function showRecognitionQuestion(item) {
+
+  photoArea.style.display =
+    "flex";
+
+
+  showRecognitionPhoto(
+    item
+  );
+
+
+  const input =
+    document.createElement(
+      "input"
+    );
+
+
+  input.type =
+    "text";
+
+
+  input.className =
+    "written-answer";
+
+
+  input.placeholder =
+    "Napiš celý název...";
+
+
+  input.autocomplete =
+    "off";
+
+
+  input.spellcheck =
+    false;
+
+
+  input.addEventListener(
+    "input",
+    function() {
+
+      selectedAnswer =
+        input.value;
+
+
+      nextButton.disabled =
+        input.value.trim() === "";
+    }
+  );
+
+
+  input.addEventListener(
+    "keydown",
+    function(event) {
+
+      if (
+        event.key === "Enter" &&
+        input.value.trim() !== ""
+      ) {
+
+        saveAndNext();
+      }
+    }
+  );
+
+
+  answersArea.appendChild(
+    input
+  );
+
+
+  const hint =
+    document.createElement(
+      "div"
+    );
+
+
+  hint.className =
+    "hint";
+
+
+  if (
+    item.type === "fish" ||
+    item.type === "animal"
+  ) {
+
+    hint.textContent =
+      "Napiš rodové i druhové jméno.";
+
+  }
+  else {
+
+    hint.textContent =
+      "Napiš celý název rostliny.";
+  }
+
+
+  answersArea.appendChild(
+    hint
+  );
+
+
+  /*
+    U poznávačky záměrně není
+    automatické čtení názvu.
+
+    Jinak by aplikace prozradila odpověď.
+  */
+
+
+  setTimeout(
+    function() {
+      input.focus();
+    },
+    100
+  );
+}
+
+
+/* ========================================
+   OBRÁZEK POZNÁVAČKY
+======================================== */
+
+function showRecognitionPhoto(testItem) {
+
+  const item =
+    testItem.item;
+
+
+  photoArea.innerHTML =
+    '<div class="photo-placeholder">' +
+      '<div class="photo-icon">🖼️</div>' +
+      '<strong>Načítám fotografii...</strong>' +
+    '</div>';
+
+
+  let baseName;
+
+
+  /*
+    Ryby mohou mít imageName.
+  */
+
+  if (
+    testItem.type === "fish" &&
+    item.imageName
+  ) {
+
+    baseName =
+      item.imageName;
+
+  }
+  else {
+
+    baseName =
+      createFileName(
+        item.name
+      );
+  }
+
+
+  const possibleImages = [];
+
+
+  /*
+    Pokud je obrázek přímo uvedený
+    v databázi.
+  */
+
+  if (item.image) {
+
+    possibleImages.push(
+      item.image
+    );
+  }
+
+
+  /*
+    Stejný systém jako v ostatních
+    částech aplikace.
+  */
+
+  possibleImages.push(
+
+    baseName + ".webp",
+    baseName + "-2.webp",
+    baseName + "-3.webp",
+
+    baseName + ".jpg",
+    baseName + "-2.jpg",
+    baseName + "-3.jpg",
+
+    baseName + ".jpeg",
+    baseName + "-2.jpeg",
+    baseName + "-3.jpeg",
+
+    baseName + ".png",
+    baseName + "-2.png",
+    baseName + "-3.png"
+
+  );
+
+
+  let attempt = 0;
+
+
+  function tryNextImage() {
+
+    if (
+      attempt >=
+      possibleImages.length
+    ) {
+
+      photoArea.innerHTML =
+        '<div class="photo-placeholder">' +
+          '<div class="photo-icon">🖼️</div>' +
+          '<strong>Fotografie nebyla nalezena</strong>' +
+        '</div>';
+
+      return;
+    }
+
+
+    const img =
+      new Image();
+
+
+    img.onload =
+      function() {
+
+        /*
+          Kontrola, zda mezitím
+          nebyla zobrazena jiná otázka.
+        */
+
+        if (
+          testQuestions[currentIndex] !==
+          testItem
+        ) {
+          return;
+        }
+
+
+        img.className =
+          "test-photo";
+
+
+        /*
+          DŮLEŽITÉ:
+          alt nesmí prozradit odpověď.
+        */
+
+        img.alt =
+          "Poznávací fotografie";
+
+
+        photoArea.innerHTML =
+          "";
+
+
+        photoArea.appendChild(
+          img
+        );
+      };
+
+
+    img.onerror =
+      function() {
+
+        attempt++;
+
+        tryNextImage();
+      };
+
+
+    img.src =
+      possibleImages[attempt];
+  }
+
+
+  tryNextImage();
+}
+
+
+/* ========================================
+   KONTROLA SPRÁVNOSTI
+======================================== */
+
+function isCorrectAnswer(
+  item,
+  answer
+) {
+
+  /*
+    Teorie:
+    přesná vybraná odpověď.
+  */
+
+  if (
+    item.type === "theory"
+  ) {
+
+    return (
+      answer ===
+      item.correctAnswer
+    );
+  }
+
+
+  /*
+    Poznávačky:
+
+    Ignorujeme:
+    - velikost písmen
+    - diakritiku
+    - vícenásobné mezery
+
+    Ale název musí být celý.
+  */
+
+  return (
+    normalizeAnswer(answer) ===
+    normalizeAnswer(
+      item.correctAnswer
+    )
+  );
+}
+
+
+/* ========================================
+   ULOŽENÍ ODPOVĚDI
+======================================== */
+
+function saveAndNext() {
+
+  if (
+    selectedAnswer === null ||
+    String(selectedAnswer).trim() === ""
+  ) {
+    return;
+  }
+
+
+  const item =
+    testQuestions[currentIndex];
+
+
+  const correct =
+    isCorrectAnswer(
+      item,
+      selectedAnswer
+    );
+
+
+  testResults.push({
+
+    number:
+      currentIndex + 1,
+
+    type:
+      item.type,
+
+    category:
+      item.category,
+
+    question:
+      item.question,
+
+    userAnswer:
+      String(selectedAnswer).trim(),
+
+    correctAnswer:
+      item.correctAnswer,
+
+    correct:
+      correct,
+
+    points:
+      correct
+        ? POINTS_PER_QUESTION
+        : 0,
+
+    itemName:
+      item.item
+        ? item.item.name
+        : null
+
+  });
+
+
+  currentIndex++;
+
+
+  if (
+    currentIndex >=
+    testQuestions.length
+  ) {
+
+    finishTest();
+
+  }
+  else {
+
+    showQuestion();
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  }
+}
+
+
+/* ========================================
+   KONEC TESTU
+======================================== */
+
+function finishTest() {
+
+  if (
+    typeof window.stopSound ===
+    "function"
+  ) {
+    window.stopSound();
+  }
+
+
+  testCard.classList.add(
+    "hidden"
+  );
+
+
+  resultBox.style.display =
+    "block";
+
+
+  const score =
+    testResults.reduce(
+      function(sum, item) {
+        return sum + item.points;
+      },
+      0
+    );
+
+
+  const maxScore =
+    testResults.length *
+    POINTS_PER_QUESTION;
+
+
+  const percentage =
+    maxScore
+      ? Math.round(
+          (score / maxScore) * 100
+        )
+      : 0;
+
+
+  const correctCount =
+    testResults.filter(
+      function(item) {
+        return item.correct;
+      }
+    ).length;
+
+
+  const wrongCount =
+    testResults.length -
+    correctCount;
+
+
+  finalScore.textContent =
+    score +
+    " / " +
+    maxScore +
+    " bodů";
+
+
+  finalPercentage.textContent =
+    percentage +
+    " %";
+
+
+  if (percentage === 100) {
+
+    resultIcon.textContent =
+      "🏆";
+
+  }
+  else if (percentage >= 80) {
+
+    resultIcon.textContent =
+      "🥇";
+
+  }
+  else if (percentage >= 60) {
+
+    resultIcon.textContent =
+      "🎣";
+
+  }
+  else {
+
+    resultIcon.textContent =
+      "📚";
+  }
+
+
+  summaryGrid.innerHTML =
+
+    '<div class="summary-card">' +
+      '<strong>' +
+        correctCount +
+      '</strong>' +
+      '<span>správně</span>' +
+    '</div>' +
+
+    '<div class="summary-card">' +
+      '<strong>' +
+        wrongCount +
+      '</strong>' +
+      '<span>špatně</span>' +
+    '</div>' +
+
+    '<div class="summary-card">' +
+      '<strong>' +
+        score +
+      '</strong>' +
+      '<span>získaných bodů</span>' +
+    '</div>' +
+
+    '<div class="summary-card">' +
+      '<strong>' +
+        maxScore +
+      '</strong>' +
+      '<span>maximum</span>' +
+    '</div>';
+
+
+  createReview();
+
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+}
+
+
+/* ========================================
+   ROZBOR ODPOVĚDÍ
+======================================== */
+
+function createReview() {
+
+  reviewArea.innerHTML =
+    "";
+
+
+  const wrongAnswers =
+    testResults.filter(
+      function(item) {
+        return !item.correct;
+      }
+    );
+
+
+  /*
+    VŠECHNO SPRÁVNĚ
+  */
+
+  if (
+    wrongAnswers.length === 0
+  ) {
+
+    const perfect =
+      document.createElement(
+        "div"
+      );
+
+
+    perfect.className =
+      "perfect-box";
+
+
+    perfect.innerHTML =
+      "🎉 Bez chyby! Všechny odpovědi byly správně.";
+
+
+    reviewArea.appendChild(
+      perfect
+    );
+
+
+    return;
+  }
+
+
+  const title =
+    document.createElement(
+      "h3"
+    );
+
+
+  title.className =
+    "review-title";
+
+
+  title.textContent =
+    "❌ Co bylo špatně";
+
+
+  reviewArea.appendChild(
+    title
+  );
+
+
+  wrongAnswers.forEach(
+    function(item) {
+
+      const box =
+        document.createElement(
+          "div"
+        );
+
+
+      box.className =
+        "review-item wrong";
+
+
+      const number =
+        document.createElement(
+          "div"
+        );
+
+
+      number.className =
+        "review-number";
+
+
+      number.textContent =
+        "OTÁZKA " +
+        item.number +
+        " • " +
+        item.category;
+
+
+      box.appendChild(
+        number
+      );
+
+
+      const question =
+        document.createElement(
+          "div"
+        );
+
+
+      question.className =
+        "review-question";
+
+
+      /*
+        U poznávačky zobrazíme,
+        že šlo o poznávání.
+      */
+
+      if (
+        item.type === "theory"
+      ) {
+
+        question.textContent =
+          item.question;
+
+      }
+      else {
+
+        question.textContent =
+          "Poznávání podle fotografie";
+      }
+
+
+      box.appendChild(
+        question
+      );
+
+
+      /*
+        ZVOLENÁ / NAPSANÁ ODPOVĚĎ
+      */
+
+      const userLine =
+        document.createElement(
+          "div"
+        );
+
+
+      userLine.className =
+        "review-line your-answer";
+
+
+      userLine.innerHTML =
+        "<strong>Tvoje odpověď:</strong> " +
+        escapeHtml(
+          item.userAnswer
+        );
+
+
+      box.appendChild(
+        userLine
+      );
+
+
+      /*
+        SPRÁVNÁ ODPOVĚĎ
+      */
+
+      const correctLine =
+        document.createElement(
+          "div"
+        );
+
+
+      correctLine.className =
+        "review-line correct-answer";
+
+
+      correctLine.innerHTML =
+        "<strong>Správná odpověď:</strong> " +
+        escapeHtml(
+          item.correctAnswer
+        );
+
+
+      box.appendChild(
+        correctLine
+      );
+
+
+      const points =
+        document.createElement(
+          "div"
+        );
+
+
+      points.className =
+        "points";
+
+
+      points.textContent =
+        "0 / " +
+        POINTS_PER_QUESTION +
+        " body";
+
+
+      box.appendChild(
+        points
+      );
+
+
+      reviewArea.appendChild(
+        box
+      );
+    }
+  );
+
+
+  /*
+    Pod chyby přidáme i přehled
+    správných odpovědí.
+  */
+
+  const correctAnswers =
+    testResults.filter(
+      function(item) {
+        return item.correct;
+      }
+    );
+
+
+  if (
+    correctAnswers.length
+  ) {
+
+    const correctTitle =
+      document.createElement(
+        "h3"
+      );
+
+
+    correctTitle.className =
+      "review-title";
+
+
+    correctTitle.textContent =
+      "✅ Správné odpovědi";
+
+
+    reviewArea.appendChild(
+      correctTitle
+    );
+
+
+    correctAnswers.forEach(
+      function(item) {
+
+        const box =
+          document.createElement(
+            "div"
+          );
+
+
+        box.className =
+          "review-item correct";
+
+
+        const number =
+          document.createElement(
+            "div"
+          );
+
+
+        number.className =
+          "review-number";
+
+
+        number.textContent =
+          "OTÁZKA " +
+          item.number +
+          " • " +
+          item.category;
+
+
+        box.appendChild(
+          number
+        );
+
+
+        const question =
+          document.createElement(
+            "div"
+          );
+
+
+        question.className =
+          "review-question";
+
+
+        if (
+          item.type === "theory"
+        ) {
+
+          question.textContent =
+            item.question;
+
+        }
+        else {
+
+          question.textContent =
+            "Poznávání podle fotografie";
+        }
+
+
+        box.appendChild(
+          question
+        );
+
+
+        const answer =
+          document.createElement(
+            "div"
+          );
+
+
+        answer.className =
+          "review-line correct-answer";
+
+
+        answer.innerHTML =
+          "<strong>Odpověď:</strong> " +
+          escapeHtml(
+            item.correctAnswer
+          );
+
+
+        box.appendChild(
+          answer
+        );
+
+
+        const points =
+          document.createElement(
+            "div"
+          );
+
+
+        points.className =
+          "points";
+
+
+        points.textContent =
+          POINTS_PER_QUESTION +
+          " / " +
+          POINTS_PER_QUESTION +
+          " body";
+
+
+        box.appendChild(
+          points
+        );
+
+
+        reviewArea.appendChild(
+          box
+        );
+      }
+    );
+  }
+}
+
+
+/* ========================================
+   BEZPEČNÝ TEXT
+======================================== */
+
+function escapeHtml(text) {
+
+  const div =
+    document.createElement(
+      "div"
+    );
+
+
+  div.textContent =
+    String(text);
+
+
+  return div.innerHTML;
+}
+
+
+/* ========================================
+   KONTROLA DAT
+======================================== */
+
+(function checkData() {
+
+  const problems = [];
+
+
+  if (
+    typeof questions === "undefined" ||
+    !Array.isArray(questions) ||
+    questions.length === 0
+  ) {
+
+    problems.push(
+      "otázky"
+    );
+  }
+
+
+  if (
+    typeof fish === "undefined" ||
+    !Array.isArray(fish) ||
+    fish.length === 0
+  ) {
+
+    problems.push(
+      "ryby"
+    );
+  }
+
+
+  if (
+    typeof plants === "undefined" ||
+    !Array.isArray(plants) ||
+    plants.length === 0
+  ) {
+
+    problems.push(
+      "rostliny"
+    );
+  }
+
+
+  if (
+    typeof animals === "undefined" ||
+    !Array.isArray(animals) ||
+    animals.length === 0
+  ) {
+
+    problems.push(
+      "živočichy"
+    );
+  }
+
+
+  if (
+    problems.length
+  ) {
+
+    startBox.innerHTML =
+      "<h2>⚠️ Chybí data</h2>" +
+      "<p>Nepodařilo se načíst: " +
+      problems.join(", ") +
+      ".</p>" +
+      "<p>Zkontroluj názvy JS souborů dole v kódu.</p>";
+  }
+
+})();
+
+</script>
+
+</body>
+</html>
