@@ -11,6 +11,10 @@
   <link rel="manifest" href="./manifest.json">
   <meta name="theme-color" content="#062d59">
 
+  <!-- Ikona pro některé prohlížeče / Apple -->
+  <link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png">
+  <link rel="apple-touch-icon" href="./icons/icon-192.png">
+
   <style>
     * {
       box-sizing: border-box;
@@ -124,6 +128,44 @@
 
     .test p {
       color: #dce8f2;
+    }
+
+    /* =========================================
+       INSTALACE APLIKACE
+    ========================================= */
+
+    .install-box {
+      display: none;
+      margin-top: 22px;
+      background: white;
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      text-align: center;
+    }
+
+    .install-box h2 {
+      margin: 0 0 8px;
+      font-size: 20px;
+    }
+
+    .install-box p {
+      margin: 0 0 15px;
+      color: #678;
+      line-height: 1.4;
+      font-size: 14px;
+    }
+
+    .install-button {
+      width: 100%;
+      border: none;
+      border-radius: 14px;
+      background: #17324d;
+      color: white;
+      padding: 15px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
     }
 
     /* =========================================
@@ -267,9 +309,7 @@
       class="card"
       href="ryby.html">
 
-      <div class="icon">
-        🐟
-      </div>
+      <div class="icon">🐟</div>
 
       <h2>Ryby</h2>
 
@@ -284,9 +324,7 @@
       class="card"
       href="rostliny.html">
 
-      <div class="icon">
-        🌿
-      </div>
+      <div class="icon">🌿</div>
 
       <h2>Rostliny</h2>
 
@@ -301,9 +339,7 @@
       class="card"
       href="zivocichove.html">
 
-      <div class="icon">
-        🦆
-      </div>
+      <div class="icon">🦆</div>
 
       <h2>Živočichové</h2>
 
@@ -318,9 +354,7 @@
       class="card test"
       href="otazky.html">
 
-      <div class="icon">
-        📝
-      </div>
+      <div class="icon">📝</div>
 
       <h2>Testové otázky</h2>
 
@@ -333,7 +367,38 @@
   </div>
 
 
-  <!-- OFFLINE -->
+  <!-- =========================================
+       INSTALACE NA PLOCHU
+  ========================================= -->
+
+  <div
+    class="install-box"
+    id="installBox">
+
+    <h2>
+      📱 Nainstalovat aplikaci
+    </h2>
+
+    <p>
+      Přidej si Zlatou udici na plochu telefonu
+      a spouštěj ji jako běžnou aplikaci.
+    </p>
+
+    <button
+      class="install-button"
+      id="installButton"
+      type="button">
+
+      📲 Přidat Zlatou udici na plochu
+
+    </button>
+
+  </div>
+
+
+  <!-- =========================================
+       OFFLINE
+  ========================================= -->
 
   <div class="offline-box">
 
@@ -393,17 +458,12 @@
 
 
 <!-- =========================================
-     SPOLEČNÁ DATA
+     DATA
 ========================================= -->
 
 <script src="ryby-data.js"></script>
 <script src="rostliny-data.js"></script>
 <script src="zivocichove-data.js"></script>
-
-
-<!-- =========================================
-     SPOLEČNÝ ZVUK
-========================================= -->
 
 <script src="zvuk.js"></script>
 
@@ -496,7 +556,7 @@ function loadActivePlayer() {
 
 
 /* =========================================
-   TEXT -> NÁZEV MP3
+   TEXT -> MP3
 ========================================= */
 
 function soundFileName(text) {
@@ -551,16 +611,6 @@ function addSounds(
       }
 
 
-      /*
-        DŮLEŽITÉ:
-
-        Pokud má položka soundName,
-        použijeme přímo tento název.
-
-        Jinak vytvoříme název MP3
-        automaticky z item.name.
-      */
-
       let fileName;
 
 
@@ -595,7 +645,7 @@ function addSounds(
 
 
 /* =========================================
-   SEZNAM VŠECH MP3
+   SEZNAM MP3
 ========================================= */
 
 function createOfflineSoundList() {
@@ -732,13 +782,6 @@ async function downloadOfflineSounds() {
 
     try {
 
-      /*
-        Fetchujeme přesnou URL MP3.
-
-        Service worker tento request
-        zachytí a uloží zvuk do cache.
-      */
-
       const response =
         await fetch(
           files[i],
@@ -792,10 +835,6 @@ async function downloadOfflineSounds() {
   }
 
 
-  /* =========================================
-     VÝSLEDEK
-  ========================================= */
-
   progressFill.style.width =
     "100%";
 
@@ -803,10 +842,10 @@ async function downloadOfflineSounds() {
   if (failed === 0) {
 
     status.innerHTML =
-      "✅ Uloženo: <strong>" +
+      "✅ Hotovo!<br>" +
+      "<strong>" +
       saved +
-      "</strong><br>" +
-      "🎉 Všechny zvuky jsou připravené offline.";
+      " zvuků</strong> je připraveno pro offline použití.";
 
   }
 
@@ -831,10 +870,6 @@ async function downloadOfflineSounds() {
 
   }
 
-
-  /*
-    Uložíme stav offline balíčku.
-  */
 
   if (saved > 0) {
 
@@ -875,7 +910,7 @@ async function downloadOfflineSounds() {
 
 
 /* =========================================
-   ZOBRAZENÍ ULOŽENÉHO STAVU
+   ULOŽENÝ OFFLINE STAV
 ========================================= */
 
 function showOfflineStatus() {
@@ -939,19 +974,30 @@ function showOfflineStatus() {
       "100%";
 
 
-    status.innerHTML =
-      "✅ Uloženo: <strong>" +
-      (info.saved || 0) +
-      "</strong><br>" +
-      (
-        info.failed > 0
-          ?
-          "⚠️ Nenalezeno: <strong>" +
-          info.failed +
-          "</strong>"
-          :
-          "🎉 Všechny zvuky jsou připravené offline."
-      );
+    if (
+      !info.failed ||
+      info.failed === 0
+    ) {
+
+      status.innerHTML =
+        "✅ Hotovo!<br>" +
+        "<strong>" +
+        (info.saved || 0) +
+        " zvuků</strong> je připraveno pro offline použití.";
+
+    }
+
+    else {
+
+      status.innerHTML =
+        "✅ Uloženo: <strong>" +
+        (info.saved || 0) +
+        "</strong><br>" +
+        "⚠️ Nenalezeno: <strong>" +
+        info.failed +
+        "</strong>";
+
+    }
 
 
     if (
@@ -986,6 +1032,137 @@ function showOfflineStatus() {
     );
 
   }
+
+}
+
+
+/* =========================================
+   INSTALACE PWA
+========================================= */
+
+let deferredInstallPrompt = null;
+
+
+const installBox =
+  document.getElementById(
+    "installBox"
+  );
+
+
+const installButton =
+  document.getElementById(
+    "installButton"
+  );
+
+
+/*
+  Chrome tuto událost vyvolá,
+  když je aplikace připravena
+  k instalaci.
+*/
+
+window.addEventListener(
+  "beforeinstallprompt",
+  function(event) {
+
+    event.preventDefault();
+
+    deferredInstallPrompt =
+      event;
+
+
+    installBox.style.display =
+      "block";
+
+  }
+);
+
+
+/*
+  Kliknutí na naše tlačítko.
+*/
+
+installButton.addEventListener(
+  "click",
+  async function() {
+
+    if (!deferredInstallPrompt) {
+
+      return;
+
+    }
+
+
+    deferredInstallPrompt.prompt();
+
+
+    try {
+
+      await deferredInstallPrompt
+        .userChoice;
+
+    }
+
+    catch (error) {
+
+      console.log(
+        "Instalace byla zavřena.",
+        error
+      );
+
+    }
+
+
+    deferredInstallPrompt =
+      null;
+
+
+    installBox.style.display =
+      "none";
+
+  }
+);
+
+
+/*
+  Po úspěšné instalaci
+  tlačítko schováme.
+*/
+
+window.addEventListener(
+  "appinstalled",
+  function() {
+
+    deferredInstallPrompt =
+      null;
+
+
+    installBox.style.display =
+      "none";
+
+
+    console.log(
+      "Zlatá udice byla nainstalována."
+    );
+
+  }
+);
+
+
+/*
+  Pokud už běží jako nainstalovaná
+  aplikace, instalační box vůbec
+  nezobrazujeme.
+*/
+
+if (
+  window.matchMedia(
+    "(display-mode: standalone)"
+  ).matches
+) {
+
+  installBox.style.display =
+    "none";
 
 }
 
