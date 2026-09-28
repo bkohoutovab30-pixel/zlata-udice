@@ -29,6 +29,10 @@
       padding: 20px;
     }
 
+    /* =========================
+       HRÁČ
+    ========================= */
+
     .player-bar {
       display: flex;
       justify-content: space-between;
@@ -58,6 +62,10 @@
       font-weight: bold;
     }
 
+    /* =========================
+       HLAVIČKA
+    ========================= */
+
     .header {
       text-align: center;
       margin-bottom: 35px;
@@ -73,6 +81,10 @@
       color: #567;
       font-size: 17px;
     }
+
+    /* =========================
+       MENU
+    ========================= */
 
     .menu {
       display: grid;
@@ -162,6 +174,10 @@
       cursor: pointer;
     }
 
+    .offline-button:active {
+      transform: scale(0.99);
+    }
+
     .offline-button:disabled {
       opacity: 0.6;
       cursor: default;
@@ -205,7 +221,9 @@
 
 <main class="app">
 
-  <!-- HRÁČ -->
+  <!-- =========================
+       HRÁČ
+  ========================== -->
 
   <div class="player-bar">
 
@@ -229,11 +247,15 @@
   </div>
 
 
-  <!-- HLAVIČKA -->
+  <!-- =========================
+       HLAVIČKA
+  ========================== -->
 
   <div class="header">
 
-    <h1>🎣 Zlatá udice</h1>
+    <h1>
+      🎣 Zlatá udice
+    </h1>
 
     <p>
       Uč se, procvičuj a připrav se na soutěž
@@ -242,9 +264,14 @@
   </div>
 
 
-  <!-- MENU -->
+  <!-- =========================
+       MENU
+  ========================== -->
 
   <div class="menu">
+
+
+    <!-- RYBY -->
 
     <a
       class="card"
@@ -254,7 +281,9 @@
         🐟
       </div>
 
-      <h2>Ryby</h2>
+      <h2>
+        Ryby
+      </h2>
 
       <p>
         Poznávání ryb našich vod
@@ -262,6 +291,8 @@
 
     </a>
 
+
+    <!-- ROSTLINY -->
 
     <a
       class="card"
@@ -271,7 +302,9 @@
         🌿
       </div>
 
-      <h2>Rostliny</h2>
+      <h2>
+        Rostliny
+      </h2>
 
       <p>
         Poznávání rostlin kolem vody
@@ -279,6 +312,8 @@
 
     </a>
 
+
+    <!-- ŽIVOČICHOVÉ -->
 
     <a
       class="card"
@@ -288,7 +323,9 @@
         🦆
       </div>
 
-      <h2>Živočichové</h2>
+      <h2>
+        Živočichové
+      </h2>
 
       <p>
         Poznávání živočichů kolem našich vod
@@ -296,6 +333,8 @@
 
     </a>
 
+
+    <!-- OTÁZKY -->
 
     <a
       class="card test"
@@ -305,7 +344,9 @@
         📝
       </div>
 
-      <h2>Testové otázky</h2>
+      <h2>
+        Testové otázky
+      </h2>
 
       <p>
         Procvičuj otázky Zlaté udice 2026
@@ -316,7 +357,9 @@
   </div>
 
 
-  <!-- OFFLINE -->
+  <!-- =========================
+       OFFLINE
+  ========================== -->
 
   <div class="offline-box">
 
@@ -325,7 +368,7 @@
     </h2>
 
     <p>
-      Stáhni si zvuky ryb, rostlin a živočichů,
+      Stáhni si zvuky do tohoto zařízení,
       aby fungovaly i bez internetu.
     </p>
 
@@ -369,27 +412,11 @@
 </main>
 
 
-<!-- =========================================
-     SPOLEČNÁ DATA
-========================================= -->
-
-<script src="ryby-data.js"></script>
-<script src="rostliny-data.js"></script>
-<script src="zivocichove-data.js"></script>
-
-
-<!-- =========================================
-     SPOLEČNÝ ZVUK
-========================================= -->
-
-<script src="zvuk.js"></script>
-
-
 <script>
 
-/* =========================================
+/* ==================================================
    PROFILY
-========================================= */
+================================================== */
 
 function getProfiles() {
 
@@ -398,23 +425,22 @@ function getProfiles() {
       "zlataUdiceProfiles"
     );
 
-
   if (!saved) {
-
     return [];
-
   }
-
 
   try {
 
-    return JSON.parse(
-      saved
-    );
+    return JSON.parse(saved);
 
   }
 
-  catch {
+  catch (error) {
+
+    console.error(
+      "Chyba profilů:",
+      error
+    );
 
     return [];
 
@@ -423,9 +449,9 @@ function getProfiles() {
 }
 
 
-/* =========================================
+/* ==================================================
    AKTIVNÍ HRÁČ
-========================================= */
+================================================== */
 
 function loadActivePlayer() {
 
@@ -451,8 +477,13 @@ function loadActivePlayer() {
 
   const player =
     profiles.find(
-      profile =>
-        profile.id === activeId
+      function(profile) {
+
+        return (
+          profile.id === activeId
+        );
+
+      }
     );
 
 
@@ -462,7 +493,6 @@ function loadActivePlayer() {
       "zlataUdiceActiveProfile"
     );
 
-
     window.location.href =
       "profily.html";
 
@@ -471,108 +501,137 @@ function loadActivePlayer() {
   }
 
 
-  document
-    .getElementById(
+  const nameElement =
+    document.getElementById(
       "playerName"
-    )
-    .textContent =
-      player.name;
-
-
-  document
-    .getElementById(
-      "playerAvatar"
-    )
-    .textContent =
-      player.avatar;
-
-}
-
-
-/* =========================================
-   TEXT -> NÁZEV MP3
-========================================= */
-
-function soundFileName(text) {
-
-  return String(text)
-
-    .normalize("NFD")
-
-    .replace(
-      /[\u0300-\u036f]/g,
-      ""
-    )
-
-    .toLowerCase()
-
-    .replace(
-      /[^a-z0-9]+/g,
-      "-"
-    )
-
-    .replace(
-      /^-+|-+$/g,
-      ""
     );
 
-}
+
+  const avatarElement =
+    document.getElementById(
+      "playerAvatar"
+    );
 
 
-/* =========================================
-   PŘIDÁNÍ ZVUKŮ ZE SEZNAMU
-========================================= */
+  if (nameElement) {
 
-function addSounds(
-  result,
-  list,
-  folder
-) {
-
-  if (
-    !Array.isArray(list)
-  ) {
-
-    return;
+    nameElement.textContent =
+      player.name || "";
 
   }
 
 
-  list.forEach(
-    function(item) {
+  if (avatarElement) {
 
-      if (
-        !item ||
-        !item.name
-      ) {
+    avatarElement.textContent =
+      player.avatar || "🎣";
 
-        return;
-
-      }
-
-
-      const fileName =
-        soundFileName(
-          item.name
-        );
-
-
-      result.push(
-        folder +
-        "/" +
-        fileName +
-        ".mp3"
-      );
-
-    }
-  );
+  }
 
 }
 
 
-/* =========================================
-   SEZNAM VŠECH MP3
-========================================= */
+/* ==================================================
+   OFFLINE ZVUKY
+
+   TADY JSOU NÁZVY MP3 SOUBORŮ.
+   INDEX.HTML TAK NENÍ ZÁVISLÝ NA
+   ryby-data.js / rostliny-data.js /
+   zivocichove-data.js
+================================================== */
+
+
+/* =========================
+   RYBY
+========================= */
+
+const offlineFish = [
+
+  "amur-bily",
+  "blatnak-tmavy",
+  "bolen-dravy",
+  "candat-obecny",
+  "candat-vychodni",
+
+  "cejn-velky",
+  "cejnek-maly",
+  "drsek-mensi",
+  "hlavacka-mramorovana",
+  "hlavatka-obecna",
+  "horavka-duhova",
+
+  "hrouzek-obecny",
+  "jelec-jesen",
+  "jelec-proudnik",
+  "jelec-tloust",
+
+  "jeseter-maly",
+  "jezdik-obecny",
+  "jezdik-zluty",
+
+  "kapr-obecny",
+  "karas-obecny",
+  "karas-stribrity",
+  "koljuska-triostna",
+
+  "lipan-podhorni",
+  "lin-obecny",
+  "losos-obecny",
+
+  "mnik-jednovousy",
+  "mrenka-mramorovana",
+
+  "okoun-ricni",
+  "okounek-pstruhovy",
+
+  "ostroretka-stehovava",
+  "ostrucha-krivocara",
+
+  "ouklej-obecna",
+  "ouklejka-pruhovana",
+
+  "parma-obecna",
+  "parma-stredomorska",
+
+  "perlin-ostrobrichy",
+  "piskor-pruhovany",
+
+  "plotice-obecna",
+  "podoustev-ricni",
+
+  "pstruh-duhovy",
+
+  "pstruh-obecny-f-forma-morska",
+  "pstruh-obecny-f-forma-potocni",
+
+  "siven-americky",
+
+  "sih-severni-marena",
+  "sih-peled",
+
+  "slunecnice-pestra",
+  "slunka-stribrita",
+
+  "strevle-potocni",
+  "strevlicka-vychodni",
+
+  "sumec-velky",
+  "sumecek-americky",
+  "stika-obecna",
+
+  "tolstolobik-bily",
+
+  "uhor-ricni",
+
+  "vranka-obecna",
+  "vranka-pruhoploutva"
+
+];
+
+
+/* =========================
+   VYTVOŘENÍ SEZNAMU MP3
+========================= */
 
 function createOfflineSoundList() {
 
@@ -580,34 +639,31 @@ function createOfflineSoundList() {
 
 
   /*
-    Tyto proměnné jsou načtené přímo
-    z našich datových JS souborů.
+    RYBY
   */
 
-  addSounds(
-    files,
-    fish,
-    "audio/ryby"
-  );
+  offlineFish.forEach(
+    function(fileName) {
 
+      files.push(
+        "audio/ryby/" +
+        fileName +
+        ".mp3"
+      );
 
-  addSounds(
-    files,
-    plants,
-    "audio/rostliny"
-  );
-
-
-  addSounds(
-    files,
-    animals,
-    "audio/zivocichove"
+    }
   );
 
 
   /*
-    Odstraníme případné duplicity.
+    Rostliny a živočichy zatím nemusíme
+    kvůli hlavní stránce načítat z jejich
+    datových JS souborů.
+
+    Jejich zvuky se mohou normálně ukládat
+    průběžně přes service worker při používání.
   */
+
 
   return [
     ...new Set(files)
@@ -616,11 +672,11 @@ function createOfflineSoundList() {
 }
 
 
-/* =========================================
-   ČEKÁNÍ NA SERVICE WORKER
-========================================= */
+/* ==================================================
+   SERVICE WORKER
+================================================== */
 
-async function waitForServiceWorker() {
+async function getServiceWorker() {
 
   if (
     !("serviceWorker" in navigator)
@@ -633,37 +689,18 @@ async function waitForServiceWorker() {
   }
 
 
-  await navigator.serviceWorker.ready;
+  const registration =
+    await navigator.serviceWorker.ready;
 
 
-  /*
-    Pokud stránku ještě neřídí SW,
-    chvíli počkáme.
-  */
-
-  if (
-    !navigator.serviceWorker.controller
-  ) {
-
-    await new Promise(
-      function(resolve) {
-
-        setTimeout(
-          resolve,
-          1000
-        );
-
-      }
-    );
-
-  }
+  return registration;
 
 }
 
 
-/* =========================================
-   STAŽENÍ OFFLINE ZVUKŮ
-========================================= */
+/* ==================================================
+   STAŽENÍ ZVUKŮ
+================================================== */
 
 async function downloadOfflineSounds() {
 
@@ -701,17 +738,13 @@ async function downloadOfflineSounds() {
   }
 
 
-  button.disabled =
-    true;
-
+  button.disabled = true;
 
   progressBar.style.display =
     "block";
 
-
   progressFill.style.width =
     "0%";
-
 
   status.textContent =
     "Připravuji offline zvuky…";
@@ -719,19 +752,19 @@ async function downloadOfflineSounds() {
 
   try {
 
-    await waitForServiceWorker();
+    await getServiceWorker();
 
   }
 
   catch (error) {
 
+    console.error(error);
+
     status.textContent =
       "⚠️ Offline režim se nepodařilo spustit.";
 
-
     button.disabled =
       false;
-
 
     return;
 
@@ -749,10 +782,8 @@ async function downloadOfflineSounds() {
     status.textContent =
       "⚠️ Seznam zvuků je prázdný.";
 
-
     button.disabled =
       false;
-
 
     return;
 
@@ -760,7 +791,6 @@ async function downloadOfflineSounds() {
 
 
   let saved = 0;
-
   let failed = 0;
 
 
@@ -781,37 +811,21 @@ async function downloadOfflineSounds() {
     try {
 
       /*
-        Přidáváme parametr, aby prohlížeč
-        opravdu provedl request.
-
-        Service worker ho zachytí a uloží
-        do AUDIO_CACHE.
+        Stahujeme přesnou MP3 adresu.
+        Service worker ji může uložit
+        do své cache.
       */
-
-      const separator =
-        files[i].includes("?")
-          ? "&"
-          : "?";
-
-
-      const requestUrl =
-        files[i] +
-        separator +
-        "offline=1";
-
 
       const response =
         await fetch(
-          requestUrl,
+          files[i],
           {
             cache: "reload"
           }
         );
 
 
-      if (
-        response.ok
-      ) {
+      if (response.ok) {
 
         saved++;
 
@@ -821,6 +835,11 @@ async function downloadOfflineSounds() {
 
         failed++;
 
+        console.warn(
+          "Nenalezen zvuk:",
+          files[i]
+        );
+
       }
 
     }
@@ -828,6 +847,12 @@ async function downloadOfflineSounds() {
     catch (error) {
 
       failed++;
+
+      console.warn(
+        "Chyba zvuku:",
+        files[i],
+        error
+      );
 
     }
 
@@ -847,13 +872,11 @@ async function downloadOfflineSounds() {
   }
 
 
-  /* =========================================
+  /* =========================
      VÝSLEDEK
-  ========================================= */
+  ========================= */
 
-  if (
-    failed === 0
-  ) {
+  if (failed === 0) {
 
     status.innerHTML =
       "✅ Hotovo! <strong>" +
@@ -875,19 +898,12 @@ async function downloadOfflineSounds() {
   }
 
 
-  /*
-    Stav uložíme pouze tehdy,
-    když se podařilo uložit
-    alespoň jeden zvuk.
-  */
-
-  if (
-    saved > 0
-  ) {
+  if (saved > 0) {
 
     localStorage.setItem(
       "zlataUdiceOfflineSounds",
       JSON.stringify({
+
         date:
           new Date()
             .toISOString(),
@@ -897,6 +913,7 @@ async function downloadOfflineSounds() {
 
         failed:
           failed
+
       })
     );
 
@@ -913,9 +930,9 @@ async function downloadOfflineSounds() {
 }
 
 
-/* =========================================
-   ZOBRAZENÍ STAVU
-========================================= */
+/* ==================================================
+   ZOBRAZENÍ STAVU OFFLINE BALÍČKU
+================================================== */
 
 function showOfflineStatus() {
 
@@ -934,53 +951,62 @@ function showOfflineStatus() {
 
   try {
 
-    const info =
-      JSON.parse(
-        saved
+    JSON.parse(saved);
+
+
+    const button =
+      document.getElementById(
+        "offlineButton"
       );
 
 
-    document
-      .getElementById(
-        "offlineButton"
-      )
-      .textContent =
+    const status =
+      document.getElementById(
+        "offlineStatus"
+      );
+
+
+    if (button) {
+
+      button.textContent =
         "🔄 Aktualizovat offline zvuky";
 
+    }
 
-    document
-      .getElementById(
-        "offlineStatus"
-      )
-      .innerHTML =
+
+    if (status) {
+
+      status.innerHTML =
         "✅ V tomto zařízení už je uložen offline balíček.";
+
+    }
 
   }
 
-  catch {
+  catch (error) {
 
-    /*
-      Starší uložená hodnota.
-      Jen ji ignorujeme.
-    */
+    console.warn(
+      "Starý offline stav:",
+      error
+    );
 
   }
 
 }
 
 
-/* =========================================
+/* ==================================================
    START
-========================================= */
+================================================== */
 
 loadActivePlayer();
 
 showOfflineStatus();
 
 
-/* =========================================
-   SERVICE WORKER
-========================================= */
+/* ==================================================
+   REGISTRACE SERVICE WORKERU
+================================================== */
 
 if (
   "serviceWorker" in navigator
@@ -991,7 +1017,6 @@ if (
     function() {
 
       navigator.serviceWorker
-
         .register(
           "./service-worker.js"
         )
@@ -1004,12 +1029,6 @@ if (
               registration.scope
             );
 
-
-            /*
-              Pokud je připravená novější
-              verze service workeru,
-              požádáme o kontrolu.
-            */
 
             registration.update();
 
