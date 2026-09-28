@@ -2,6 +2,7 @@
 <html lang="cs">
 
 <head>
+
   <meta charset="UTF-8">
 
   <meta
@@ -274,10 +275,6 @@
     }
 
 
-    /* =========================
-       MOBIL
-    ========================= */
-
     @media (max-width: 520px) {
 
       .app {
@@ -299,6 +296,7 @@
     }
 
   </style>
+
 </head>
 
 
@@ -421,9 +419,7 @@
 
     <!-- UKÁZAT NÁZEV -->
 
-    <div
-      id="questionArea"
-    >
+    <div id="questionArea">
 
       <button
         class="show-name"
@@ -551,13 +547,9 @@ function getProfiles() {
       "zlataUdiceProfiles"
     );
 
-
   if (!saved) {
-
     return [];
-
   }
-
 
   try {
 
@@ -606,6 +598,7 @@ if (activePlayer) {
       "playerInfo"
     )
     .textContent =
+
       (activePlayer.avatar || "") +
       " " +
       (activePlayer.name || "");
@@ -771,10 +764,13 @@ function saveProgress(
 ) {
 
   localStorage.setItem(
+
     progressKey,
+
     JSON.stringify(
       progress
     )
+
   );
 
 }
@@ -874,6 +870,7 @@ function addMistake(
 
   const exists =
     mistakes.some(
+
       function(savedItem) {
 
         if (
@@ -890,12 +887,16 @@ function addMistake(
 
 
         return (
+
           savedItem &&
+
           savedItem.name ===
           item.name
+
         );
 
       }
+
     );
 
 
@@ -916,10 +917,13 @@ function addMistake(
 
 
     localStorage.setItem(
+
       mistakesKey,
+
       JSON.stringify(
         mistakes
       )
+
     );
 
   }
@@ -941,6 +945,7 @@ function removeMistake(
 
   const filtered =
     mistakes.filter(
+
       function(savedItem) {
 
         if (
@@ -957,20 +962,27 @@ function removeMistake(
 
 
         return !(
+
           savedItem &&
+
           savedItem.name ===
           item.name
+
         );
 
       }
+
     );
 
 
   localStorage.setItem(
+
     mistakesKey,
+
     JSON.stringify(
       filtered
     )
+
   );
 
 }
@@ -1139,48 +1151,25 @@ function stopCurrentSound() {
 
   }
 
-
-  /*
-    Pro jistotu zastavíme také
-    syntézu řeči v prohlížeči.
-  */
-
-  if (
-    "speechSynthesis" in window
-  ) {
-
-    window
-      .speechSynthesis
-      .cancel();
-
-  }
-
 }
 
 
 /* =========================
    PŘEHRÁNÍ NÁZVU
 
-   ZVUK JE POVOLEN POUZE
-   PŘI SKUTEČNÉM KLIKNUTÍ
-   UŽIVATELE.
+   TATO FUNKCE SE SPUSTÍ
+   POUZE PO KLIKNUTÍ NA 🔊
 ========================= */
 
 function playCurrentAnimal(
   event
 ) {
 
-  /*
-    Bez skutečného kliknutí
-    se nic nepřehraje.
-  */
+  if (event) {
 
-  if (
-    !event ||
-    !event.isTrusted
-  ) {
+    event.preventDefault();
 
-    return;
+    event.stopPropagation();
 
   }
 
@@ -1195,14 +1184,27 @@ function playCurrentAnimal(
   stopCurrentSound();
 
 
+  /*
+    Použijeme společný zvuk.js.
+
+    Hledá:
+    audio/zivocichove/nazev.mp3
+
+    Pokud MP3 neexistuje,
+    přečte název českým hlasem.
+  */
+
   if (
     typeof playNamedSound ===
     "function"
   ) {
 
     playNamedSound(
+
       currentAnimal.name,
+
       "audio/zivocichove"
+
     );
 
   }
@@ -1217,8 +1219,8 @@ function playCurrentAnimal(
 function chooseAnimal() {
 
   /*
-    Při načtení nové otázky
-    vždy zastavíme případný zvuk.
+    Při každé nové otázce
+    nejdříve zastavíme případný zvuk.
   */
 
   stopCurrentSound();
@@ -1226,11 +1228,14 @@ function chooseAnimal() {
 
   if (
     typeof animals ===
-      "undefined" ||
+    "undefined" ||
+
     !Array.isArray(
       animals
     ) ||
-    animals.length === 0
+
+    animals.length ===
+    0
   ) {
 
     message.textContent =
@@ -1246,8 +1251,8 @@ function chooseAnimal() {
 
 
   /*
-    Stejný živočich nebude
-    dvakrát za sebou.
+    Pokud je více živočichů,
+    neopakujeme stejného hned po sobě.
   */
 
   if (
@@ -1257,6 +1262,7 @@ function chooseAnimal() {
 
     available =
       animals.filter(
+
         function(item) {
 
           return (
@@ -1265,6 +1271,7 @@ function chooseAnimal() {
           );
 
         }
+
       );
 
   }
@@ -1272,10 +1279,14 @@ function chooseAnimal() {
 
   currentAnimal =
     available[
+
       Math.floor(
+
         Math.random() *
         available.length
+
       )
+
     ];
 
 
@@ -1283,10 +1294,20 @@ function chooseAnimal() {
     currentAnimal.name;
 
 
+  /*
+    Obrázek pouze zobrazíme.
+    ŽÁDNÝ ZVUK.
+  */
+
   showPhoto(
     currentAnimal
   );
 
+
+  /*
+    Název připravíme do HTML,
+    ale odpověď je zatím skrytá.
+  */
 
   animalName.textContent =
     currentAnimal.name;
@@ -1319,17 +1340,18 @@ function chooseAnimal() {
 
 
 /* =========================
-   UKÁZAT NÁZEV
+   UKÁZAT ODPOVĚĎ
 
-   TADY SE ZVUK
+   DŮLEŽITÉ:
+   TADY SE ŽÁDNÝ ZVUK
    NESPOUŠTÍ.
 ========================= */
 
 function showAnswer() {
 
   /*
-    Pro jistotu zastavíme vše,
-    co by případně hrálo.
+    Pro jistotu zastavíme
+    jakýkoliv předchozí zvuk.
   */
 
   stopCurrentSound();
@@ -1344,17 +1366,17 @@ function showAnswer() {
 
 
   /*
-    POZOR:
-    žádné playCurrentAnimal()
-    ani playNamedSound()
-    zde není.
+    SCHVÁLNĚ TU NENÍ:
+    playCurrentAnimal();
+
+    Název se tedy sám nepřečte.
   */
 
 }
 
 
 /* =========================
-   VÝSLEDEK
+   ULOŽENÍ ODPOVĚDI
 ========================= */
 
 function saveAnswer(
@@ -1369,6 +1391,14 @@ function saveAnswer(
     return;
 
   }
+
+
+  /*
+    Ani tady nechceme
+    žádné automatické čtení.
+  */
+
+  stopCurrentSound();
 
 
   answered =
@@ -1441,6 +1471,11 @@ function saveAnswer(
 
 function nextAnimal() {
 
+  /*
+    Zastavíme případný zvuk
+    z předchozí otázky.
+  */
+
   stopCurrentSound();
 
 
@@ -1448,8 +1483,11 @@ function nextAnimal() {
 
 
   window.scrollTo({
+
     top: 0,
+
     behavior: "smooth"
+
   });
 
 }
@@ -1457,10 +1495,14 @@ function nextAnimal() {
 
 /* =========================
    START
-
-   PŘI STARTU SE ZVUK
-   NEPŘEHRÁVÁ.
 ========================= */
+
+/*
+  Při startu stránky:
+  - zobrazíme skóre
+  - vybereme živočicha
+  - NEPOUŠTÍME ŽÁDNÝ ZVUK
+*/
 
 stopCurrentSound();
 
