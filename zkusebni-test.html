@@ -100,9 +100,9 @@
     .start-button,
     .next-button,
     .restart-button,
-    .mistakes-button {
+    .mistakes-button,
+    .end-test-button {
       width: 100%;
-      border: none;
       border-radius: 14px;
       padding: 16px;
       font-size: 17px;
@@ -113,15 +113,38 @@
     .start-button,
     .next-button,
     .restart-button {
+      border: none;
       background: #17324d;
       color: white;
     }
 
+    .next-button {
+      margin-top: 20px;
+    }
+
+    .next-button:disabled {
+      opacity: 0.45;
+      cursor: default;
+    }
+
+    .end-test-button {
+      margin-top: 12px;
+      border: 2px solid #d7e5ec;
+      background: white;
+      color: #a64f4f;
+    }
+
+    .end-test-button:hover {
+      background: #fff1f1;
+      border-color: #d9aaaa;
+    }
+
     .mistakes-button {
+      display: none;
       margin-top: 18px;
+      border: 2px solid #f1c7d2;
       background: #ffe9ee;
       color: #9b3650;
-      border: 2px solid #f1c7d2;
     }
 
     .mistakes-button:disabled {
@@ -310,15 +333,6 @@
       cursor: pointer;
     }
 
-    .next-button {
-      margin-top: 20px;
-    }
-
-    .next-button:disabled {
-      opacity: 0.45;
-      cursor: default;
-    }
-
     .result-box {
       display: none;
     }
@@ -487,6 +501,9 @@
     <p>Krajské kolo – Zlatá udice 2026</p>
   </div>
 
+
+  <!-- START -->
+
   <div class="start-box" id="startBox">
 
     <h2>Připraven?</h2>
@@ -532,14 +549,11 @@
   </div>
 
 
-  <div
-    class="test-card hidden"
-    id="testCard">
+  <!-- TEST -->
 
-    <div
-      class="phase"
-      id="phaseInfo">
-    </div>
+  <div class="test-card hidden" id="testCard">
+
+    <div class="phase" id="phaseInfo"></div>
 
     <div class="progress-wrap">
 
@@ -557,10 +571,7 @@
 
     </div>
 
-    <div
-      class="category"
-      id="category">
-    </div>
+    <div class="category" id="category"></div>
 
     <div
       class="question-text"
@@ -599,8 +610,18 @@
       Další →
     </button>
 
+    <button
+      class="end-test-button"
+      id="endTestButton"
+      type="button"
+      onclick="endTestEarly()">
+      ⏹️ Ukončit test
+    </button>
+
   </div>
 
+
+  <!-- VÝSLEDEK -->
 
   <div
     class="result-box"
@@ -660,6 +681,8 @@
 </main>
 
 
+<!-- DATA -->
+
 <script src="otazky-data.js"></script>
 <script src="ryby-data.js"></script>
 <script src="rostliny-data.js"></script>
@@ -688,6 +711,7 @@ const TEST_CONFIG = {
   plants: 15,
   animals: 15
 };
+
 
 const POINTS_PER_QUESTION = 2;
 
@@ -919,6 +943,7 @@ function createTheoryQuestions() {
 
   const result = [];
 
+
   Object.keys(
     TEST_CONFIG.theorySections
   ).forEach(
@@ -927,14 +952,17 @@ function createTheoryQuestions() {
       const sectionNumber =
         Number(sectionKey);
 
+
       const requiredCount =
         TEST_CONFIG.theorySections[
           sectionNumber
         ];
 
+
       const available =
         questions.filter(
           function(question) {
+
             return (
               question.section ===
               sectionNumber
@@ -942,12 +970,14 @@ function createTheoryQuestions() {
           }
         );
 
+
       const selected =
         shuffle(available)
           .slice(
             0,
             requiredCount
           );
+
 
       selected.forEach(
         function(item) {
@@ -958,6 +988,7 @@ function createTheoryQuestions() {
                 return answer.correct;
               }
             );
+
 
           result.push({
 
@@ -992,12 +1023,13 @@ function createTheoryQuestions() {
     }
   );
 
+
   return shuffle(result);
 }
 
 
 /* ========================================
-   ODSTRANĚNÍ DUPLICIT DRUHŮ
+   JEDINEČNÉ DRUHY
 ======================================== */
 
 function getUniqueRecognitionItems(source) {
@@ -1018,10 +1050,12 @@ function getUniqueRecognitionItems(source) {
         return;
       }
 
+
       const key =
         normalizeAnswer(
           item.name
         );
+
 
       if (
         usedNames.has(key)
@@ -1029,11 +1063,13 @@ function getUniqueRecognitionItems(source) {
         return;
       }
 
+
       usedNames.add(key);
 
       unique.push(item);
     }
   );
+
 
   return unique;
 }
@@ -1050,12 +1086,9 @@ function createRecognitionQuestions(
   categoryName
 ) {
 
-  const uniqueItems =
-    getUniqueRecognitionItems(
-      source
-    );
-
-  return uniqueItems
+  return getUniqueRecognitionItems(
+    source
+  )
 
     .slice(
       0,
@@ -1167,8 +1200,10 @@ function startTest() {
   mistakesButton.style.display =
     "none";
 
+
   mistakesButton.disabled =
     false;
+
 
   mistakesButton.textContent =
     '❤️ Přidat chyby do „Co mi nejde“';
@@ -1176,6 +1211,7 @@ function startTest() {
 
   saveMessage.style.display =
     "none";
+
 
   saveMessage.innerHTML =
     "";
@@ -1683,7 +1719,7 @@ function showRecognitionQuestion(item) {
 
 
 /* ========================================
-   KANDIDÁTI OBRÁZKU
+   OBRÁZKY
 ======================================== */
 
 function getImageCandidates(testItem) {
@@ -1817,13 +1853,7 @@ function getImageCandidates(testItem) {
 
 
 /* ========================================
-   FOTOGRAFIE
-
-   Pro každý vybraný druh se náhodně
-   zvolí pořadí jeho dostupných obrázků.
-
-   Jeden druh je v testu jen jednou,
-   takže se nemůže opakovat jeho fotografie.
+   ZOBRAZENÍ FOTOGRAFIE
 ======================================== */
 
 function showRecognitionPhoto(testItem) {
@@ -2027,7 +2057,10 @@ function saveAndNext() {
     originalItem:
       item.item
         ? item.item
-        : null
+        : null,
+
+    unanswered:
+      false
 
   });
 
@@ -2053,6 +2086,116 @@ function saveAndNext() {
       behavior: "smooth"
     });
   }
+}
+
+
+/* ========================================
+   PŘEDČASNÉ UKONČENÍ TESTU
+======================================== */
+
+function endTestEarly() {
+
+  const alreadyAnswered =
+    testResults.length;
+
+
+  const remaining =
+    testQuestions.length -
+    currentIndex;
+
+
+  const confirmed =
+    window.confirm(
+      "Opravdu chceš ukončit test?\n\n" +
+      "Dokončeno: " +
+      alreadyAnswered +
+      " / " +
+      testQuestions.length +
+      "\n" +
+      "Zbývá: " +
+      remaining +
+      "\n\n" +
+      "Všechny nezodpovězené otázky budou vyhodnoceny jako chybné."
+    );
+
+
+  if (!confirmed) {
+    return;
+  }
+
+
+  if (
+    typeof window.stopSound ===
+    "function"
+  ) {
+    window.stopSound();
+  }
+
+
+  /*
+    Aktuální otázka i všechny následující
+    budou považovány za nezodpovězené.
+  */
+
+  for (
+    let i = currentIndex;
+    i < testQuestions.length;
+    i++
+  ) {
+
+    const item =
+      testQuestions[i];
+
+
+    testResults.push({
+
+      number:
+        i + 1,
+
+      type:
+        item.type,
+
+      category:
+        item.category,
+
+      question:
+        item.question,
+
+      userAnswer:
+        "",
+
+      correctAnswer:
+        item.correctAnswer,
+
+      correct:
+        false,
+
+      points:
+        0,
+
+      image:
+        item.usedImage || "",
+
+      sourceId:
+        item.sourceId || "",
+
+      originalItem:
+        item.item
+          ? item.item
+          : null,
+
+      unanswered:
+        true
+
+    });
+  }
+
+
+  currentIndex =
+    testQuestions.length;
+
+
+  finishTest();
 }
 
 
@@ -2120,8 +2263,13 @@ function finishTest() {
     );
 
 
+  /*
+    Maximum zůstává 200 bodů,
+    i když byl test ukončen dříve.
+  */
+
   const maxScore =
-    testResults.length *
+    testQuestions.length *
     POINTS_PER_QUESTION;
 
 
@@ -2433,6 +2581,11 @@ function createReview() {
       );
 
 
+      /*
+        Fotografie se zobrazí pouze tehdy,
+        pokud už byla skutečně načtená.
+      */
+
       if (
         item.type !==
           "theory" &&
@@ -2473,11 +2626,23 @@ function createReview() {
         "review-line your-answer";
 
 
-      userLine.innerHTML =
-        "<strong>Tvoje odpověď:</strong> " +
-        escapeHtml(
-          item.userAnswer
-        );
+      if (
+        item.unanswered
+      ) {
+
+        userLine.innerHTML =
+          "<strong>Tvoje odpověď:</strong> " +
+          "⚪ Nezodpovězeno";
+      }
+
+      else {
+
+        userLine.innerHTML =
+          "<strong>Tvoje odpověď:</strong> " +
+          escapeHtml(
+            item.userAnswer
+          );
+      }
 
 
       box.appendChild(
@@ -2535,7 +2700,7 @@ function createReview() {
 
 
 /* ========================================
-   NAČTENÍ SEZNAMU "CO MI NEJDE"
+   NAČTENÍ "CO MI NEJDE"
 ======================================== */
 
 function loadMistakeList(key) {
@@ -2570,7 +2735,7 @@ function loadMistakeList(key) {
 
 
 /* ========================================
-   PŘIDÁNÍ POLOŽKY BEZ DUPLICIT
+   PŘIDÁNÍ BEZ DUPLICIT
 ======================================== */
 
 function addUniqueMistake(
@@ -2582,7 +2747,6 @@ function addUniqueMistake(
     !item ||
     !item.name
   ) {
-
     return false;
   }
 
@@ -2627,12 +2791,6 @@ function addUniqueMistake(
   }
 
 
-  /*
-    Ukládáme původní objekt z databáze.
-    Tím zůstanou zachované údaje jako
-    card, image, imageName, soundName atd.
-  */
-
   list.push(item);
 
 
@@ -2641,7 +2799,7 @@ function addUniqueMistake(
 
 
 /* ========================================
-   ULOŽENÍ CHYB Z TESTU
+   ULOŽENÍ CHYB DO "CO MI NEJDE"
 ======================================== */
 
 function saveRecognitionMistakes() {
@@ -2707,7 +2865,6 @@ function saveRecognitionMistakes() {
           "theory" ||
         !result.originalItem
       ) {
-
         return;
       }
 
@@ -2723,7 +2880,6 @@ function saveRecognitionMistakes() {
             result.originalItem
           )
         ) {
-
           addedFish++;
         }
       }
@@ -2740,7 +2896,6 @@ function saveRecognitionMistakes() {
             result.originalItem
           )
         ) {
-
           addedPlants++;
         }
       }
@@ -2757,7 +2912,6 @@ function saveRecognitionMistakes() {
             result.originalItem
           )
         ) {
-
           addedAnimals++;
         }
       }
@@ -2853,7 +3007,7 @@ function escapeHtml(text) {
 
 
 /* ========================================
-   KONTROLA POČTŮ TEORETICKÝCH OTÁZEK
+   KONTROLA TEORETICKÝCH OTÁZEK
 ======================================== */
 
 function checkSectionCounts() {
@@ -3024,6 +3178,7 @@ function checkSectionCounts() {
   console.log(
     "Zkušební test připraven:"
   );
+
 
   console.log(
     "50 teorie + 20 ryb + 15 rostlin + 15 živočichů = 100 položek / 200 bodů"
