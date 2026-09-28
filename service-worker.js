@@ -1,11 +1,29 @@
 /* =========================================================
    ZLATÁ UDICE 2026
    SERVICE WORKER – OFFLINE REŽIM v6
+
+   - HTML: NETWORK FIRST
+     -> při internetu vždy zkusí nejnovější verzi
+
+   - DATA / JS / MANIFEST: NETWORK FIRST
+     -> změny se projeví bez držení staré verze
+
+   - AUDIO: CACHE FIRST
+     -> stažené zvuky fungují offline
+
+   - OBRÁZKY: CACHE FIRST
+     -> jednou načtené obrázky zůstávají offline
 ========================================================= */
 
-const APP_CACHE = "zlata-udice-app-v6";
-const AUDIO_CACHE = "zlata-udice-audio-v6";
-const IMAGE_CACHE = "zlata-udice-images-v6";
+
+const APP_CACHE =
+  "zlata-udice-app-v6";
+
+const AUDIO_CACHE =
+  "zlata-udice-audio-v6";
+
+const IMAGE_CACHE =
+  "zlata-udice-images-v6";
 
 
 /* =========================================================
@@ -18,42 +36,59 @@ const APP_FILES = [
   "./index.html",
 
   /* PROFILY */
+
   "./profily.html",
 
+
   /* HLAVNÍ STRÁNKY */
+
   "./ryby.html",
   "./rostliny.html",
   "./zivocichove.html",
   "./otazky.html",
 
+
   /* RYBY */
+
   "./ryby-uceni.html",
   "./ryby-procvicovani.html",
   "./ryby-chyby.html",
 
+
   /* ROSTLINY */
+
   "./rostliny-uceni.html",
   "./rostliny-procvicovani.html",
   "./rostliny-chyby.html",
 
+
   /* ŽIVOČICHOVÉ */
+
   "./zivocichove-uceni.html",
   "./zivocichove-procvicovani.html",
   "./zivocichove-chyby.html",
 
+
   /* OTÁZKY */
+
   "./otazky-procvicovani.html",
 
+
   /* DATA */
+
   "./ryby-data.js",
   "./rostliny-data.js",
   "./zivocichove-data.js",
   "./otazky-data.js",
 
+
   /* ZVUK */
+
   "./zvuk.js",
 
+
   /* PWA */
+
   "./manifest.json"
 
 ];
@@ -83,10 +118,9 @@ self.addEventListener(
             /*
               Soubory ukládáme jednotlivě.
 
-              Výhoda:
-              pokud by jeden soubor chyběl,
-              nespadne kvůli tomu instalace
-              celého Service Workeru.
+              Když by náhodou jeden soubor
+              neexistoval, nespadne kvůli tomu
+              instalace celého workeru.
             */
 
             for (
@@ -104,9 +138,8 @@ self.addEventListener(
               catch (error) {
 
                 console.warn(
-                  "Nepodařilo se uložit do APP cache:",
-                  file,
-                  error
+                  "Nepodařilo se předem uložit:",
+                  file
                 );
 
               }
@@ -120,8 +153,8 @@ self.addEventListener(
 
 
     /*
-      Nová verze nemusí čekat,
-      až se zavřou všechny staré stránky.
+      Nový worker nemusí čekat,
+      až zmizí starý.
     */
 
     self.skipWaiting();
@@ -137,6 +170,11 @@ self.addEventListener(
 self.addEventListener(
   "activate",
   event => {
+
+    console.log(
+      "Zlatá udice: aktivuji offline režim v6."
+    );
+
 
     const allowedCaches = [
 
@@ -159,11 +197,6 @@ self.addEventListener(
 
               cacheNames.map(
                 cacheName => {
-
-                  /*
-                    Staré cache v1, v2, v3,
-                    v4, v5 atd. odstraníme.
-                  */
 
                   if (
                     !allowedCaches.includes(
@@ -195,8 +228,8 @@ self.addEventListener(
           () => {
 
             /*
-              Nový Service Worker převezme
-              otevřenou aplikaci.
+              Nový worker okamžitě převezme
+              otevřené stránky.
             */
 
             return self.clients.claim();
@@ -212,7 +245,12 @@ self.addEventListener(
 
 /* =========================================================
    POMOCNÁ FUNKCE
-   ODSTRANĚNÍ QUERY PARAMETRŮ
+
+   Odstraní pomocný parametr ?offline=1,
+   který používáme při stahování zvuků.
+
+   Díky tomu se stejný MP3 soubor
+   neukládá pod dvěma různými adresami.
 ========================================================= */
 
 function cleanRequest(
@@ -225,23 +263,19 @@ function cleanRequest(
     );
 
 
-  /*
-    Například:
-
-    audio/ryby/kapr-obecny.mp3?offline=1
-
-    převedeme na:
-
-    audio/ryby/kapr-obecny.mp3
-  */
-
-  url.search = "";
+  url.searchParams.delete(
+    "offline"
+  );
 
 
   return new Request(
     url.toString(),
     {
-      method: "GET"
+      method: "GET",
+      headers: request.headers,
+      mode: request.mode,
+      credentials: request.credentials,
+      redirect: request.redirect
     }
   );
 
@@ -249,7 +283,7 @@ function cleanRequest(
 
 
 /* =========================================================
-   JE TO AUDIO?
+   JE TO ZVUK?
 ========================================================= */
 
 function isAudioRequest(
@@ -262,9 +296,8 @@ function isAudioRequest(
     );
 
 
-  const pathname =
-    url.pathname
-      .toLowerCase();
+  const path =
+    url.pathname.toLowerCase();
 
 
   return (
@@ -274,25 +307,25 @@ function isAudioRequest(
 
     ||
 
-    pathname.endsWith(
+    path.endsWith(
       ".mp3"
     )
 
     ||
 
-    pathname.endsWith(
+    path.endsWith(
       ".wav"
     )
 
     ||
 
-    pathname.endsWith(
+    path.endsWith(
       ".ogg"
     )
 
     ||
 
-    pathname.endsWith(
+    path.endsWith(
       ".m4a"
     )
 
@@ -315,9 +348,8 @@ function isImageRequest(
     );
 
 
-  const pathname =
-    url.pathname
-      .toLowerCase();
+  const path =
+    url.pathname.toLowerCase();
 
 
   return (
@@ -327,26 +359,97 @@ function isImageRequest(
 
     ||
 
-    pathname.endsWith(
+    path.endsWith(
       ".jpg"
     )
 
     ||
 
-    pathname.endsWith(
+    path.endsWith(
       ".jpeg"
     )
 
     ||
 
-    pathname.endsWith(
+    path.endsWith(
       ".png"
     )
 
     ||
 
-    pathname.endsWith(
+    path.endsWith(
       ".webp"
+    )
+
+  );
+
+}
+
+
+/* =========================================================
+   JE TO HTML?
+========================================================= */
+
+function isHTMLRequest(
+  request
+) {
+
+  const url =
+    new URL(
+      request.url
+    );
+
+
+  return (
+
+    request.mode ===
+      "navigate"
+
+    ||
+
+    request.destination ===
+      "document"
+
+    ||
+
+    url.pathname.endsWith(
+      ".html"
+    )
+
+  );
+
+}
+
+
+/* =========================================================
+   JE TO SOUBOR APLIKACE,
+   KTERÝ CHCEME AKTUALIZOVAT Z INTERNETU?
+========================================================= */
+
+function isUpdateableAppFile(
+  request
+) {
+
+  const url =
+    new URL(
+      request.url
+    );
+
+
+  const path =
+    url.pathname.toLowerCase();
+
+
+  return (
+
+    path.endsWith(
+      ".js"
+    )
+
+    ||
+
+    path.endsWith(
+      ".json"
     )
 
   );
@@ -370,7 +473,8 @@ async function handleAudio(
 
 
   /*
-    Použijeme URL bez query parametrů.
+    Odstraníme ?offline=1,
+    aby byl zvuk uložen pod normální adresou.
   */
 
   const clean =
@@ -379,19 +483,17 @@ async function handleAudio(
     );
 
 
-  /*
-    Nejdříve hledáme zvuk v cache.
-  */
-
   const cached =
     await cache.match(
       clean
     );
 
 
-  if (
-    cached
-  ) {
+  /*
+    Zvuk už máme uložený.
+  */
+
+  if (cached) {
 
     return cached;
 
@@ -399,7 +501,7 @@ async function handleAudio(
 
 
   /*
-    Zvuk v cache není.
+    Nemáme ho.
 
     Zkusíme internet.
   */
@@ -411,11 +513,6 @@ async function handleAudio(
         clean
       );
 
-
-    /*
-      Uložíme pouze skutečně
-      existující soubor.
-    */
 
     if (
       response &&
@@ -434,13 +531,10 @@ async function handleAudio(
 
   }
 
-
-  catch (
-    error
-  ) {
+  catch (error) {
 
     console.warn(
-      "Zvuk není dostupný offline:",
+      "Zvuk není dostupný:",
       clean.url
     );
 
@@ -474,25 +568,17 @@ async function handleImage(
     );
 
 
-  const clean =
-    cleanRequest(
+  const cached =
+    await cache.match(
       request
     );
 
 
   /*
-    Nejprve cache.
+    Obrázek už máme.
   */
 
-  const cached =
-    await cache.match(
-      clean
-    );
-
-
-  if (
-    cached
-  ) {
+  if (cached) {
 
     return cached;
 
@@ -500,14 +586,16 @@ async function handleImage(
 
 
   /*
-    Potom internet.
+    Nemáme ho.
+
+    Zkusíme internet.
   */
 
   try {
 
     const response =
       await fetch(
-        clean
+        request
       );
 
 
@@ -517,7 +605,7 @@ async function handleImage(
     ) {
 
       await cache.put(
-        clean,
+        request,
         response.clone()
       );
 
@@ -528,14 +616,11 @@ async function handleImage(
 
   }
 
-
-  catch (
-    error
-  ) {
+  catch (error) {
 
     console.warn(
-      "Obrázek není dostupný offline:",
-      clean.url
+      "Obrázek není dostupný:",
+      request.url
     );
 
 
@@ -554,16 +639,135 @@ async function handleImage(
 
 
 /* =========================================================
-   HTML / JS / JSON / OSTATNÍ SOUBORY
+   HTML / JS / DATA
+   NETWORK FIRST
+
+   To je důležitá změna.
+
+   Pokud internet funguje:
+   -> dostaneme nejnovější soubor.
+
+   Pokud internet nefunguje:
+   -> použijeme uloženou verzi.
 ========================================================= */
 
-async function handleAppRequest(
+async function handleNetworkFirst(
   request
 ) {
 
-  /*
-    Nejdříve se podíváme do cache.
-  */
+  const cache =
+    await caches.open(
+      APP_CACHE
+    );
+
+
+  try {
+
+    /*
+      Zkusíme internet jako první.
+    */
+
+    const response =
+      await fetch(
+        request
+      );
+
+
+    if (
+      response &&
+      response.ok
+    ) {
+
+      /*
+        Novou verzi rovnou uložíme
+        pro příští offline použití.
+      */
+
+      await cache.put(
+        request,
+        response.clone()
+      );
+
+    }
+
+
+    return response;
+
+  }
+
+  catch (error) {
+
+    /*
+      Internet není dostupný.
+
+      Zkusíme cache.
+    */
+
+    const cached =
+      await cache.match(
+        request
+      );
+
+
+    if (cached) {
+
+      return cached;
+
+    }
+
+
+    /*
+      U navigace zkusíme ještě
+      hlavní stránku.
+    */
+
+    if (
+      request.mode ===
+        "navigate"
+    ) {
+
+      const fallback =
+        await cache.match(
+          "./index.html"
+        );
+
+
+      if (fallback) {
+
+        return fallback;
+
+      }
+
+    }
+
+
+    return new Response(
+      "Obsah není dostupný offline.",
+      {
+        status: 503,
+
+        headers: {
+
+          "Content-Type":
+            "text/plain; charset=utf-8"
+
+        }
+      }
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   OSTATNÍ SOUBORY
+   CACHE FIRST
+========================================================= */
+
+async function handleCacheFirst(
+  request
+) {
 
   const cached =
     await caches.match(
@@ -571,19 +775,12 @@ async function handleAppRequest(
     );
 
 
-  if (
-    cached
-  ) {
+  if (cached) {
 
     return cached;
 
   }
 
-
-  /*
-    Pokud soubor není v cache,
-    zkusíme internet.
-  */
 
   try {
 
@@ -592,11 +789,6 @@ async function handleAppRequest(
         request
       );
 
-
-    /*
-      Úspěšnou odpověď ze stejné
-      domény uložíme.
-    */
 
     if (
       response &&
@@ -608,6 +800,11 @@ async function handleAppRequest(
           request.url
         );
 
+
+      /*
+        Ukládáme jen soubory
+        z naší vlastní stránky.
+      */
 
       if (
         url.origin ===
@@ -634,15 +831,7 @@ async function handleAppRequest(
 
   }
 
-
-  catch (
-    error
-  ) {
-
-    /*
-      Pokud jsme úplně offline
-      a požadavek není v cache.
-    */
+  catch (error) {
 
     return new Response(
       "Obsah není dostupný offline.",
@@ -681,7 +870,7 @@ self.addEventListener(
 
     if (
       request.method !==
-      "GET"
+        "GET"
     ) {
 
       return;
@@ -725,9 +914,11 @@ self.addEventListener(
     ) {
 
       event.respondWith(
+
         handleAudio(
           request
         )
+
       );
 
 
@@ -747,9 +938,11 @@ self.addEventListener(
     ) {
 
       event.respondWith(
+
         handleImage(
           request
         )
+
       );
 
 
@@ -759,4 +952,76 @@ self.addEventListener(
 
 
     /* =====================================================
-       O
+       HTML
+
+       VŽDY INTERNET PRVNÍ
+    ===================================================== */
+
+    if (
+      isHTMLRequest(
+        request
+      )
+    ) {
+
+      event.respondWith(
+
+        handleNetworkFirst(
+          request
+        )
+
+      );
+
+
+      return;
+
+    }
+
+
+    /* =====================================================
+       JS + JSON
+
+       Také internet první.
+
+       Díky tomu se budou aktualizovat:
+       - ryby-data.js
+       - rostliny-data.js
+       - zivocichove-data.js
+       - otazky-data.js
+       - zvuk.js
+       - manifest.json
+    ===================================================== */
+
+    if (
+      isUpdateableAppFile(
+        request
+      )
+    ) {
+
+      event.respondWith(
+
+        handleNetworkFirst(
+          request
+        )
+
+      );
+
+
+      return;
+
+    }
+
+
+    /* =====================================================
+       OSTATNÍ
+    ===================================================== */
+
+    event.respondWith(
+
+      handleCacheFirst(
+        request
+      )
+
+    );
+
+  }
+);
