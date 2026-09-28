@@ -8,7 +8,10 @@
   - Učení
   - Procvičování
   - Co mi nejde
-  - Offline režim
+  - Offline zvuky
+
+  soundName se používá pouze tehdy,
+  když se název MP3 liší od názvu ryby.
 */
 
 
@@ -214,17 +217,46 @@ const fish = [
     name: "Pstruh duhový"
   },
 
+
+  /* ========================================
+     PSTRUH OBECNÝ
+     MP3 soubory používají zkratku "f"
+  ======================================== */
+
   {
     card: "46",
     name: "Pstruh obecný - forma mořská",
-    imageName: "pstruh-obecny"
+
+    /*
+      Obrázek:
+      pstruh-obecny.webp / jpg / png...
+    */
+    imageName: "pstruh-obecny",
+
+    /*
+      Zvuk:
+      audio/ryby/pstruh-obecny-f-morska.mp3
+    */
+    soundName: "pstruh-obecny-f-morska"
   },
 
   {
     card: "47",
     name: "Pstruh obecný - forma potoční",
-    imageName: "pstruh-obecny"
+
+    /*
+      Obrázek:
+      pstruh-obecny.webp / jpg / png...
+    */
+    imageName: "pstruh-obecny",
+
+    /*
+      Zvuk:
+      audio/ryby/pstruh-obecny-f-potocni.mp3
+    */
+    soundName: "pstruh-obecny-f-potocni"
   },
+
 
   {
     card: "50",
