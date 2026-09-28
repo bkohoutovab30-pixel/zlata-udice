@@ -31,7 +31,6 @@
       padding: 20px;
     }
 
-
     /* =========================================
        HRÁČ
     ========================================= */
@@ -65,7 +64,6 @@
       font-weight: bold;
     }
 
-
     /* =========================================
        HLAVIČKA
     ========================================= */
@@ -85,7 +83,6 @@
       color: #567;
       font-size: 17px;
     }
-
 
     /* =========================================
        MENU
@@ -132,11 +129,6 @@
       line-height: 1.4;
     }
 
-
-    /* =========================================
-       TEST
-    ========================================= */
-
     .test {
       margin-top: 12px;
       background: #17324d;
@@ -146,7 +138,6 @@
     .test p {
       color: #dce8f2;
     }
-
 
     /* =========================================
        OFFLINE
@@ -185,10 +176,6 @@
       cursor: pointer;
     }
 
-    .offline-button:active {
-      transform: scale(0.99);
-    }
-
     .offline-button:disabled {
       opacity: 0.55;
       cursor: default;
@@ -225,36 +212,23 @@
       color: #789;
     }
 
-
-    /* =========================================
-       MOBIL
-    ========================================= */
-
-    @media (max-width: 520px) {
-
-      .app {
-        padding: 15px;
-      }
-
-      .header h1 {
-        font-size: 32px;
-      }
-
-      .card {
-        padding: 20px;
-      }
-
+    .missing-files {
+      margin-top: 12px;
+      padding: 12px;
+      background: #fff7e6;
+      border-radius: 12px;
+      color: #765500;
+      font-size: 13px;
+      line-height: 1.6;
+      word-break: break-word;
     }
 
   </style>
-
 </head>
-
 
 <body>
 
 <main class="app">
-
 
   <!-- =========================================
        HRÁČ
@@ -273,13 +247,10 @@
 
     </div>
 
-
     <a
       class="change-player"
       href="profily.html">
-
       Změnit hráče
-
     </a>
 
   </div>
@@ -308,9 +279,6 @@
 
   <div class="menu">
 
-
-    <!-- RYBY -->
-
     <a
       class="card"
       href="ryby.html">
@@ -329,8 +297,6 @@
 
     </a>
 
-
-    <!-- ROSTLINY -->
 
     <a
       class="card"
@@ -351,8 +317,6 @@
     </a>
 
 
-    <!-- ŽIVOČICHOVÉ -->
-
     <a
       class="card"
       href="zivocichove.html">
@@ -372,8 +336,6 @@
     </a>
 
 
-    <!-- TESTOVÉ OTÁZKY -->
-
     <a
       class="card test"
       href="otazky.html">
@@ -391,7 +353,6 @@
       </p>
 
     </a>
-
 
   </div>
 
@@ -453,7 +414,6 @@
 
   </div>
 
-
 </main>
 
 
@@ -461,20 +421,19 @@
      SPOLEČNÁ DATA
 ========================================= -->
 
-<script src="./ryby-data.js"></script>
-<script src="./rostliny-data.js"></script>
-<script src="./zivocichove-data.js"></script>
+<script src="ryby-data.js"></script>
+<script src="rostliny-data.js"></script>
+<script src="zivocichove-data.js"></script>
 
 
 <!-- =========================================
      SPOLEČNÝ ZVUK
 ========================================= -->
 
-<script src="./zvuk.js"></script>
+<script src="zvuk.js"></script>
 
 
 <script>
-
 
 /* =========================================
    PROFILY
@@ -503,7 +462,7 @@ function getProfiles() {
 
   }
 
-  catch (error) {
+  catch {
 
     return [];
 
@@ -573,7 +532,7 @@ function loadActivePlayer() {
       "playerAvatar"
     )
     .textContent =
-      player.avatar || "🎣";
+      player.avatar;
 
 }
 
@@ -641,23 +600,20 @@ function addSounds(
 
 
       /*
-        Pokud někdy přidáme soundName,
-        použije se přímo.
+        Pokud je v datech uvedený
+        vlastní název zvuku:
 
-        Jinak se vytvoří název MP3
-        z názvu položky.
+        soundName: "neco"
+
+        použije se ten.
       */
 
-      const sourceName =
+      const fileName =
         item.soundName
           ? item.soundName
-          : item.name;
-
-
-      const fileName =
-        soundFileName(
-          sourceName
-        );
+          : soundFileName(
+              item.name
+            );
 
 
       result.push(
@@ -682,63 +638,40 @@ function createOfflineSoundList() {
   const files = [];
 
 
-  if (
-    typeof fish !==
-    "undefined"
-  ) {
-
-    addSounds(
-      files,
-      fish,
-      "audio/ryby"
-    );
-
-  }
+  addSounds(
+    files,
+    fish,
+    "audio/ryby"
+  );
 
 
-  if (
-    typeof plants !==
-    "undefined"
-  ) {
-
-    addSounds(
-      files,
-      plants,
-      "audio/rostliny"
-    );
-
-  }
+  addSounds(
+    files,
+    plants,
+    "audio/rostliny"
+  );
 
 
-  if (
-    typeof animals !==
-    "undefined"
-  ) {
-
-    addSounds(
-      files,
-      animals,
-      "audio/zivocichove"
-    );
-
-  }
+  addSounds(
+    files,
+    animals,
+    "audio/zivocichove"
+  );
 
 
   /*
-    Odstranění případných duplicit.
+    Odstranění duplicit.
   */
 
   return [
-    ...new Set(
-      files
-    )
+    ...new Set(files)
   ];
 
 }
 
 
 /* =========================================
-   ČEKÁNÍ NA SERVICE WORKER
+   SERVICE WORKER
 ========================================= */
 
 async function waitForServiceWorker() {
@@ -754,16 +687,13 @@ async function waitForServiceWorker() {
   }
 
 
-  /*
-    Počkáme, až bude worker připravený.
-  */
-
   await navigator.serviceWorker.ready;
 
 
   /*
-    Pokud stránku ještě nový worker
-    nepřevzal, chvíli počkáme.
+    Pokud aktuální stránku ještě
+    nekontroluje service worker,
+    krátce počkáme.
   */
 
   if (
@@ -823,16 +753,12 @@ async function downloadOfflineSounds() {
   if (!navigator.onLine) {
 
     status.textContent =
-      "⚠️ Pro první stažení musí být zařízení připojené k internetu.";
+      "⚠️ Pro stažení zvuků musí být zařízení připojené k internetu.";
 
     return;
 
   }
 
-
-  /* =========================================
-     PŘÍPRAVA
-  ========================================= */
 
   button.disabled =
     true;
@@ -862,11 +788,6 @@ async function downloadOfflineSounds() {
 
   catch (error) {
 
-    console.error(
-      error
-    );
-
-
     status.textContent =
       "⚠️ Offline režim se nepodařilo spustit.";
 
@@ -881,7 +802,7 @@ async function downloadOfflineSounds() {
 
 
   /* =========================================
-     SEZNAM ZVUKŮ
+     SEZNAM SOUBORŮ
   ========================================= */
 
   const files =
@@ -893,7 +814,7 @@ async function downloadOfflineSounds() {
   ) {
 
     status.textContent =
-      "⚠️ Nenašel jsem žádné zvuky ke stažení.";
+      "⚠️ Seznam zvuků je prázdný.";
 
 
     button.disabled =
@@ -909,6 +830,8 @@ async function downloadOfflineSounds() {
 
   let failed = 0;
 
+  let failedFiles = [];
+
 
   /* =========================================
      STAHOVÁNÍ
@@ -919,10 +842,6 @@ async function downloadOfflineSounds() {
     i < files.length;
     i++
   ) {
-
-    const file =
-      files[i];
-
 
     status.textContent =
       "📥 Stahuji zvuk " +
@@ -935,24 +854,29 @@ async function downloadOfflineSounds() {
     try {
 
       /*
-        Pomocný parametr donutí prohlížeč
-        provést požadavek.
+        Parametr offline=1 způsobí nový request.
 
-        Service worker parametr odstraní
-        a uloží MP3 pod normální adresou.
+        Service worker request zachytí
+        a uloží MP3 do audio cache.
       */
 
+      const separator =
+        files[i].includes("?")
+          ? "&"
+          : "?";
+
+
       const requestUrl =
-        file +
-        "?offline=1&t=" +
-        Date.now();
+        files[i] +
+        separator +
+        "offline=1";
 
 
       const response =
         await fetch(
           requestUrl,
           {
-            cache: "no-store"
+            cache: "reload"
           }
         );
 
@@ -969,10 +893,9 @@ async function downloadOfflineSounds() {
 
         failed++;
 
-        console.warn(
-          "Zvuk nenalezen:",
-          file,
-          response.status
+
+        failedFiles.push(
+          files[i]
         );
 
       }
@@ -984,10 +907,8 @@ async function downloadOfflineSounds() {
       failed++;
 
 
-      console.warn(
-        "Chyba při stahování:",
-        file,
-        error
+      failedFiles.push(
+        files[i]
       );
 
     }
@@ -1021,7 +942,8 @@ async function downloadOfflineSounds() {
   ) {
 
     status.innerHTML =
-      "✅ Hotovo! <strong>" +
+      "✅ Hotovo!<br>" +
+      "<strong>" +
       saved +
       " zvuků</strong> je připraveno pro offline použití.";
 
@@ -1029,19 +951,42 @@ async function downloadOfflineSounds() {
 
   else {
 
+    const missingList =
+      failedFiles
+        .map(
+          function(file) {
+
+            return file
+              .split("/")
+              .pop();
+
+          }
+        )
+        .join("<br>");
+
+
     status.innerHTML =
       "✅ Uloženo: <strong>" +
       saved +
       "</strong><br>" +
+
       "⚠️ Nenalezeno: <strong>" +
       failed +
-      "</strong>";
+      "</strong>" +
+
+      "<div class=\"missing-files\">" +
+
+      "<strong>Chybějící zvuky:</strong><br>" +
+
+      missingList +
+
+      "</div>";
 
   }
 
 
   /* =========================================
-     ULOŽENÍ INFORMACE O BALÍČKU
+     ULOŽENÍ STAVU
   ========================================= */
 
   if (
@@ -1050,22 +995,22 @@ async function downloadOfflineSounds() {
 
     localStorage.setItem(
       "zlataUdiceOfflineSounds",
+      JSON.stringify({
 
-      JSON.stringify(
-        {
+        date:
+          new Date()
+            .toISOString(),
 
-          date:
-            new Date()
-              .toISOString(),
+        saved:
+          saved,
 
-          saved:
-            saved,
+        failed:
+          failed,
 
-          failed:
-            failed
+        failedFiles:
+          failedFiles
 
-        }
-      )
+      })
     );
 
 
@@ -1082,7 +1027,7 @@ async function downloadOfflineSounds() {
 
 
 /* =========================================
-   STAV OFFLINE BALÍČKU
+   ZOBRAZENÍ ULOŽENÉHO STAVU
 ========================================= */
 
 function showOfflineStatus() {
@@ -1108,45 +1053,83 @@ function showOfflineStatus() {
       );
 
 
-    document
-      .getElementById(
+    const button =
+      document.getElementById(
         "offlineButton"
-      )
-      .textContent =
-        "🔄 Aktualizovat offline zvuky";
+      );
 
 
-    let message =
-      "✅ V tomto zařízení už je uložen offline balíček.";
+    const status =
+      document.getElementById(
+        "offlineStatus"
+      );
 
+
+    button.textContent =
+      "🔄 Aktualizovat offline zvuky";
+
+
+    /*
+      Pokud máme uložené informace
+      o chybějících souborech,
+      zobrazíme je.
+    */
 
     if (
-      info.saved
+      Array.isArray(
+        info.failedFiles
+      ) &&
+      info.failedFiles.length > 0
     ) {
 
-      message +=
-        "<br>Uložené zvuky: <strong>" +
+      const missingList =
+        info.failedFiles
+          .map(
+            function(file) {
+
+              return file
+                .split("/")
+                .pop();
+
+            }
+          )
+          .join("<br>");
+
+
+      status.innerHTML =
+        "✅ Uloženo: <strong>" +
         info.saved +
-        "</strong>";
+        "</strong><br>" +
+
+        "⚠️ Nenalezeno: <strong>" +
+        info.failed +
+        "</strong>" +
+
+        "<div class=\"missing-files\">" +
+
+        "<strong>Chybějící zvuky:</strong><br>" +
+
+        missingList +
+
+        "</div>";
 
     }
 
+    else {
 
-    document
-      .getElementById(
-        "offlineStatus"
-      )
-      .innerHTML =
-        message;
+      status.innerHTML =
+        "✅ V tomto zařízení už je uložen offline balíček.";
+
+    }
 
   }
 
   catch (error) {
 
     /*
-      Pokud je uložená starší
-      nebo poškozená hodnota,
-      jednoduše ji ignorujeme.
+      Pokud je v localStorage starší
+      nebo neplatná hodnota,
+      nic se nestane.
     */
 
   }
@@ -1155,19 +1138,21 @@ function showOfflineStatus() {
 
 
 /* =========================================
-   SERVICE WORKER
+   START
 ========================================= */
 
-function registerServiceWorker() {
+loadActivePlayer();
 
-  if (
-    !("serviceWorker" in navigator)
-  ) {
+showOfflineStatus();
 
-    return;
 
-  }
+/* =========================================
+   REGISTRACE SERVICE WORKERU
+========================================= */
 
+if (
+  "serviceWorker" in navigator
+) {
 
   window.addEventListener(
     "load",
@@ -1189,7 +1174,8 @@ function registerServiceWorker() {
 
 
             /*
-              Zkontrolujeme novější verzi.
+              Zkontrolujeme, zda na GitHubu
+              není novější service worker.
             */
 
             registration.update();
@@ -1213,20 +1199,7 @@ function registerServiceWorker() {
 
 }
 
-
-/* =========================================
-   START
-========================================= */
-
-loadActivePlayer();
-
-showOfflineStatus();
-
-registerServiceWorker();
-
-
 </script>
 
 </body>
-
 </html>
