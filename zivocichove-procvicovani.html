@@ -2,7 +2,6 @@
 <html lang="cs">
 
 <head>
-
   <meta charset="UTF-8">
 
   <meta
@@ -275,6 +274,10 @@
     }
 
 
+    /* =========================
+       MOBIL
+    ========================= */
+
     @media (max-width: 520px) {
 
       .app {
@@ -296,7 +299,6 @@
     }
 
   </style>
-
 </head>
 
 
@@ -419,7 +421,9 @@
 
     <!-- UKÁZAT NÁZEV -->
 
-    <div id="questionArea">
+    <div
+      id="questionArea"
+    >
 
       <button
         class="show-name"
@@ -448,7 +452,7 @@
       <button
         class="sound-button"
         type="button"
-        onclick="playCurrentAnimal()"
+        onclick="playCurrentAnimal(event)"
       >
         🔊 Poslechnout název
       </button>
@@ -508,12 +512,16 @@
 </main>
 
 
-<!-- DATA ŽIVOČICHŮ -->
+<!-- =========================
+     DATA ŽIVOČICHŮ
+========================= -->
 
 <script src="zivocichove-data.js"></script>
 
 
-<!-- SPOLEČNÝ ZVUK -->
+<!-- =========================
+     SPOLEČNÝ ZVUK
+========================= -->
 
 <script src="zvuk.js"></script>
 
@@ -543,15 +551,22 @@ function getProfiles() {
       "zlataUdiceProfiles"
     );
 
+
   if (!saved) {
+
     return [];
+
   }
+
 
   try {
 
-    return JSON.parse(saved);
+    return JSON.parse(
+      saved
+    );
 
   }
+
   catch {
 
     return [];
@@ -586,12 +601,14 @@ const activePlayer =
 
 if (activePlayer) {
 
-  document.getElementById(
-    "playerInfo"
-  ).textContent =
-    (activePlayer.avatar || "") +
-    " " +
-    (activePlayer.name || "");
+  document
+    .getElementById(
+      "playerInfo"
+    )
+    .textContent =
+      (activePlayer.avatar || "") +
+      " " +
+      (activePlayer.name || "");
 
 }
 
@@ -657,11 +674,25 @@ const nextButton =
 function createFileName(name) {
 
   return String(name)
+
     .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
+
+    .replace(
+      /[\u0300-\u036f]/g,
+      ""
+    )
+
     .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
+
+    .replace(
+      /[^a-z0-9]+/g,
+      "-"
+    )
+
+    .replace(
+      /^-+|-+$/g,
+      ""
+    );
 
 }
 
@@ -692,23 +723,32 @@ function getProgress() {
   try {
 
     const progress =
-      JSON.parse(saved);
+      JSON.parse(
+        saved
+      );
 
 
     return {
 
       total:
-        Number(progress.total) || 0,
+        Number(
+          progress.total
+        ) || 0,
 
       correct:
-        Number(progress.correct) || 0,
+        Number(
+          progress.correct
+        ) || 0,
 
       wrong:
-        Number(progress.wrong) || 0
+        Number(
+          progress.wrong
+        ) || 0
 
     };
 
   }
+
   catch {
 
     return {
@@ -726,11 +766,15 @@ function getProgress() {
    ULOŽENÍ POKROKU
 ========================= */
 
-function saveProgress(progress) {
+function saveProgress(
+  progress
+) {
 
   localStorage.setItem(
     progressKey,
-    JSON.stringify(progress)
+    JSON.stringify(
+      progress
+    )
   );
 
 }
@@ -746,22 +790,28 @@ function showProgress() {
     getProgress();
 
 
-  document.getElementById(
-    "totalScore"
-  ).textContent =
-    progress.total;
+  document
+    .getElementById(
+      "totalScore"
+    )
+    .textContent =
+      progress.total;
 
 
-  document.getElementById(
-    "correctScore"
-  ).textContent =
-    progress.correct;
+  document
+    .getElementById(
+      "correctScore"
+    )
+    .textContent =
+      progress.correct;
 
 
-  document.getElementById(
-    "wrongScore"
-  ).textContent =
-    progress.wrong;
+  document
+    .getElementById(
+      "wrongScore"
+    )
+    .textContent =
+      progress.wrong;
 
 }
 
@@ -779,21 +829,28 @@ function getMistakes() {
 
 
   if (!saved) {
+
     return [];
+
   }
 
 
   try {
 
     const mistakes =
-      JSON.parse(saved);
+      JSON.parse(
+        saved
+      );
 
 
-    return Array.isArray(mistakes)
+    return Array.isArray(
+      mistakes
+    )
       ? mistakes
       : [];
 
   }
+
   catch {
 
     return [];
@@ -807,7 +864,9 @@ function getMistakes() {
    PŘIDÁNÍ DO CHYB
 ========================= */
 
-function addMistake(item) {
+function addMistake(
+  item
+) {
 
   const mistakes =
     getMistakes();
@@ -818,11 +877,13 @@ function addMistake(item) {
       function(savedItem) {
 
         if (
-          typeof savedItem === "string"
+          typeof savedItem ===
+          "string"
         ) {
 
           return (
-            savedItem === item.name
+            savedItem ===
+            item.name
           );
 
         }
@@ -856,7 +917,9 @@ function addMistake(item) {
 
     localStorage.setItem(
       mistakesKey,
-      JSON.stringify(mistakes)
+      JSON.stringify(
+        mistakes
+      )
     );
 
   }
@@ -868,7 +931,9 @@ function addMistake(item) {
    ODSTRANĚNÍ Z CHYB
 ========================= */
 
-function removeMistake(item) {
+function removeMistake(
+  item
+) {
 
   const mistakes =
     getMistakes();
@@ -879,7 +944,8 @@ function removeMistake(item) {
       function(savedItem) {
 
         if (
-          typeof savedItem === "string"
+          typeof savedItem ===
+          "string"
         ) {
 
           return (
@@ -902,7 +968,9 @@ function removeMistake(item) {
 
   localStorage.setItem(
     mistakesKey,
-    JSON.stringify(filtered)
+    JSON.stringify(
+      filtered
+    )
   );
 
 }
@@ -914,11 +982,21 @@ function removeMistake(item) {
 
 function showPlaceholder() {
 
-  photoArea.innerHTML =
-    '<div>' +
-      '<div class="photo-icon">🖼️</div>' +
-      '<strong>Fotografii doplníme</strong>' +
-    '</div>';
+  photoArea.innerHTML = `
+
+    <div>
+
+      <div class="photo-icon">
+        🖼️
+      </div>
+
+      <strong>
+        Fotografii doplníme
+      </strong>
+
+    </div>
+
+  `;
 
 }
 
@@ -927,7 +1005,9 @@ function showPlaceholder() {
    OBRÁZEK
 ========================= */
 
-function showPhoto(item) {
+function showPhoto(
+  item
+) {
 
   showPlaceholder();
 
@@ -972,7 +1052,8 @@ function showPhoto(item) {
   );
 
 
-  let attempt = 0;
+  let attempt =
+    0;
 
 
   function tryNextImage() {
@@ -1031,46 +1112,14 @@ function showPhoto(item) {
 
 
     img.src =
-      possibleImages[attempt];
+      possibleImages[
+        attempt
+      ];
 
   }
 
 
   tryNextImage();
-
-}
-
-
-/* =========================
-   PŘEHRÁNÍ NÁZVU
-
-   Zvuk se spustí POUZE
-   po kliknutí na tlačítko.
-========================= */
-
-function playCurrentAnimal() {
-
-  if (!currentAnimal) {
-    return;
-  }
-
-
-  /*
-    Použijeme stejný zvukový systém
-    jako v ostatních částech aplikace.
-  */
-
-  if (
-    typeof playNamedSound ===
-    "function"
-  ) {
-
-    playNamedSound(
-      currentAnimal.name,
-      "audio/zivocichove"
-    );
-
-  }
 
 }
 
@@ -1090,6 +1139,74 @@ function stopCurrentSound() {
 
   }
 
+
+  /*
+    Pro jistotu zastavíme také
+    syntézu řeči v prohlížeči.
+  */
+
+  if (
+    "speechSynthesis" in window
+  ) {
+
+    window
+      .speechSynthesis
+      .cancel();
+
+  }
+
+}
+
+
+/* =========================
+   PŘEHRÁNÍ NÁZVU
+
+   ZVUK JE POVOLEN POUZE
+   PŘI SKUTEČNÉM KLIKNUTÍ
+   UŽIVATELE.
+========================= */
+
+function playCurrentAnimal(
+  event
+) {
+
+  /*
+    Bez skutečného kliknutí
+    se nic nepřehraje.
+  */
+
+  if (
+    !event ||
+    !event.isTrusted
+  ) {
+
+    return;
+
+  }
+
+
+  if (!currentAnimal) {
+
+    return;
+
+  }
+
+
+  stopCurrentSound();
+
+
+  if (
+    typeof playNamedSound ===
+    "function"
+  ) {
+
+    playNamedSound(
+      currentAnimal.name,
+      "audio/zivocichove"
+    );
+
+  }
+
 }
 
 
@@ -1099,12 +1216,20 @@ function stopCurrentSound() {
 
 function chooseAnimal() {
 
+  /*
+    Při načtení nové otázky
+    vždy zastavíme případný zvuk.
+  */
+
   stopCurrentSound();
 
 
   if (
-    typeof animals === "undefined" ||
-    !Array.isArray(animals) ||
+    typeof animals ===
+      "undefined" ||
+    !Array.isArray(
+      animals
+    ) ||
     animals.length === 0
   ) {
 
@@ -1121,8 +1246,8 @@ function chooseAnimal() {
 
 
   /*
-    Neopakujeme stejného živočicha
-    hned dvakrát za sebou.
+    Stejný živočich nebude
+    dvakrát za sebou.
   */
 
   if (
@@ -1194,13 +1319,21 @@ function chooseAnimal() {
 
 
 /* =========================
-   UKÁZAT ODPOVĚĎ
+   UKÁZAT NÁZEV
 
-   DŮLEŽITÉ:
-   tady se zvuk NEPOUŠTÍ.
+   TADY SE ZVUK
+   NESPOUŠTÍ.
 ========================= */
 
 function showAnswer() {
+
+  /*
+    Pro jistotu zastavíme vše,
+    co by případně hrálo.
+  */
+
+  stopCurrentSound();
+
 
   questionArea.style.display =
     "none";
@@ -1208,6 +1341,14 @@ function showAnswer() {
 
   answerArea.style.display =
     "block";
+
+
+  /*
+    POZOR:
+    žádné playCurrentAnimal()
+    ani playNamedSound()
+    zde není.
+  */
 
 }
 
@@ -1316,7 +1457,12 @@ function nextAnimal() {
 
 /* =========================
    START
+
+   PŘI STARTU SE ZVUK
+   NEPŘEHRÁVÁ.
 ========================= */
+
+stopCurrentSound();
 
 showProgress();
 
