@@ -270,6 +270,23 @@
       line-height: 1.6;
       overflow-wrap: anywhere;
     }
+
+    /* =========================================
+       AUTOR
+    ========================================= */
+
+    .author {
+      margin-top: 28px;
+      padding: 15px 10px 8px;
+      text-align: center;
+      color: #789;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .author strong {
+      color: #567;
+    }
   </style>
 </head>
 
@@ -486,6 +503,14 @@
 
   </div>
 
+
+  <!-- AUTOR -->
+
+  <div class="author">
+    © 2026 Zlatá udice · vytvořila
+    <strong>Barbora Hozmanová</strong>
+  </div>
+
 </main>
 
 
@@ -617,9 +642,6 @@ function createFileName(text) {
 
 /* =========================================
    NÁZEV OBRÁZKU RYBY
-
-   Ryby mají speciální pravidlo
-   pro formy pstruha.
 ========================================= */
 
 function createFishImageName(name) {
@@ -774,12 +796,6 @@ function createImageCandidates(
   const result = [];
 
 
-  /*
-    Pokud je obrázek zadaný přímo
-    v datovém souboru, zkusíme ho
-    jako první.
-  */
-
   if (
     item &&
     item.image
@@ -854,10 +870,6 @@ function createImageCandidates(
 
 /* =========================================
    ZJIŠTĚNÍ EXISTUJÍCÍCH OBRÁZKŮ
-
-   Neexistující varianty nejsou chyba.
-   Aplikace je zkouší pouze proto,
-   aby našla skutečné fotografie.
 ========================================= */
 
 async function findExistingImages(
@@ -909,10 +921,7 @@ async function findExistingImages(
 
     catch (error) {
 
-      /*
-        Neexistující varianta fotografie
-        se ignoruje.
-      */
+      /* neexistující varianta se ignoruje */
 
     }
 
@@ -925,7 +934,7 @@ async function findExistingImages(
 
 
 /* =========================================
-   STAŽENÍ JEDNÉHO ZVUKU
+   STAŽENÍ ZVUKU
 ========================================= */
 
 async function downloadSound(
@@ -965,10 +974,7 @@ async function downloadSound(
 
 
 /* =========================================
-   STAŽENÍ JEDNOHO OBRÁZKU
-
-   Service worker ho při načtení
-   automaticky uloží do IMAGE_CACHE.
+   STAŽENÍ OBRÁZKU
 ========================================= */
 
 async function downloadImage(
@@ -1142,9 +1148,7 @@ async function downloadOfflineContent() {
   }
 
 
-  /* =====================================
-     ZVUKY
-  ===================================== */
+  /* ZVUKY */
 
   for (
     let i = 0;
@@ -1192,9 +1196,7 @@ async function downloadOfflineContent() {
   }
 
 
-  /* =====================================
-     RYBY
-  ===================================== */
+  /* RYBY */
 
   for (
     let i = 0;
@@ -1226,14 +1228,6 @@ async function downloadOfflineContent() {
     }
 
 
-    /*
-      findExistingImages už obrázky načetlo
-      přes service worker a tím je zároveň
-      uložilo do IMAGE_CACHE.
-
-      Přesto je ještě jednou ověříme.
-    */
-
     for (
       const file of files
     ) {
@@ -1258,9 +1252,7 @@ async function downloadOfflineContent() {
   }
 
 
-  /* =====================================
-     ROSTLINY
-  ===================================== */
+  /* ROSTLINY */
 
   for (
     let i = 0;
@@ -1316,9 +1308,7 @@ async function downloadOfflineContent() {
   }
 
 
-  /* =====================================
-     ŽIVOČICHOVÉ
-  ===================================== */
+  /* ŽIVOČICHOVÉ */
 
   for (
     let i = 0;
@@ -1445,12 +1435,6 @@ async function downloadOfflineContent() {
   );
 
 
-  /*
-    Zachováme i původní informaci
-    o offline zvucích pro případ,
-    že ji používá jiná část aplikace.
-  */
-
   localStorage.setItem(
     "zlataUdiceOfflineSounds",
     JSON.stringify({
@@ -1498,12 +1482,6 @@ function showOfflineStatus() {
 
 
   if (!saved) {
-
-    /*
-      Pokud existuje pouze starý balíček
-      zvuků, nabídneme aktualizaci
-      na kompletní offline obsah.
-    */
 
     const oldSounds =
       localStorage.getItem(
