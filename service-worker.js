@@ -1,6 +1,6 @@
 /* =========================================================
    ZLATÁ UDICE 2026
-   SERVICE WORKER – OFFLINE REŽIM v6
+   SERVICE WORKER – OFFLINE REŽIM v7
 
    - HTML: NETWORK FIRST
      -> při internetu vždy zkusí nejnovější verzi
@@ -13,17 +13,20 @@
 
    - OBRÁZKY: CACHE FIRST
      -> jednou načtené obrázky zůstávají offline
+
+   - ZKUŠEBNÍ TEST:
+     -> je součástí offline aplikace
 ========================================================= */
 
 
 const APP_CACHE =
-  "zlata-udice-app-v6";
+  "zlata-udice-app-v7";
 
 const AUDIO_CACHE =
-  "zlata-udice-audio-v6";
+  "zlata-udice-audio-v7";
 
 const IMAGE_CACHE =
-  "zlata-udice-images-v6";
+  "zlata-udice-images-v7";
 
 
 /* =========================================================
@@ -46,6 +49,7 @@ const APP_FILES = [
   "./rostliny.html",
   "./zivocichove.html",
   "./otazky.html",
+  "./zkusebni-test.html",
 
 
   /* RYBY */
@@ -103,7 +107,7 @@ self.addEventListener(
   event => {
 
     console.log(
-      "Zlatá udice: instaluji offline režim v6."
+      "Zlatá udice: instaluji offline režim v7."
     );
 
 
@@ -172,7 +176,7 @@ self.addEventListener(
   event => {
 
     console.log(
-      "Zlatá udice: aktivuji offline režim v6."
+      "Zlatá udice: aktivuji offline režim v7."
     );
 
 
@@ -642,8 +646,6 @@ async function handleImage(
    HTML / JS / DATA
    NETWORK FIRST
 
-   To je důležitá změna.
-
    Pokud internet funguje:
    -> dostaneme nejnovější soubor.
 
@@ -953,7 +955,6 @@ self.addEventListener(
 
     /* =====================================================
        HTML
-
        VŽDY INTERNET PRVNÍ
     ===================================================== */
 
@@ -979,16 +980,7 @@ self.addEventListener(
 
     /* =====================================================
        JS + JSON
-
-       Také internet první.
-
-       Díky tomu se budou aktualizovat:
-       - ryby-data.js
-       - rostliny-data.js
-       - zivocichove-data.js
-       - otazky-data.js
-       - zvuk.js
-       - manifest.json
+       TAKÉ INTERNET PRVNÍ
     ===================================================== */
 
     if (
