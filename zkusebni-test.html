@@ -1,489 +1,559 @@
 <!DOCTYPE html>
 <html lang="cs">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="robots" content="noindex, nofollow">
-
-  <title>Zkušební test | Zlatá udice 2026</title>
-
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #eef7fb;
-      color: #17324d;
-    }
-
-    .app {
-      max-width: 700px;
-      margin: auto;
-      min-height: 100vh;
-      padding: 18px;
-    }
-
-    .topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 18px;
-    }
-
-    .back {
-      color: #567;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    .player {
-      color: #567;
-      font-size: 14px;
-      font-weight: bold;
-      text-align: right;
-    }
-
-    .header {
-      text-align: center;
-      margin-bottom: 18px;
-    }
-
-    .header-icon {
-      font-size: 45px;
-    }
-
-    .header h1 {
-      margin: 5px 0;
-      font-size: 29px;
-    }
-
-    .header p {
-      margin: 5px 0;
-      color: #678;
-      line-height: 1.4;
-    }
-
-    .start-box,
-    .test-card,
-    .result-box {
-      background: white;
-      border-radius: 22px;
-      padding: 22px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-    }
-
-    .start-box {
-      text-align: center;
-    }
-
-    .rules {
-      background: #f3f8fb;
-      border-radius: 16px;
-      padding: 16px;
-      margin: 18px 0;
-      text-align: left;
-      line-height: 1.65;
-    }
-
-    .rules-title {
-      text-align: center;
-      font-size: 19px;
-      font-weight: bold;
-      margin-bottom: 12px;
-    }
-
-    .start-button,
-    .next-button,
-    .restart-button,
-    .mistakes-button,
-    .end-test-button {
-      width: 100%;
-      border-radius: 14px;
-      padding: 16px;
-      font-size: 17px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .start-button,
-    .next-button,
-    .restart-button {
-      border: none;
-      background: #17324d;
-      color: white;
-    }
-
-    .next-button {
-      margin-top: 20px;
-    }
-
-    .next-button:disabled {
-      opacity: 0.45;
-      cursor: default;
-    }
-
-    .end-test-button {
-      margin-top: 12px;
-      border: 2px solid #d7e5ec;
-      background: white;
-      color: #a64f4f;
-    }
-
-    .end-test-button:hover {
-      background: #fff1f1;
-      border-color: #d9aaaa;
-    }
-
-    .mistakes-button {
-      display: none;
-      margin-top: 18px;
-      border: 2px solid #f1c7d2;
-      background: #ffe9ee;
-      color: #9b3650;
-    }
-
-    .mistakes-button:disabled {
-      opacity: 0.65;
-      cursor: default;
-    }
-
-    .save-message {
-      display: none;
-      margin-top: 12px;
-      padding: 13px;
-      border-radius: 12px;
-      background: #edf8f0;
-      color: #387848;
-      text-align: center;
-      font-weight: bold;
-      line-height: 1.5;
-    }
-
-    .progress-wrap {
-      margin-bottom: 15px;
-    }
-
-    .progress-info {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 7px;
-      color: #567;
-      font-size: 14px;
-      font-weight: bold;
-    }
-
-    .progress-bar {
-      height: 10px;
-      background: #dce9ef;
-      border-radius: 20px;
-      overflow: hidden;
-    }
-
-    .progress-fill {
-      height: 100%;
-      width: 0%;
-      background: #17324d;
-      transition: width 0.25s;
-    }
-
-    .phase {
-      text-align: center;
-      margin: 0 0 12px;
-      color: #789;
-      font-size: 13px;
-      font-weight: bold;
-    }
-
-    .category {
-      display: inline-block;
-      background: #e6f2f7;
-      border-radius: 20px;
-      padding: 7px 12px;
-      margin-bottom: 14px;
-      color: #456;
-      font-size: 13px;
-      font-weight: bold;
-    }
-
-    .question-text {
-      font-size: 21px;
-      line-height: 1.4;
-      font-weight: bold;
-      margin-bottom: 18px;
-    }
-
-    .photo {
-      width: 100%;
-      min-height: 280px;
-      background: #f3f7f9;
-      border-radius: 18px;
-      display: none;
-      justify-content: center;
-      align-items: center;
-      margin-bottom: 18px;
-      overflow: hidden;
-    }
-
-    .test-photo {
-      display: block;
-      width: 100%;
-      height: auto;
-      max-height: 430px;
-      object-fit: contain;
-      border-radius: 18px;
-    }
-
-    .photo-placeholder {
-      width: 100%;
-      min-height: 280px;
-      border: 2px dashed #c7d8e2;
-      border-radius: 18px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-      color: #789;
-      text-align: center;
-    }
-
-    .photo-icon {
-      font-size: 55px;
-      margin-bottom: 10px;
-    }
-
-    .answers {
-      display: grid;
-      gap: 12px;
-    }
-
-    .answer-row {
-      display: grid;
-      grid-template-columns: 1fr 52px;
-      gap: 8px;
-    }
-
-    .answer-button {
-      width: 100%;
-      border: 2px solid #d7e5ec;
-      background: white;
-      color: #17324d;
-      border-radius: 14px;
-      padding: 15px;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-      text-align: left;
-    }
-
-    .answer-button.selected {
-      border-color: #17324d;
-      background: #eaf3f7;
-    }
-
-    .answer-sound {
-      border: none;
-      border-radius: 14px;
-      background: #e6f2f7;
-      color: #17324d;
-      font-size: 20px;
-      cursor: pointer;
-    }
-
-    .written-answer {
-      width: 100%;
-      border: 2px solid #d7e5ec;
-      border-radius: 14px;
-      padding: 16px;
-      font-size: 18px;
-      color: #17324d;
-      outline: none;
-    }
-
-    .written-answer:focus {
-      border-color: #17324d;
-    }
-
-    .hint {
-      margin-top: 9px;
-      color: #789;
-      font-size: 13px;
-      line-height: 1.4;
-    }
-
-    .sound-row {
-      margin: 15px 0;
-      text-align: center;
-    }
-
-    .sound-button {
-      border: none;
-      border-radius: 14px;
-      background: #e6f2f7;
-      color: #17324d;
-      padding: 11px 18px;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .result-box {
-      display: none;
-    }
-
-    .score-main {
-      text-align: center;
-      margin-bottom: 25px;
-    }
-
-    .trophy {
-      font-size: 60px;
-    }
-
-    .score-main h2 {
-      font-size: 28px;
-      margin: 8px 0;
-    }
-
-    .big-score {
-      font-size: 38px;
-      font-weight: bold;
-    }
-
-    .percentage {
-      color: #678;
-      margin-top: 5px;
-      font-size: 18px;
-    }
-
-    .summary-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin: 20px 0;
-    }
-
-    .summary-card {
-      background: #f3f8fb;
-      border-radius: 14px;
-      padding: 14px 8px;
-      text-align: center;
-    }
-
-    .summary-card strong {
-      display: block;
-      font-size: 22px;
-      margin-bottom: 4px;
-    }
-
-    .summary-card span {
-      color: #678;
-      font-size: 13px;
-    }
-
-    .review-title {
-      margin-top: 30px;
-      margin-bottom: 12px;
-      font-size: 22px;
-    }
-
-    .review-item {
-      border-radius: 16px;
-      padding: 16px;
-      margin-bottom: 13px;
-      background: #fff1f1;
-      border-left: 5px solid #c77;
-    }
-
-    .review-number {
-      font-size: 12px;
-      color: #789;
-      font-weight: bold;
-      margin-bottom: 7px;
-    }
-
-    .review-question {
-      font-weight: bold;
-      line-height: 1.4;
-      margin-bottom: 11px;
-    }
-
-    .review-line {
-      margin: 6px 0;
-      line-height: 1.4;
-    }
-
-    .your-answer {
-      color: #a64f4f;
-    }
-
-    .correct-answer {
-      color: #387848;
-    }
-
-    .points {
-      font-weight: bold;
-      margin-top: 9px;
-    }
-
-    .review-photo {
-      width: 100%;
-      max-height: 300px;
-      object-fit: contain;
-      background: white;
-      border-radius: 12px;
-      margin: 10px 0 14px;
-    }
-
-    .perfect-box {
-      background: #edf8f0;
-      border-radius: 16px;
-      padding: 18px;
-      text-align: center;
-      margin: 20px 0;
-      color: #387848;
-      font-weight: bold;
-    }
-
-    .restart-button {
-      margin-top: 20px;
-    }
-
-    .hidden {
-      display: none !important;
-    }
-
-    @media (max-width: 520px) {
-      .app {
-        padding: 14px;
-      }
-
-      .start-box,
-      .test-card,
-      .result-box {
-        padding: 17px;
-      }
-
-      .photo,
-      .photo-placeholder {
-        min-height: 220px;
-      }
-
-      .test-photo {
-        max-height: 350px;
-      }
-
-      .question-text {
-        font-size: 19px;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+
+<title>Zkušební test | Zlatá udice 2026</title>
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #eef7fb;
+  color: #17324d;
+}
+
+.app {
+  max-width: 700px;
+  margin: auto;
+  min-height: 100vh;
+  padding: 18px;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.back {
+  color: #567;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.player {
+  color: #567;
+  font-size: 14px;
+  font-weight: bold;
+  text-align: right;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 18px;
+}
+
+.header-icon { font-size: 45px; }
+
+.header h1 {
+  margin: 5px 0;
+  font-size: 29px;
+}
+
+.header p {
+  margin: 5px 0;
+  color: #678;
+}
+
+.start-box,
+.test-card,
+.result-box,
+.history-box {
+  background: white;
+  border-radius: 22px;
+  padding: 22px;
+  box-shadow: 0 4px 15px rgba(0,0,0,.08);
+}
+
+.start-box { text-align: center; }
+
+.rules {
+  background: #f3f8fb;
+  border-radius: 16px;
+  padding: 16px;
+  margin: 18px 0;
+  text-align: left;
+  line-height: 1.65;
+}
+
+.rules-title {
+  text-align: center;
+  font-size: 19px;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.resume-box {
+  display: none;
+  background: #fff8df;
+  border: 2px solid #f0d889;
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 18px;
+}
+
+.resume-title {
+  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 6px;
+}
+
+.resume-info {
+  color: #6d654a;
+  margin-bottom: 13px;
+}
+
+button {
+  font-family: inherit;
+}
+
+.start-button,
+.resume-button,
+.new-button,
+.history-button,
+.next-button,
+.restart-button,
+.mistakes-button,
+.end-test-button,
+.back-results-button {
+  width: 100%;
+  border-radius: 14px;
+  padding: 15px;
+  font-size: 17px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.start-button,
+.resume-button,
+.next-button,
+.restart-button {
+  border: none;
+  background: #17324d;
+  color: white;
+}
+
+.resume-button {
+  margin-bottom: 9px;
+}
+
+.new-button,
+.history-button,
+.back-results-button {
+  border: 2px solid #d7e5ec;
+  background: white;
+  color: #17324d;
+}
+
+.history-button {
+  margin-top: 12px;
+}
+
+.new-button {
+  margin-top: 3px;
+}
+
+.next-button {
+  margin-top: 20px;
+}
+
+.next-button:disabled {
+  opacity: .45;
+  cursor: default;
+}
+
+.end-test-button {
+  margin-top: 12px;
+  border: 2px solid #e3caca;
+  background: white;
+  color: #a64f4f;
+}
+
+.mistakes-button {
+  display: none;
+  margin-top: 18px;
+  border: 2px solid #f1c7d2;
+  background: #ffe9ee;
+  color: #9b3650;
+}
+
+.mistakes-button:disabled {
+  opacity: .65;
+  cursor: default;
+}
+
+.save-message {
+  display: none;
+  margin-top: 12px;
+  padding: 13px;
+  border-radius: 12px;
+  background: #edf8f0;
+  color: #387848;
+  text-align: center;
+  font-weight: bold;
+  line-height: 1.5;
+}
+
+.progress-wrap { margin-bottom: 15px; }
+
+.progress-info {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 7px;
+  color: #567;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.progress-bar {
+  height: 10px;
+  background: #dce9ef;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0;
+  background: #17324d;
+  transition: width .25s;
+}
+
+.phase {
+  text-align: center;
+  margin-bottom: 12px;
+  color: #789;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.category {
+  display: inline-block;
+  background: #e6f2f7;
+  border-radius: 20px;
+  padding: 7px 12px;
+  margin-bottom: 14px;
+  color: #456;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.question-text {
+  font-size: 21px;
+  line-height: 1.4;
+  font-weight: bold;
+  margin-bottom: 18px;
+}
+
+.photo {
+  width: 100%;
+  min-height: 280px;
+  background: #f3f7f9;
+  border-radius: 18px;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 18px;
+  overflow: hidden;
+}
+
+.test-photo {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 430px;
+  object-fit: contain;
+}
+
+.photo-placeholder {
+  width: 100%;
+  min-height: 280px;
+  border: 2px dashed #c7d8e2;
+  border-radius: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  color: #789;
+  text-align: center;
+}
+
+.photo-icon {
+  font-size: 55px;
+  margin-bottom: 10px;
+}
+
+.answers {
+  display: grid;
+  gap: 12px;
+}
+
+.answer-row {
+  display: grid;
+  grid-template-columns: 1fr 52px;
+  gap: 8px;
+}
+
+.answer-button {
+  width: 100%;
+  border: 2px solid #d7e5ec;
+  background: white;
+  color: #17324d;
+  border-radius: 14px;
+  padding: 15px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  text-align: left;
+}
+
+.answer-button.selected {
+  border-color: #17324d;
+  background: #eaf3f7;
+}
+
+.answer-sound {
+  border: none;
+  border-radius: 14px;
+  background: #e6f2f7;
+  color: #17324d;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.written-answer {
+  width: 100%;
+  border: 2px solid #d7e5ec;
+  border-radius: 14px;
+  padding: 16px;
+  font-size: 18px;
+  color: #17324d;
+  outline: none;
+}
+
+.written-answer:focus {
+  border-color: #17324d;
+}
+
+.hint {
+  margin-top: 9px;
+  color: #789;
+  font-size: 13px;
+}
+
+.sound-row {
+  margin: 15px 0;
+  text-align: center;
+}
+
+.sound-button {
+  border: none;
+  border-radius: 14px;
+  background: #e6f2f7;
+  color: #17324d;
+  padding: 11px 18px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.result-box,
+.history-box {
+  display: none;
+}
+
+.score-main {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.trophy { font-size: 60px; }
+
+.score-main h2 {
+  font-size: 28px;
+  margin: 8px 0;
+}
+
+.big-score {
+  font-size: 38px;
+  font-weight: bold;
+}
+
+.percentage {
+  color: #678;
+  margin-top: 5px;
+  font-size: 18px;
+}
+
+.completion-info {
+  background: #f3f8fb;
+  border-radius: 14px;
+  padding: 12px;
+  margin: 15px 0;
+  text-align: center;
+  line-height: 1.6;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.summary-card {
+  background: #f3f8fb;
+  border-radius: 14px;
+  padding: 14px 8px;
+  text-align: center;
+}
+
+.summary-card strong {
+  display: block;
+  font-size: 22px;
+  margin-bottom: 4px;
+}
+
+.summary-card span {
+  color: #678;
+  font-size: 13px;
+}
+
+.review-title {
+  margin-top: 30px;
+  margin-bottom: 12px;
+  font-size: 22px;
+}
+
+.review-item {
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 13px;
+  background: #fff1f1;
+  border-left: 5px solid #c77;
+}
+
+.review-number {
+  font-size: 12px;
+  color: #789;
+  font-weight: bold;
+  margin-bottom: 7px;
+}
+
+.review-question {
+  font-weight: bold;
+  line-height: 1.4;
+  margin-bottom: 11px;
+}
+
+.review-line {
+  margin: 6px 0;
+  line-height: 1.4;
+}
+
+.your-answer { color: #a64f4f; }
+.correct-answer { color: #387848; }
+
+.review-photo {
+  width: 100%;
+  max-height: 300px;
+  object-fit: contain;
+  background: white;
+  border-radius: 12px;
+  margin: 10px 0 14px;
+}
+
+.perfect-box {
+  background: #edf8f0;
+  border-radius: 16px;
+  padding: 18px;
+  text-align: center;
+  margin: 20px 0;
+  color: #387848;
+  font-weight: bold;
+}
+
+.restart-button {
+  margin-top: 20px;
+}
+
+.history-title {
+  text-align: center;
+  margin-top: 0;
+}
+
+.history-empty {
+  text-align: center;
+  padding: 25px 5px;
+  color: #678;
+}
+
+.history-item {
+  background: #f3f8fb;
+  border-radius: 16px;
+  padding: 15px;
+  margin-bottom: 12px;
+}
+
+.history-date {
+  font-size: 13px;
+  color: #789;
+  margin-bottom: 5px;
+}
+
+.history-score {
+  font-size: 21px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.history-detail {
+  font-size: 14px;
+  line-height: 1.65;
+  color: #567;
+}
+
+.back-results-button {
+  margin-top: 15px;
+}
+
+.hidden {
+  display: none !important;
+}
+
+@media (max-width:520px) {
+  .app { padding: 14px; }
+
+  .start-box,
+  .test-card,
+  .result-box,
+  .history-box {
+    padding: 17px;
+  }
+
+  .photo,
+  .photo-placeholder {
+    min-height: 220px;
+  }
+
+  .test-photo {
+    max-height: 350px;
+  }
+
+  .question-text {
+    font-size: 19px;
+  }
+}
+</style>
 </head>
 
 <body>
@@ -498,7 +568,6 @@
   <div class="header">
     <div class="header-icon">🏆🎣</div>
     <h1>Zkušební test</h1>
-    <p>Krajské kolo – Zlatá udice 2026</p>
   </div>
 
 
@@ -506,44 +575,78 @@
 
   <div class="start-box" id="startBox">
 
-    <h2>Připraven?</h2>
-
-    <p>
-      Vyzkoušej si kompletní soutěžní test nanečisto.
-    </p>
-
-    <div class="rules">
-
-      <div class="rules-title">
-        📋 Krajské kolo
+    <div class="resume-box" id="resumeBox">
+      <div class="resume-title">
+        ▶️ Máš rozdělaný test
       </div>
 
-      <strong>🧠 Teoretický test – 50 otázek / 100 bodů</strong><br>
-      • Přírodovědné znalosti – 18<br>
-      • Chov ryb – 9<br>
-      • Zákon o rybářství – 11<br>
-      • Stanovy ČRS – 4<br>
-      • Rybolovná technika – 5<br>
-      • Závodní lov ryb udicí – 3<br><br>
+      <div class="resume-info" id="resumeInfo"></div>
 
-      <strong>📷 Poznávačka – 50 fotografií / 100 bodů</strong><br>
-      🐟 Ryby – 20<br>
-      🌿 Rostliny – 15<br>
-      🦆 Živočichové – 15<br><br>
+      <button
+        class="resume-button"
+        type="button"
+        onclick="resumeTest()"
+      >
+        ▶️ Pokračovat v testu
+      </button>
 
-      ⭐ Každá položka = <strong>2 body</strong><br>
-      🏆 Maximum = <strong>200 bodů</strong><br><br>
+      <button
+        class="new-button"
+        type="button"
+        onclick="confirmNewTest()"
+      >
+        🔄 Začít nový test
+      </button>
+    </div>
 
-      U poznávačky napiš celý správný název.
-      Výsledek a chyby uvidíš až na konci.
+
+    <div id="normalStart">
+
+      <h2>Připraven?</h2>
+
+      <p>
+        Vyzkoušej si kompletní soutěžní test nanečisto.
+      </p>
+
+      <div class="rules">
+
+        <div class="rules-title">
+          📋 Krajské kolo
+        </div>
+
+        <strong>🧠 Teoretický test – 50 otázek / 100 bodů</strong><br>
+        • Přírodovědné znalosti – 18<br>
+        • Chov ryb – 9<br>
+        • Zákon o rybářství – 11<br>
+        • Stanovy ČRS – 4<br>
+        • Rybolovná technika – 5<br>
+        • Závodní lov ryb udicí – 3<br><br>
+
+        <strong>📷 Poznávačka – 50 fotografií / 100 bodů</strong><br>
+        🐟 Ryby – 20<br>
+        🌿 Rostliny – 15<br>
+        🦆 Živočichové – 15<br><br>
+
+        ⭐ Každá položka = <strong>2 body</strong><br>
+        🏆 Maximum = <strong>200 bodů</strong>
+      </div>
+
+      <button
+        class="start-button"
+        type="button"
+        onclick="startNewTest()"
+      >
+        ▶️ Spustit test
+      </button>
 
     </div>
 
     <button
-      class="start-button"
+      class="history-button"
       type="button"
-      onclick="startTest()">
-      ▶️ Spustit test
+      onclick="showHistory()"
+    >
+      📊 Moje výsledky
     </button>
 
   </div>
@@ -559,100 +662,70 @@
 
       <div class="progress-info">
         <span id="questionCounter"></span>
-        <span id="scorePossible"></span>
+        <span>max. 200 bodů</span>
       </div>
 
       <div class="progress-bar">
-        <div
-          class="progress-fill"
-          id="progressFill">
-        </div>
+        <div class="progress-fill" id="progressFill"></div>
       </div>
 
     </div>
 
     <div class="category" id="category"></div>
 
-    <div
-      class="question-text"
-      id="questionText">
-    </div>
+    <div class="question-text" id="questionText"></div>
 
-    <div
-      class="photo"
-      id="photoArea">
-    </div>
+    <div class="photo" id="photoArea"></div>
 
-    <div
-      class="sound-row hidden"
-      id="soundRow">
-
+    <div class="sound-row hidden" id="soundRow">
       <button
         class="sound-button"
         id="questionSoundButton"
-        type="button">
+        type="button"
+      >
         🔊 Přečíst otázku
       </button>
-
     </div>
 
-    <div
-      class="answers"
-      id="answersArea">
-    </div>
+    <div class="answers" id="answersArea"></div>
 
     <button
       class="next-button"
       id="nextButton"
       type="button"
       onclick="saveAndNext()"
-      disabled>
+      disabled
+    >
       Další →
     </button>
 
     <button
       class="end-test-button"
-      id="endTestButton"
       type="button"
-      onclick="endTestEarly()">
+      onclick="endTestEarly()"
+    >
       ⏹️ Ukončit test
     </button>
 
   </div>
 
 
-  <!-- VÝSLEDEK -->
+  <!-- VÝSLEDKY -->
 
-  <div
-    class="result-box"
-    id="resultBox">
+  <div class="result-box" id="resultBox">
 
     <div class="score-main">
-
-      <div
-        class="trophy"
-        id="resultIcon">
-        🏆
-      </div>
+      <div class="trophy" id="resultIcon">🏆</div>
 
       <h2>Výsledek testu</h2>
 
-      <div
-        class="big-score"
-        id="finalScore">
-      </div>
-
-      <div
-        class="percentage"
-        id="finalPercentage">
-      </div>
-
+      <div class="big-score" id="finalScore"></div>
+      <div class="percentage" id="finalPercentage"></div>
     </div>
 
-    <div
-      class="summary-grid"
-      id="summaryGrid">
-    </div>
+    <div class="completion-info" id="completionInfo"></div>
+
+    <div class="summary-grid" id="summaryGrid"></div>
 
     <div id="reviewArea"></div>
 
@@ -660,20 +733,46 @@
       class="mistakes-button"
       id="mistakesButton"
       type="button"
-      onclick="saveRecognitionMistakes()">
+      onclick="saveRecognitionMistakes()"
+    >
       ❤️ Přidat chyby do „Co mi nejde“
     </button>
 
-    <div
-      class="save-message"
-      id="saveMessage">
-    </div>
+    <div class="save-message" id="saveMessage"></div>
 
     <button
       class="restart-button"
       type="button"
-      onclick="startTest()">
+      onclick="startNewTest()"
+    >
       🔄 Spustit nový test
+    </button>
+
+    <button
+      class="history-button"
+      type="button"
+      onclick="showHistory()"
+    >
+      📊 Moje výsledky
+    </button>
+
+  </div>
+
+
+  <!-- HISTORIE -->
+
+  <div class="history-box" id="historyBox">
+
+    <h2 class="history-title">📊 Moje výsledky</h2>
+
+    <div id="historyList"></div>
+
+    <button
+      class="back-results-button"
+      type="button"
+      onclick="closeHistory()"
+    >
+      ← Zpět
     </button>
 
   </div>
@@ -681,23 +780,19 @@
 </main>
 
 
-<!-- DATA -->
-
 <script src="otazky-data.js"></script>
 <script src="ryby-data.js"></script>
 <script src="rostliny-data.js"></script>
 <script src="zivocichove-data.js"></script>
 <script src="zvuk.js"></script>
 
-
 <script>
 
-/* ========================================
-   NASTAVENÍ KRAJSKÉHO KOLA
-======================================== */
+/* =====================================================
+   NASTAVENÍ
+===================================================== */
 
 const TEST_CONFIG = {
-
   theorySections: {
     1: 18,
     2: 9,
@@ -712,26 +807,101 @@ const TEST_CONFIG = {
   animals: 15
 };
 
-
 const POINTS_PER_QUESTION = 2;
 
 
-/* ========================================
+/* =====================================================
+   PROFIL
+===================================================== */
+
+const activeProfileId =
+  localStorage.getItem("zlataUdiceActiveProfile") || "default";
+
+
+function getProfiles() {
+  try {
+    return JSON.parse(
+      localStorage.getItem("zlataUdiceProfiles")
+    ) || [];
+  } catch {
+    return [];
+  }
+}
+
+
+const activePlayer =
+  getProfiles().find(function(profile) {
+    return String(profile.id) === String(activeProfileId);
+  });
+
+
+if (activePlayer) {
+  document.getElementById("playerInfo").textContent =
+    (activePlayer.avatar || "") +
+    " " +
+    (activePlayer.name || "");
+}
+
+
+/* =====================================================
+   KLÍČE LOCALSTORAGE
+===================================================== */
+
+const PROGRESS_KEY =
+  "zlataUdiceTrialTestProgress_" +
+  activeProfileId;
+
+const HISTORY_KEY =
+  "zlataUdiceTrialTestHistory_" +
+  activeProfileId;
+
+const QUESTION_MISTAKES_KEY =
+  "zlataUdiceProblemQuestions_" +
+  activeProfileId;
+
+const OLD_QUESTION_MISTAKES_KEY =
+  "zlataUdiceProblemQuestions";
+
+const FISH_MISTAKES_KEY =
+  "zlataUdiceFishMistakes_" +
+  activeProfileId;
+
+const PLANT_MISTAKES_KEY =
+  "zlataUdicePlantMistakes_" +
+  activeProfileId;
+
+const ANIMAL_MISTAKES_KEY =
+  "zlataUdiceAnimalMistakes_" +
+  activeProfileId;
+
+
+/* =====================================================
    PROMĚNNÉ
-======================================== */
+===================================================== */
 
 let testQuestions = [];
+let testResults = [];
 let currentIndex = 0;
 let selectedAnswer = null;
-let testResults = [];
+let usedRecognitionImages = new Set();
+let lastView = "start";
 
 
-/* ========================================
+/* =====================================================
    HTML
-======================================== */
+===================================================== */
 
 const startBox =
   document.getElementById("startBox");
+
+const normalStart =
+  document.getElementById("normalStart");
+
+const resumeBox =
+  document.getElementById("resumeBox");
+
+const resumeInfo =
+  document.getElementById("resumeInfo");
 
 const testCard =
   document.getElementById("testCard");
@@ -739,11 +909,11 @@ const testCard =
 const resultBox =
   document.getElementById("resultBox");
 
+const historyBox =
+  document.getElementById("historyBox");
+
 const questionCounter =
   document.getElementById("questionCounter");
-
-const scorePossible =
-  document.getElementById("scorePossible");
 
 const progressFill =
   document.getElementById("progressFill");
@@ -778,6 +948,9 @@ const finalScore =
 const finalPercentage =
   document.getElementById("finalPercentage");
 
+const completionInfo =
+  document.getElementById("completionInfo");
+
 const summaryGrid =
   document.getElementById("summaryGrid");
 
@@ -793,291 +966,264 @@ const mistakesButton =
 const saveMessage =
   document.getElementById("saveMessage");
 
-
-/* ========================================
-   PROFILY
-======================================== */
-
-function getProfiles() {
-
-  const saved =
-    localStorage.getItem(
-      "zlataUdiceProfiles"
-    );
-
-  if (!saved) {
-    return [];
-  }
-
-  try {
-    return JSON.parse(saved);
-  }
-  catch {
-    return [];
-  }
-}
+const historyList =
+  document.getElementById("historyList");
 
 
-const activeProfileId =
-  localStorage.getItem(
-    "zlataUdiceActiveProfile"
-  );
-
-
-const activePlayer =
-  getProfiles().find(
-    function(profile) {
-      return profile.id === activeProfileId;
-    }
-  );
-
-
-if (activePlayer) {
-
-  document.getElementById(
-    "playerInfo"
-  ).textContent =
-    (activePlayer.avatar || "") +
-    " " +
-    (activePlayer.name || "");
-}
-
-
-/* ========================================
-   NÁHODNÉ POŘADÍ
-======================================== */
+/* =====================================================
+   POMOCNÉ FUNKCE
+===================================================== */
 
 function shuffle(array) {
-
   const copy = [...array];
 
-  for (
-    let i = copy.length - 1;
-    i > 0;
-    i--
-  ) {
-
+  for (let i = copy.length - 1; i > 0; i--) {
     const j =
-      Math.floor(
-        Math.random() * (i + 1)
-      );
+      Math.floor(Math.random() * (i + 1));
 
-    [
-      copy[i],
-      copy[j]
-    ] = [
-      copy[j],
-      copy[i]
-    ];
+    [copy[i], copy[j]] =
+      [copy[j], copy[i]];
   }
 
   return copy;
 }
 
 
-/* ========================================
-   NÁZEV SOUBORU
-======================================== */
+function normalizeAnswer(text) {
+  return String(text || "")
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[–—]/g, "-")
+    .replace(/\s+/g, " ");
+}
+
 
 function createFileName(name) {
-
   return String(name)
-
     .normalize("NFD")
-
-    .replace(
-      /[\u0300-\u036f]/g,
-      ""
-    )
-
+    .replace(/[\u0300-\u036f]/g, "")
     .toLowerCase()
-
-    .replace(
-      /[^a-z0-9]+/g,
-      "-"
-    )
-
-    .replace(
-      /^-+|-+$/g,
-      ""
-    );
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
 }
 
 
-/* ========================================
-   NORMALIZACE ODPOVĚDI
-======================================== */
+function escapeHtml(text) {
+  const div =
+    document.createElement("div");
 
-function normalizeAnswer(text) {
+  div.textContent =
+    String(text || "");
 
-  return String(text || "")
-
-    .trim()
-
-    .toLowerCase()
-
-    .normalize("NFD")
-
-    .replace(
-      /[\u0300-\u036f]/g,
-      ""
-    )
-
-    .replace(
-      /[–—]/g,
-      "-"
-    )
-
-    .replace(
-      /\s+/g,
-      " "
-    );
+  return div.innerHTML;
 }
 
 
-/* ========================================
-   TEORETICKÉ OTÁZKY
-======================================== */
+function readArray(key) {
+  try {
+    const value =
+      JSON.parse(localStorage.getItem(key));
+
+    return Array.isArray(value)
+      ? value
+      : [];
+  } catch {
+    return [];
+  }
+}
+
+
+/* =====================================================
+   PŘEVOD TEORETICKÝCH OTÁZEK
+
+   Podporuje tvoje questionsRaw.
+===================================================== */
+
+function prepareTheoryDatabase() {
+
+  if (
+    typeof questionsRaw === "undefined" ||
+    !Array.isArray(questionsRaw)
+  ) {
+    return [];
+  }
+
+  return questionsRaw.map(function(q) {
+
+    const section =
+      Number(q[0]);
+
+    const number =
+      Number(q[1]);
+
+    const correctNumber =
+      Number(q[6]);
+
+    const answers = [
+      {
+        text: q[3],
+        originalNumber: 1
+      },
+      {
+        text: q[4],
+        originalNumber: 2
+      },
+      {
+        text: q[5],
+        originalNumber: 3
+      }
+    ];
+
+    const correct =
+      answers.find(function(a) {
+        return (
+          a.originalNumber ===
+          correctNumber
+        );
+      });
+
+    return {
+      section: section,
+      number: number,
+      question: q[2],
+      answers: answers,
+      correctNumber: correctNumber,
+      correctAnswer:
+        correct ? correct.text : ""
+    };
+  });
+}
+
+
+const theoryDatabase =
+  prepareTheoryDatabase();
+
+
+function getSectionName(section) {
+
+  if (
+    typeof questionSections !== "undefined" &&
+    questionSections[section]
+  ) {
+    return questionSections[section];
+  }
+
+  const names = {
+    1: "Přírodovědné znalosti",
+    2: "Chov ryb",
+    3: "Zákon o rybářství",
+    4: "Stanovy ČRS",
+    5: "Znalosti z rybolovné techniky",
+    6: "Závodní lov ryb udicí"
+  };
+
+  return names[section] || "";
+}
+
+
+function theoryQuestionID(item) {
+  return (
+    item.section +
+    "-" +
+    item.number
+  );
+}
+
+
+/* =====================================================
+   TVORBA TEORETICKÉHO TESTU
+===================================================== */
 
 function createTheoryQuestions() {
 
   const result = [];
 
-
   Object.keys(
     TEST_CONFIG.theorySections
-  ).forEach(
-    function(sectionKey) {
+  ).forEach(function(key) {
 
-      const sectionNumber =
-        Number(sectionKey);
+    const section =
+      Number(key);
 
+    const required =
+      TEST_CONFIG.theorySections[section];
 
-      const requiredCount =
-        TEST_CONFIG.theorySections[
-          sectionNumber
-        ];
+    const available =
+      theoryDatabase.filter(function(q) {
+        return q.section === section;
+      });
 
+    const selected =
+      shuffle(available)
+        .slice(0, required);
 
-      const available =
-        questions.filter(
-          function(question) {
+    selected.forEach(function(q) {
 
-            return (
-              question.section ===
-              sectionNumber
-            );
-          }
-        );
+      result.push({
+        type: "theory",
+        category:
+          getSectionName(q.section),
 
+        question:
+          q.question,
 
-      const selected =
-        shuffle(available)
-          .slice(
-            0,
-            requiredCount
-          );
+        answers:
+          shuffle(q.answers),
 
+        correctAnswer:
+          q.correctAnswer,
 
-      selected.forEach(
-        function(item) {
+        correctNumber:
+          q.correctNumber,
 
-          const correct =
-            item.answers.find(
-              function(answer) {
-                return answer.correct;
-              }
-            );
+        section:
+          q.section,
 
+        number:
+          q.number,
 
-          result.push({
+        sourceId:
+          theoryQuestionID(q)
+      });
 
-            type: "theory",
-
-            category:
-              item.sectionName,
-
-            question:
-              item.question,
-
-            answers:
-              item.answers,
-
-            correctAnswer:
-              correct
-                ? correct.text
-                : "",
-
-            audio:
-              item.questionAudio,
-
-            sourceId:
-              item.id,
-
-            section:
-              item.section
-
-          });
-        }
-      );
-    }
-  );
-
+    });
+  });
 
   return shuffle(result);
 }
 
 
-/* ========================================
-   JEDINEČNÉ DRUHY
-======================================== */
+/* =====================================================
+   POZNÁVAČKY – BEZ OPAKOVÁNÍ DRUHŮ
+===================================================== */
 
 function getUniqueRecognitionItems(source) {
 
   const unique = [];
+  const usedNames = new Set();
 
-  const usedNames =
-    new Set();
+  shuffle(source).forEach(function(item) {
 
-
-  shuffle(source).forEach(
-    function(item) {
-
-      if (
-        !item ||
-        !item.name
-      ) {
-        return;
-      }
-
-
-      const key =
-        normalizeAnswer(
-          item.name
-        );
-
-
-      if (
-        usedNames.has(key)
-      ) {
-        return;
-      }
-
-
-      usedNames.add(key);
-
-      unique.push(item);
+    if (!item || !item.name) {
+      return;
     }
-  );
 
+    const key =
+      normalizeAnswer(item.name);
+
+    if (usedNames.has(key)) {
+      return;
+    }
+
+    usedNames.add(key);
+    unique.push(item);
+  });
 
   return unique;
 }
 
-
-/* ========================================
-   POZNÁVAČKY
-======================================== */
 
 function createRecognitionQuestions(
   source,
@@ -1086,153 +1232,255 @@ function createRecognitionQuestions(
   categoryName
 ) {
 
-  return getUniqueRecognitionItems(
-    source
-  )
+  return getUniqueRecognitionItems(source)
+    .slice(0, count)
+    .map(function(item) {
 
-    .slice(
-      0,
-      count
-    )
+      return {
+        type: type,
+        category: categoryName,
+        question: "Co je na obrázku?",
+        item: item,
+        correctAnswer: item.name,
+        usedImage: ""
+      };
 
-    .map(
-      function(item) {
-
-        return {
-
-          type:
-            type,
-
-          category:
-            categoryName,
-
-          question:
-            "Co je na obrázku?",
-
-          item:
-            item,
-
-          correctAnswer:
-            item.name
-
-        };
-      }
-    );
+    });
 }
 
 
-/* ========================================
-   VYTVOŘENÍ TESTU
-======================================== */
+/* =====================================================
+   CELÝ TEST
+===================================================== */
 
 function buildTest() {
 
-  const theoryQuestions =
-    createTheoryQuestions();
+  return [
+    ...createTheoryQuestions(),
 
-
-  const fishQuestions =
-    createRecognitionQuestions(
+    ...createRecognitionQuestions(
       fish,
       TEST_CONFIG.fish,
       "fish",
       "🐟 Poznávání ryb"
-    );
+    ),
 
-
-  const plantQuestions =
-    createRecognitionQuestions(
+    ...createRecognitionQuestions(
       plants,
       TEST_CONFIG.plants,
       "plant",
       "🌿 Poznávání rostlin"
-    );
+    ),
 
-
-  const animalQuestions =
-    createRecognitionQuestions(
+    ...createRecognitionQuestions(
       animals,
       TEST_CONFIG.animals,
       "animal",
       "🦆 Poznávání živočichů"
-    );
-
-
-  return [
-
-    ...theoryQuestions,
-
-    ...fishQuestions,
-
-    ...plantQuestions,
-
-    ...animalQuestions
-
+    )
   ];
 }
 
 
-/* ========================================
-   START
-======================================== */
+/* =====================================================
+   ROZEHRANÝ TEST
+===================================================== */
 
-function startTest() {
+function saveProgress() {
 
   if (
-    typeof window.stopSound ===
-    "function"
+    !testQuestions.length ||
+    currentIndex >= testQuestions.length
   ) {
-    window.stopSound();
+    return;
   }
 
+  const data = {
+    version: 1,
+    savedAt:
+      new Date().toISOString(),
+
+    currentIndex:
+      currentIndex,
+
+    testQuestions:
+      testQuestions,
+
+    testResults:
+      testResults,
+
+    usedImages:
+      Array.from(
+        usedRecognitionImages
+      )
+  };
+
+  localStorage.setItem(
+    PROGRESS_KEY,
+    JSON.stringify(data)
+  );
+}
+
+
+function loadProgress() {
+
+  try {
+    const saved =
+      JSON.parse(
+        localStorage.getItem(
+          PROGRESS_KEY
+        )
+      );
+
+    if (
+      !saved ||
+      !Array.isArray(saved.testQuestions) ||
+      !Array.isArray(saved.testResults) ||
+      saved.testQuestions.length !== 100 ||
+      saved.currentIndex < 0 ||
+      saved.currentIndex >=
+        saved.testQuestions.length
+    ) {
+      return null;
+    }
+
+    return saved;
+
+  } catch {
+    return null;
+  }
+}
+
+
+function clearProgress() {
+  localStorage.removeItem(
+    PROGRESS_KEY
+  );
+}
+
+
+function updateResumeBox() {
+
+  const saved =
+    loadProgress();
+
+  if (!saved) {
+    resumeBox.style.display = "none";
+    normalStart.style.display = "block";
+    return;
+  }
+
+  resumeBox.style.display = "block";
+  normalStart.style.display = "none";
+
+  resumeInfo.textContent =
+    "Hotovo " +
+    saved.currentIndex +
+    " ze 100 položek. Test můžeš dokončit později.";
+}
+
+
+/* =====================================================
+   NOVÝ TEST
+===================================================== */
+
+function startNewTest() {
+
+  if (
+    loadProgress() &&
+    !window.confirm(
+      "Máš rozdělaný test. Opravdu ho chceš zahodit a začít nový?"
+    )
+  ) {
+    return;
+  }
+
+  clearProgress();
+
+  usedRecognitionImages =
+    new Set();
 
   testQuestions =
     buildTest();
 
-
-  currentIndex = 0;
-
-  selectedAnswer = null;
-
   testResults = [];
-
+  currentIndex = 0;
+  selectedAnswer = null;
 
   mistakesButton.style.display =
     "none";
 
-
   mistakesButton.disabled =
     false;
-
-
-  mistakesButton.textContent =
-    '❤️ Přidat chyby do „Co mi nejde“';
-
 
   saveMessage.style.display =
     "none";
 
+  showTestScreen();
 
-  saveMessage.innerHTML =
-    "";
-
-
-  startBox.classList.add(
-    "hidden"
-  );
-
-
-  resultBox.style.display =
-    "none";
-
-
-  testCard.classList.remove(
-    "hidden"
-  );
-
-
+  saveProgress();
   showQuestion();
+}
 
+
+function confirmNewTest() {
+
+  if (
+    window.confirm(
+      "Rozdělaný test se smaže. Opravdu chceš začít nový?"
+    )
+  ) {
+    clearProgress();
+    startNewTest();
+  }
+}
+
+
+/* =====================================================
+   POKRAČOVÁNÍ
+===================================================== */
+
+function resumeTest() {
+
+  const saved =
+    loadProgress();
+
+  if (!saved) {
+    updateResumeBox();
+    return;
+  }
+
+  testQuestions =
+    saved.testQuestions;
+
+  testResults =
+    saved.testResults;
+
+  currentIndex =
+    saved.currentIndex;
+
+  usedRecognitionImages =
+    new Set(
+      saved.usedImages || []
+    );
+
+  selectedAnswer = null;
+
+  showTestScreen();
+  showQuestion();
+}
+
+
+/* =====================================================
+   OBRAZOVKY
+===================================================== */
+
+function showTestScreen() {
+  startBox.style.display = "none";
+  resultBox.style.display = "none";
+  historyBox.style.display = "none";
+
+  testCard.classList.remove("hidden");
 
   window.scrollTo({
     top: 0,
@@ -1241,14 +1489,13 @@ function startTest() {
 }
 
 
-/* ========================================
-   FÁZE TESTU
-======================================== */
+/* =====================================================
+   FÁZE
+===================================================== */
 
 function getPhaseInfo(index) {
 
   if (index < 50) {
-
     return (
       "🧠 TEORETICKÝ TEST • " +
       (index + 1) +
@@ -1256,9 +1503,7 @@ function getPhaseInfo(index) {
     );
   }
 
-
   if (index < 70) {
-
     return (
       "🐟 RYBY • " +
       (index - 49) +
@@ -1266,16 +1511,13 @@ function getPhaseInfo(index) {
     );
   }
 
-
   if (index < 85) {
-
     return (
       "🌿 ROSTLINY • " +
       (index - 69) +
       " / 15"
     );
   }
-
 
   return (
     "🦆 ŽIVOČICHOVÉ • " +
@@ -1285,9 +1527,9 @@ function getPhaseInfo(index) {
 }
 
 
-/* ========================================
+/* =====================================================
    ZOBRAZENÍ OTÁZKY
-======================================== */
+===================================================== */
 
 function showQuestion() {
 
@@ -1298,350 +1540,240 @@ function showQuestion() {
     window.stopSound();
   }
 
-
-  selectedAnswer =
-    null;
-
-
-  nextButton.disabled =
-    true;
-
+  selectedAnswer = null;
+  nextButton.disabled = true;
 
   const item =
     testQuestions[currentIndex];
 
-
   const number =
     currentIndex + 1;
-
 
   questionCounter.textContent =
     "Položka " +
     number +
-    " ze " +
-    testQuestions.length;
-
-
-  scorePossible.textContent =
-    "max. " +
-    (
-      testQuestions.length *
-      POINTS_PER_QUESTION
-    ) +
-    " bodů";
-
+    " ze 100";
 
   progressFill.style.width =
-    (
-      number /
-      testQuestions.length *
-      100
-    ) +
-    "%";
-
+    number + "%";
 
   phaseInfo.textContent =
-    getPhaseInfo(
-      currentIndex
-    );
-
+    getPhaseInfo(currentIndex);
 
   category.textContent =
     item.category;
 
-
   questionText.textContent =
     item.question;
 
+  answersArea.innerHTML = "";
+  photoArea.innerHTML = "";
+  photoArea.style.display = "none";
 
-  answersArea.innerHTML =
-    "";
+  soundRow.classList.add("hidden");
 
-
-  photoArea.innerHTML =
-    "";
-
-
-  photoArea.style.display =
-    "none";
-
-
-  soundRow.classList.add(
-    "hidden"
-  );
-
-
-  if (
-    item.type ===
-    "theory"
-  ) {
-
-    showTheoryQuestion(
-      item
-    );
+  if (item.type === "theory") {
+    showTheoryQuestion(item);
+  } else {
+    showRecognitionQuestion(item);
   }
 
-  else {
-
-    showRecognitionQuestion(
-      item
-    );
-  }
-
-
-  if (
-    currentIndex ===
-    testQuestions.length - 1
-  ) {
-
-    nextButton.textContent =
-      "Dokončit test 🏁";
-  }
-
-  else {
-
-    nextButton.textContent =
-      "Další →";
-  }
+  nextButton.textContent =
+    currentIndex === 99
+      ? "Dokončit test 🏁"
+      : "Další →";
 }
 
 
-/* ========================================
+/* =====================================================
    TEORETICKÁ OTÁZKA
-======================================== */
+===================================================== */
 
 function showTheoryQuestion(item) {
 
-  soundRow.classList.remove(
-    "hidden"
-  );
-
+  soundRow.classList.remove("hidden");
 
   questionSoundButton.onclick =
     function() {
-
-      if (
-        typeof window.playText ===
-        "function"
-      ) {
-
-        window.playText(
-          item.question,
-          item.audio
-        );
-      }
-
-      else if (
-        "speechSynthesis" in window
-      ) {
-
-        window.speechSynthesis.cancel();
-
-
-        const speech =
-          new SpeechSynthesisUtterance(
-            item.question
-          );
-
-
-        speech.lang =
-          "cs-CZ";
-
-
-        window.speechSynthesis.speak(
-          speech
-        );
-      }
+      playTheoryQuestion(item);
     };
 
+  item.answers.forEach(function(answer) {
 
-  item.answers.forEach(
-    function(answer) {
+    const row =
+      document.createElement("div");
 
-      const row =
-        document.createElement(
-          "div"
-        );
+    row.className =
+      "answer-row";
 
+    const button =
+      document.createElement("button");
 
-      row.className =
-        "answer-row";
+    button.type = "button";
+    button.className =
+      "answer-button";
 
+    button.textContent =
+      answer.text;
 
-      const button =
-        document.createElement(
-          "button"
-        );
+    button.onclick =
+      function() {
 
-
-      button.type =
-        "button";
-
-
-      button.className =
-        "answer-button";
-
-
-      button.textContent =
-        answer.text;
-
-
-      button.onclick =
-        function() {
-
-          document
-            .querySelectorAll(
-              ".answer-button"
-            )
-            .forEach(
-              function(otherButton) {
-
-                otherButton
-                  .classList
-                  .remove(
-                    "selected"
-                  );
-              }
+        document
+          .querySelectorAll(".answer-button")
+          .forEach(function(btn) {
+            btn.classList.remove(
+              "selected"
             );
+          });
 
+        button.classList.add(
+          "selected"
+        );
 
-          button.classList.add(
-            "selected"
-          );
-
-
-          selectedAnswer =
-            answer.text;
-
-
-          nextButton.disabled =
-            false;
+        selectedAnswer = {
+          text: answer.text,
+          originalNumber:
+            answer.originalNumber
         };
 
+        nextButton.disabled =
+          false;
+      };
 
-      const soundButton =
-        document.createElement(
-          "button"
+
+    const soundButton =
+      document.createElement("button");
+
+    soundButton.type = "button";
+    soundButton.className =
+      "answer-sound";
+
+    soundButton.textContent = "🔊";
+
+    soundButton.onclick =
+      function(event) {
+        event.stopPropagation();
+
+        playTheoryAnswer(
+          item,
+          answer.originalNumber,
+          answer.text
+        );
+      };
+
+
+    row.appendChild(button);
+    row.appendChild(soundButton);
+    answersArea.appendChild(row);
+  });
+}
+
+
+/* =====================================================
+   ZVUK TEORETICKÝCH OTÁZEK
+===================================================== */
+
+function padQuestionNumber(number) {
+  return String(number)
+    .padStart(3, "0");
+}
+
+
+function playAudioFile(path, fallbackText) {
+
+  const audio =
+    new Audio(
+      encodeURI(path)
+    );
+
+  audio.play().catch(function() {
+
+    if (
+      "speechSynthesis" in window
+    ) {
+      window.speechSynthesis.cancel();
+
+      const speech =
+        new SpeechSynthesisUtterance(
+          fallbackText
         );
 
+      speech.lang = "cs-CZ";
 
-      soundButton.type =
-        "button";
-
-
-      soundButton.className =
-        "answer-sound";
-
-
-      soundButton.textContent =
-        "🔊";
-
-
-      soundButton.setAttribute(
-        "aria-label",
-        "Přečíst odpověď"
-      );
-
-
-      soundButton.onclick =
-        function(event) {
-
-          event.stopPropagation();
-
-
-          if (
-            typeof window.playText ===
-            "function"
-          ) {
-
-            window.playText(
-              answer.text,
-              answer.audio
-            );
-          }
-
-          else if (
-            "speechSynthesis" in window
-          ) {
-
-            window.speechSynthesis.cancel();
-
-
-            const speech =
-              new SpeechSynthesisUtterance(
-                answer.text
-              );
-
-
-            speech.lang =
-              "cs-CZ";
-
-
-            window.speechSynthesis.speak(
-              speech
-            );
-          }
-        };
-
-
-      row.appendChild(
-        button
-      );
-
-
-      row.appendChild(
-        soundButton
-      );
-
-
-      answersArea.appendChild(
-        row
+      window.speechSynthesis.speak(
+        speech
       );
     }
+  });
+}
+
+
+function playTheoryQuestion(item) {
+
+  const path =
+    "OTÁZKY 1/otazka-" +
+    item.section +
+    "-" +
+    padQuestionNumber(
+      item.number
+    ) +
+    ".mp3";
+
+  playAudioFile(
+    path,
+    item.question
   );
 }
 
 
-/* ========================================
+function playTheoryAnswer(
+  item,
+  answerNumber,
+  text
+) {
+
+  const path =
+    "OTÁZKY 1/odpoved-" +
+    item.section +
+    "-" +
+    padQuestionNumber(
+      item.number
+    ) +
+    "-" +
+    answerNumber +
+    ".mp3";
+
+  playAudioFile(
+    path,
+    text
+  );
+}
+
+
+/* =====================================================
    POZNÁVAČKA
-======================================== */
+===================================================== */
 
 function showRecognitionQuestion(item) {
 
   photoArea.style.display =
     "flex";
 
-
-  showRecognitionPhoto(
-    item
-  );
-
+  showRecognitionPhoto(item);
 
   const input =
-    document.createElement(
-      "input"
-    );
+    document.createElement("input");
 
-
-  input.type =
-    "text";
-
-
+  input.type = "text";
   input.className =
     "written-answer";
-
 
   input.placeholder =
     "Napiš celý název...";
 
-
-  input.autocomplete =
-    "off";
-
-
-  input.spellcheck =
-    false;
-
+  input.autocomplete = "off";
+  input.spellcheck = false;
 
   input.addEventListener(
     "input",
@@ -1650,147 +1782,92 @@ function showRecognitionQuestion(item) {
       selectedAnswer =
         input.value;
 
-
       nextButton.disabled =
         input.value.trim() === "";
     }
   );
-
 
   input.addEventListener(
     "keydown",
     function(event) {
 
       if (
-        event.key ===
-        "Enter" &&
-        input.value.trim() !== ""
+        event.key === "Enter" &&
+        input.value.trim()
       ) {
-
         saveAndNext();
       }
     }
   );
 
-
-  answersArea.appendChild(
-    input
-  );
-
+  answersArea.appendChild(input);
 
   const hint =
-    document.createElement(
-      "div"
-    );
+    document.createElement("div");
 
+  hint.className = "hint";
 
-  hint.className =
-    "hint";
+  hint.textContent =
+    item.type === "plant"
+      ? "Napiš celý název rostliny."
+      : "Napiš rodové i druhové jméno.";
 
+  answersArea.appendChild(hint);
 
-  if (
-    item.type === "fish" ||
-    item.type === "animal"
-  ) {
-
-    hint.textContent =
-      "Napiš rodové i druhové jméno.";
-  }
-
-  else {
-
-    hint.textContent =
-      "Napiš celý název rostliny.";
-  }
-
-
-  answersArea.appendChild(
-    hint
-  );
-
-
-  setTimeout(
-    function() {
-      input.focus();
-    },
-    100
-  );
+  setTimeout(function() {
+    input.focus();
+  }, 100);
 }
 
 
-/* ========================================
-   OBRÁZKY
-======================================== */
+/* =====================================================
+   KANDIDÁTI FOTOGRAFIÍ
+===================================================== */
 
 function getImageCandidates(testItem) {
 
   const item =
     testItem.item;
 
-
   let baseName;
 
-
   if (
-    testItem.type ===
-    "fish" &&
+    testItem.type === "fish" &&
     item.imageName
   ) {
-
     baseName =
       item.imageName;
-  }
-
-  else {
-
+  } else {
     baseName =
-      createFileName(
-        item.name
-      );
+      createFileName(item.name);
   }
 
-
-  const possibleImages =
-    [];
-
+  const candidates = [];
 
   if (item.image) {
-
-    possibleImages.push(
+    candidates.push(
       item.image
     );
   }
 
-
   const fileNames = [
-
     baseName + ".webp",
     baseName + "-2.webp",
     baseName + "-3.webp",
-
     baseName + ".jpg",
     baseName + "-2.jpg",
     baseName + "-3.jpg",
-
     baseName + ".jpeg",
     baseName + "-2.jpeg",
     baseName + "-3.jpeg",
-
     baseName + ".png",
     baseName + "-2.png",
     baseName + "-3.png"
-
   ];
-
 
   let folders = [""];
 
-
-  if (
-    testItem.type ===
-    "fish"
-  ) {
-
+  if (testItem.type === "fish") {
     folders = [
       "",
       "ryby/",
@@ -1799,12 +1876,7 @@ function getImageCandidates(testItem) {
     ];
   }
 
-
-  if (
-    testItem.type ===
-    "plant"
-  ) {
-
+  if (testItem.type === "plant") {
     folders = [
       "",
       "rostliny/",
@@ -1813,12 +1885,7 @@ function getImageCandidates(testItem) {
     ];
   }
 
-
-  if (
-    testItem.type ===
-    "animal"
-  ) {
-
+  if (testItem.type === "animal") {
     folders = [
       "",
       "zivocichove/",
@@ -1827,74 +1894,93 @@ function getImageCandidates(testItem) {
     ];
   }
 
+  folders.forEach(function(folder) {
 
-  folders.forEach(
-    function(folder) {
-
-      fileNames.forEach(
-        function(fileName) {
-
-          possibleImages.push(
-            folder +
-            fileName
-          );
-        }
+    fileNames.forEach(function(file) {
+      candidates.push(
+        folder + file
       );
-    }
-  );
+    });
 
+  });
 
   return [
-    ...new Set(
-      possibleImages
-    )
+    ...new Set(candidates)
   ];
 }
 
 
-/* ========================================
-   ZOBRAZENÍ FOTOGRAFIE
-======================================== */
+/* =====================================================
+   NÁHODNÁ FOTOGRAFIE BEZ OPAKOVÁNÍ
+===================================================== */
 
 function showRecognitionPhoto(testItem) {
 
+  /*
+    Při pokračování použijeme přesně
+    stejnou fotografii jako předtím.
+  */
+
+  if (testItem.usedImage) {
+
+    showLoadedImage(
+      testItem,
+      testItem.usedImage
+    );
+
+    return;
+  }
+
+
   photoArea.innerHTML =
     '<div class="photo-placeholder">' +
-      '<div class="photo-icon">🖼️</div>' +
-      '<strong>Načítám fotografii...</strong>' +
+    '<div class="photo-icon">🖼️</div>' +
+    '<strong>Načítám fotografii...</strong>' +
     '</div>';
 
 
-  const possibleImages =
+  let candidates =
     shuffle(
-      getImageCandidates(
-        testItem
-      )
+      getImageCandidates(testItem)
     );
+
+
+  /*
+    Vyřadíme fotografie použité
+    v předchozích otázkách.
+  */
+
+  candidates =
+    candidates.filter(function(path) {
+      return (
+        !usedRecognitionImages.has(
+          path
+        )
+      );
+    });
 
 
   let attempt = 0;
 
 
-  function tryNextImage() {
+  function tryNext() {
 
     if (
-      attempt >=
-      possibleImages.length
+      attempt >= candidates.length
     ) {
 
       photoArea.innerHTML =
         '<div class="photo-placeholder">' +
-          '<div class="photo-icon">🖼️</div>' +
-          '<strong>Fotografie nebyla nalezena</strong>' +
+        '<div class="photo-icon">🖼️</div>' +
+        '<strong>Fotografie nebyla nalezena</strong>' +
         '</div>';
 
       return;
     }
 
 
-    const imagePath =
-      possibleImages[attempt];
+    const path =
+      candidates[attempt];
 
 
     const img =
@@ -1905,18 +1991,27 @@ function showRecognitionPhoto(testItem) {
       function() {
 
         if (
-          testQuestions[
-            currentIndex
-          ] !==
+          testQuestions[currentIndex] !==
           testItem
         ) {
           return;
         }
 
 
+        testItem.usedImage =
+          path;
+
+
+        usedRecognitionImages.add(
+          path
+        );
+
+
+        saveProgress();
+
+
         img.className =
           "test-photo";
-
 
         img.alt =
           "Poznávací fotografie";
@@ -1925,14 +2020,9 @@ function showRecognitionPhoto(testItem) {
         photoArea.innerHTML =
           "";
 
-
         photoArea.appendChild(
           img
         );
-
-
-        testItem.usedImage =
-          imagePath;
       };
 
 
@@ -1940,85 +2030,109 @@ function showRecognitionPhoto(testItem) {
       function() {
 
         attempt++;
-
-        tryNextImage();
+        tryNext();
       };
 
 
-    img.src =
-      imagePath;
+    img.src = path;
   }
 
 
-  tryNextImage();
+  tryNext();
 }
 
 
-/* ========================================
-   SPRÁVNOST
-======================================== */
-
-function isCorrectAnswer(
-  item,
-  answer
+function showLoadedImage(
+  testItem,
+  path
 ) {
 
-  if (
-    item.type ===
-    "theory"
-  ) {
+  const img =
+    new Image();
 
-    return (
-      answer ===
-      item.correctAnswer
-    );
-  }
+  img.className =
+    "test-photo";
 
+  img.alt =
+    "Poznávací fotografie";
 
-  return (
+  img.onload =
+    function() {
 
-    normalizeAnswer(
-      answer
-    ) ===
+      photoArea.innerHTML = "";
+      photoArea.appendChild(img);
 
-    normalizeAnswer(
-      item.correctAnswer
-    )
+      usedRecognitionImages.add(
+        path
+      );
+    };
 
-  );
+  img.onerror =
+    function() {
+
+      /*
+        Pokud byl soubor mezitím změněn,
+        vybereme jinou fotografii.
+      */
+
+      testItem.usedImage = "";
+
+      showRecognitionPhoto(
+        testItem
+      );
+    };
+
+  img.src = path;
 }
 
 
-/* ========================================
-   ULOŽENÍ ODPOVĚDI
-======================================== */
+/* =====================================================
+   VYHODNOCENÍ ODPOVĚDI
+===================================================== */
 
 function saveAndNext() {
 
   if (
-    selectedAnswer === null ||
-    String(
-      selectedAnswer
-    ).trim() === ""
+    selectedAnswer === null
   ) {
     return;
   }
 
 
   const item =
-    testQuestions[
-      currentIndex
-    ];
+    testQuestions[currentIndex];
+
+  let userAnswer;
+  let correct;
 
 
-  const correct =
-    isCorrectAnswer(
-      item,
-      selectedAnswer
-    );
+  if (item.type === "theory") {
+
+    userAnswer =
+      selectedAnswer.text;
+
+    correct =
+      selectedAnswer.originalNumber ===
+      item.correctNumber;
+
+  } else {
+
+    userAnswer =
+      String(selectedAnswer).trim();
+
+    if (!userAnswer) {
+      return;
+    }
+
+    correct =
+      normalizeAnswer(userAnswer) ===
+      normalizeAnswer(
+        item.correctAnswer
+      );
+  }
 
 
-  testResults.push({
+  const result = {
 
     number:
       currentIndex + 1,
@@ -2033,9 +2147,7 @@ function saveAndNext() {
       item.question,
 
     userAnswer:
-      String(
-        selectedAnswer
-      ).trim(),
+      userAnswer,
 
     correctAnswer:
       item.correctAnswer,
@@ -2054,15 +2166,35 @@ function saveAndNext() {
     sourceId:
       item.sourceId || "",
 
+    section:
+      item.section || null,
+
+    questionNumber:
+      item.number || null,
+
     originalItem:
-      item.item
-        ? item.item
-        : null,
+      item.item || null,
 
     unanswered:
       false
 
-  });
+  };
+
+
+  testResults.push(result);
+
+
+  /*
+    Teoretická chyba se rovnou
+    uloží do "Co mi nejde".
+  */
+
+  if (
+    item.type === "theory" &&
+    !correct
+  ) {
+    addTheoryMistake(item);
+  }
 
 
   currentIndex++;
@@ -2073,13 +2205,13 @@ function saveAndNext() {
     testQuestions.length
   ) {
 
+    clearProgress();
     finishTest();
-  }
 
-  else {
+  } else {
 
+    saveProgress();
     showQuestion();
-
 
     window.scrollTo({
       top: 0,
@@ -2089,53 +2221,52 @@ function saveAndNext() {
 }
 
 
-/* ========================================
-   PŘEDČASNÉ UKONČENÍ TESTU
-======================================== */
+/* =====================================================
+   CHYBNÉ TEORETICKÉ OTÁZKY
+===================================================== */
+
+function addTheoryMistake(item) {
+
+  let problems =
+    readArray(
+      QUESTION_MISTAKES_KEY
+    );
+
+
+  const id =
+    item.section +
+    "-" +
+    item.number;
+
+
+  if (!problems.includes(id)) {
+    problems.push(id);
+  }
+
+
+  localStorage.setItem(
+    QUESTION_MISTAKES_KEY,
+    JSON.stringify(problems)
+  );
+}
+
+
+/* =====================================================
+   PŘEDČASNÉ UKONČENÍ
+===================================================== */
 
 function endTestEarly() {
-
-  const alreadyAnswered =
-    testResults.length;
-
-
-  const remaining =
-    testQuestions.length -
-    currentIndex;
-
 
   const confirmed =
     window.confirm(
       "Opravdu chceš ukončit test?\n\n" +
-      "Dokončeno: " +
-      alreadyAnswered +
-      " / " +
-      testQuestions.length +
-      "\n" +
-      "Zbývá: " +
-      remaining +
-      "\n\n" +
-      "Všechny nezodpovězené otázky budou vyhodnoceny jako chybné."
+      "Všechny zbývající položky budou vyhodnoceny jako nezodpovězené a získají 0 bodů."
     );
-
 
   if (!confirmed) {
     return;
   }
 
-
-  if (
-    typeof window.stopSound ===
-    "function"
-  ) {
-    window.stopSound();
-  }
-
-
-  /*
-    Aktuální otázka i všechny následující
-    budou považovány za nezodpovězené.
-  */
 
   for (
     let i = currentIndex;
@@ -2145,7 +2276,6 @@ function endTestEarly() {
 
     const item =
       testQuestions[i];
-
 
     testResults.push({
 
@@ -2161,17 +2291,14 @@ function endTestEarly() {
       question:
         item.question,
 
-      userAnswer:
-        "",
+      userAnswer: "",
 
       correctAnswer:
         item.correctAnswer,
 
-      correct:
-        false,
+      correct: false,
 
-      points:
-        0,
+      points: 0,
 
       image:
         item.usedImage || "",
@@ -2179,13 +2306,16 @@ function endTestEarly() {
       sourceId:
         item.sourceId || "",
 
-      originalItem:
-        item.item
-          ? item.item
-          : null,
+      section:
+        item.section || null,
 
-      unanswered:
-        true
+      questionNumber:
+        item.number || null,
+
+      originalItem:
+        item.item || null,
+
+      unanswered: true
 
     });
   }
@@ -2195,60 +2325,55 @@ function endTestEarly() {
     testQuestions.length;
 
 
+  /*
+    Nezodpovězené položky se NEUKLÁDAJÍ
+    do "Co mi nejde".
+  */
+
+  clearProgress();
   finishTest();
 }
 
 
-/* ========================================
-   SOUČET KATEGORIE
-======================================== */
+/* =====================================================
+   SKÓRE KATEGORIE
+===================================================== */
 
 function getCategoryScore(type) {
 
   const items =
-    testResults.filter(
-      function(item) {
-        return item.type === type;
-      }
-    );
-
+    testResults.filter(function(item) {
+      return item.type === type;
+    });
 
   return {
-
     score:
-      items.reduce(
-        function(sum, item) {
-          return sum + item.points;
-        },
-        0
-      ),
+      items.reduce(function(sum, item) {
+        return sum + item.points;
+      }, 0),
 
     max:
       items.length *
       POINTS_PER_QUESTION
-
   };
 }
 
 
-/* ========================================
-   KONEC TESTU
-======================================== */
+/* =====================================================
+   DOKONČENÍ
+===================================================== */
 
 function finishTest() {
-
-  if (
-    typeof window.stopSound ===
-    "function"
-  ) {
-    window.stopSound();
-  }
-
 
   testCard.classList.add(
     "hidden"
   );
 
+  startBox.style.display =
+    "none";
+
+  historyBox.style.display =
+    "none";
 
   resultBox.style.display =
     "block";
@@ -2263,31 +2388,31 @@ function finishTest() {
     );
 
 
-  /*
-    Maximum zůstává 200 bodů,
-    i když byl test ukončen dříve.
-  */
-
-  const maxScore =
-    testQuestions.length *
-    POINTS_PER_QUESTION;
-
+  const maxScore = 200;
 
   const percentage =
-    maxScore
-      ? Math.round(
-          score /
-          maxScore *
-          100
-        )
-      : 0;
+    Math.round(
+      score /
+      maxScore *
+      100
+    );
+
+
+  const unanswered =
+    testResults.filter(
+      function(item) {
+        return item.unanswered;
+      }
+    ).length;
+
+
+  const answered =
+    100 - unanswered;
 
 
   finalScore.textContent =
     score +
-    " / " +
-    maxScore +
-    " bodů";
+    " / 200 bodů";
 
 
   finalPercentage.textContent =
@@ -2295,65 +2420,42 @@ function finishTest() {
     " %";
 
 
-  if (
-    percentage === 100
-  ) {
+  completionInfo.innerHTML =
+    "Zodpovězeno: <strong>" +
+    answered +
+    " / 100</strong><br>" +
+    "Nezodpovězeno: <strong>" +
+    unanswered +
+    "</strong>";
 
-    resultIcon.textContent =
-      "🏆";
-  }
 
-  else if (
-    percentage >= 80
-  ) {
-
-    resultIcon.textContent =
-      "🥇";
-  }
-
-  else if (
-    percentage >= 60
-  ) {
-
-    resultIcon.textContent =
-      "🎣";
-  }
-
-  else {
-
-    resultIcon.textContent =
-      "📚";
+  if (percentage === 100) {
+    resultIcon.textContent = "🏆";
+  } else if (percentage >= 80) {
+    resultIcon.textContent = "🥇";
+  } else if (percentage >= 60) {
+    resultIcon.textContent = "🎣";
+  } else {
+    resultIcon.textContent = "📚";
   }
 
 
   const theory =
-    getCategoryScore(
-      "theory"
-    );
-
+    getCategoryScore("theory");
 
   const fishScore =
-    getCategoryScore(
-      "fish"
-    );
-
+    getCategoryScore("fish");
 
   const plantScore =
-    getCategoryScore(
-      "plant"
-    );
-
+    getCategoryScore("plant");
 
   const animalScore =
-    getCategoryScore(
-      "animal"
-    );
+    getCategoryScore("animal");
 
 
   summaryGrid.innerHTML =
-
     createSummaryCard(
-      "🧠 Test",
+      "🧠 Teorie",
       theory.score,
       theory.max
     ) +
@@ -2380,38 +2482,60 @@ function finishTest() {
   createReview();
 
 
+  /*
+    Tlačítko počítá jen SKUTEČNĚ
+    chybně zodpovězené poznávačky.
+  */
+
   const wrongRecognition =
     testResults.filter(
       function(item) {
 
         return (
           !item.correct &&
-          item.type !==
-            "theory"
+          !item.unanswered &&
+          item.type !== "theory"
         );
       }
     );
 
 
-  if (
-    wrongRecognition.length > 0
-  ) {
+  if (wrongRecognition.length) {
 
     mistakesButton.style.display =
       "block";
 
+    mistakesButton.disabled =
+      false;
 
     mistakesButton.textContent =
       "❤️ Přidat " +
       wrongRecognition.length +
       " chyb do „Co mi nejde“";
-  }
 
-  else {
+  } else {
 
     mistakesButton.style.display =
       "none";
   }
+
+
+  saveMessage.style.display =
+    "none";
+
+
+  saveTestHistory(
+    score,
+    percentage,
+    unanswered,
+    theory,
+    fishScore,
+    plantScore,
+    animalScore
+  );
+
+
+  updateResumeBox();
 
 
   window.scrollTo({
@@ -2421,10 +2545,6 @@ function finishTest() {
 }
 
 
-/* ========================================
-   KARTA VÝSLEDKU
-======================================== */
-
 function createSummaryCard(
   title,
   score,
@@ -2432,34 +2552,27 @@ function createSummaryCard(
 ) {
 
   return (
-
     '<div class="summary-card">' +
-
-      '<strong>' +
-        score +
-        " / " +
-        max +
-      '</strong>' +
-
-      '<span>' +
-        title +
-      '</span>' +
-
-    '</div>'
-
+      "<strong>" +
+      score +
+      " / " +
+      max +
+      "</strong>" +
+      "<span>" +
+      title +
+      "</span>" +
+    "</div>"
   );
 }
 
 
-/* ========================================
-   ROZBOR CHYB
-======================================== */
+/* =====================================================
+   PŘEHLED CHYB
+===================================================== */
 
 function createReview() {
 
-  reviewArea.innerHTML =
-    "";
-
+  reviewArea.innerHTML = "";
 
   const wrongAnswers =
     testResults.filter(
@@ -2469,74 +2582,44 @@ function createReview() {
     );
 
 
-  if (
-    wrongAnswers.length === 0
-  ) {
+  if (!wrongAnswers.length) {
 
-    const perfect =
-      document.createElement(
-        "div"
-      );
-
-
-    perfect.className =
-      "perfect-box";
-
-
-    perfect.innerHTML =
-      "🎉 Bez chyby! Získal jsi všech 200 bodů.";
-
-
-    reviewArea.appendChild(
-      perfect
-    );
-
+    reviewArea.innerHTML =
+      '<div class="perfect-box">' +
+      "🎉 Bez chyby! Získal jsi všech 200 bodů." +
+      "</div>";
 
     return;
   }
 
 
   const title =
-    document.createElement(
-      "h3"
-    );
-
+    document.createElement("h3");
 
   title.className =
     "review-title";
 
-
   title.textContent =
     "❌ Přehled chyb";
 
-
-  reviewArea.appendChild(
-    title
-  );
+  reviewArea.appendChild(title);
 
 
   wrongAnswers.forEach(
     function(item) {
 
       const box =
-        document.createElement(
-          "div"
-        );
-
+        document.createElement("div");
 
       box.className =
         "review-item";
 
 
       const number =
-        document.createElement(
-          "div"
-        );
-
+        document.createElement("div");
 
       number.className =
         "review-number";
-
 
       number.textContent =
         "POLOŽKA " +
@@ -2544,98 +2627,54 @@ function createReview() {
         " • " +
         item.category;
 
-
-      box.appendChild(
-        number
-      );
+      box.appendChild(number);
 
 
       const question =
-        document.createElement(
-          "div"
-        );
-
+        document.createElement("div");
 
       question.className =
         "review-question";
 
+      question.textContent =
+        item.type === "theory"
+          ? item.question
+          : "Co je na této fotografii?";
+
+      box.appendChild(question);
+
 
       if (
-        item.type ===
-        "theory"
-      ) {
-
-        question.textContent =
-          item.question;
-      }
-
-      else {
-
-        question.textContent =
-          "Co je na této fotografii?";
-      }
-
-
-      box.appendChild(
-        question
-      );
-
-
-      /*
-        Fotografie se zobrazí pouze tehdy,
-        pokud už byla skutečně načtená.
-      */
-
-      if (
-        item.type !==
-          "theory" &&
+        item.type !== "theory" &&
         item.image
       ) {
 
         const img =
-          document.createElement(
-            "img"
-          );
-
+          document.createElement("img");
 
         img.src =
           item.image;
 
-
         img.className =
           "review-photo";
 
-
-        img.alt =
-          "Fotografie z chybné odpovědi";
-
-
-        box.appendChild(
-          img
-        );
+        box.appendChild(img);
       }
 
 
       const userLine =
-        document.createElement(
-          "div"
-        );
-
+        document.createElement("div");
 
       userLine.className =
         "review-line your-answer";
 
 
-      if (
-        item.unanswered
-      ) {
+      if (item.unanswered) {
 
         userLine.innerHTML =
-          "<strong>Tvoje odpověď:</strong> " +
-          "⚪ Nezodpovězeno";
-      }
+          "<strong>Tvoje odpověď:</strong> ⚪ Nezodpovězeno";
 
-      else {
+      } else {
 
         userLine.innerHTML =
           "<strong>Tvoje odpověď:</strong> " +
@@ -2645,20 +2684,14 @@ function createReview() {
       }
 
 
-      box.appendChild(
-        userLine
-      );
+      box.appendChild(userLine);
 
 
       const correctLine =
-        document.createElement(
-          "div"
-        );
-
+        document.createElement("div");
 
       correctLine.className =
         "review-line correct-answer";
-
 
       correctLine.innerHTML =
         "<strong>Správná odpověď:</strong> " +
@@ -2666,28 +2699,8 @@ function createReview() {
           item.correctAnswer
         );
 
-
       box.appendChild(
         correctLine
-      );
-
-
-      const points =
-        document.createElement(
-          "div"
-        );
-
-
-      points.className =
-        "points";
-
-
-      points.textContent =
-        "0 / 2 body";
-
-
-      box.appendChild(
-        points
       );
 
 
@@ -2699,59 +2712,21 @@ function createReview() {
 }
 
 
-/* ========================================
-   NAČTENÍ "CO MI NEJDE"
-======================================== */
-
-function loadMistakeList(key) {
-
-  const saved =
-    localStorage.getItem(
-      key
-    );
-
-
-  if (!saved) {
-    return [];
-  }
-
-
-  try {
-
-    const data =
-      JSON.parse(saved);
-
-
-    return Array.isArray(data)
-      ? data
-      : [];
-  }
-
-  catch {
-
-    return [];
-  }
-}
-
-
-/* ========================================
-   PŘIDÁNÍ BEZ DUPLICIT
-======================================== */
+/* =====================================================
+   CHYBY POZNÁVAČKY
+===================================================== */
 
 function addUniqueMistake(
   list,
   item
 ) {
 
-  if (
-    !item ||
-    !item.name
-  ) {
+  if (!item || !item.name) {
     return false;
   }
 
 
-  const normalizedName =
+  const name =
     normalizeAnswer(
       item.name
     );
@@ -2759,28 +2734,21 @@ function addUniqueMistake(
 
   const exists =
     list.some(
-      function(savedItem) {
+      function(saved) {
 
         if (
-          typeof savedItem ===
-          "string"
+          typeof saved === "string"
         ) {
-
           return (
-            normalizeAnswer(
-              savedItem
-            ) ===
-            normalizedName
+            normalizeAnswer(saved) ===
+            name
           );
         }
 
-
         return (
-          savedItem &&
-          normalizeAnswer(
-            savedItem.name
-          ) ===
-          normalizedName
+          saved &&
+          normalizeAnswer(saved.name) ===
+          name
         );
       }
     );
@@ -2793,61 +2761,25 @@ function addUniqueMistake(
 
   list.push(item);
 
-
   return true;
 }
 
 
-/* ========================================
-   ULOŽENÍ CHYB DO "CO MI NEJDE"
-======================================== */
-
 function saveRecognitionMistakes() {
 
-  if (!activeProfileId) {
-
-    saveMessage.style.display =
-      "block";
-
-
-    saveMessage.textContent =
-      "⚠️ Není vybraný hráč.";
-
-
-    return;
-  }
-
-
-  const fishKey =
-    "zlataUdiceFishMistakes_" +
-    activeProfileId;
-
-
-  const plantKey =
-    "zlataUdicePlantMistakes_" +
-    activeProfileId;
-
-
-  const animalKey =
-    "zlataUdiceAnimalMistakes_" +
-    activeProfileId;
-
-
   const fishMistakes =
-    loadMistakeList(
-      fishKey
+    readArray(
+      FISH_MISTAKES_KEY
     );
-
 
   const plantMistakes =
-    loadMistakeList(
-      plantKey
+    readArray(
+      PLANT_MISTAKES_KEY
     );
 
-
   const animalMistakes =
-    loadMistakeList(
-      animalKey
+    readArray(
+      ANIMAL_MISTAKES_KEY
     );
 
 
@@ -2859,10 +2791,14 @@ function saveRecognitionMistakes() {
   testResults.forEach(
     function(result) {
 
+      /*
+        Nezodpovězené položky ignorujeme.
+      */
+
       if (
         result.correct ||
-        result.type ===
-          "theory" ||
+        result.unanswered ||
+        result.type === "theory" ||
         !result.originalItem
       ) {
         return;
@@ -2870,80 +2806,64 @@ function saveRecognitionMistakes() {
 
 
       if (
-        result.type ===
-        "fish"
+        result.type === "fish" &&
+        addUniqueMistake(
+          fishMistakes,
+          result.originalItem
+        )
       ) {
-
-        if (
-          addUniqueMistake(
-            fishMistakes,
-            result.originalItem
-          )
-        ) {
-          addedFish++;
-        }
+        addedFish++;
       }
 
 
       if (
-        result.type ===
-        "plant"
+        result.type === "plant" &&
+        addUniqueMistake(
+          plantMistakes,
+          result.originalItem
+        )
       ) {
-
-        if (
-          addUniqueMistake(
-            plantMistakes,
-            result.originalItem
-          )
-        ) {
-          addedPlants++;
-        }
+        addedPlants++;
       }
 
 
       if (
-        result.type ===
-        "animal"
+        result.type === "animal" &&
+        addUniqueMistake(
+          animalMistakes,
+          result.originalItem
+        )
       ) {
-
-        if (
-          addUniqueMistake(
-            animalMistakes,
-            result.originalItem
-          )
-        ) {
-          addedAnimals++;
-        }
+        addedAnimals++;
       }
+
     }
   );
 
 
   localStorage.setItem(
-    fishKey,
+    FISH_MISTAKES_KEY,
     JSON.stringify(
       fishMistakes
     )
   );
 
-
   localStorage.setItem(
-    plantKey,
+    PLANT_MISTAKES_KEY,
     JSON.stringify(
       plantMistakes
     )
   );
 
-
   localStorage.setItem(
-    animalKey,
+    ANIMAL_MISTAKES_KEY,
     JSON.stringify(
       animalMistakes
     )
   );
 
 
-  const totalAdded =
+  const total =
     addedFish +
     addedPlants +
     addedAnimals;
@@ -2953,64 +2873,276 @@ function saveRecognitionMistakes() {
     "block";
 
 
-  if (
-    totalAdded === 0
-  ) {
+  if (!total) {
 
     saveMessage.innerHTML =
-      "❤️ Všechny tyto chyby už máš uložené v „Co mi nejde“.";
-  }
+      "❤️ Tyto chyby už máš v „Co mi nejde“.";
 
-  else {
+  } else {
 
     saveMessage.innerHTML =
       "✅ Uloženo do „Co mi nejde“:<br>" +
-      "🐟 Ryby: <strong>" +
+      "🐟 " +
       addedFish +
-      "</strong> &nbsp;•&nbsp; " +
-      "🌿 Rostliny: <strong>" +
+      " &nbsp; • &nbsp; " +
+      "🌿 " +
       addedPlants +
-      "</strong> &nbsp;•&nbsp; " +
-      "🦆 Živočichové: <strong>" +
-      addedAnimals +
-      "</strong>";
+      " &nbsp; • &nbsp; " +
+      "🦆 " +
+      addedAnimals;
   }
 
 
   mistakesButton.disabled =
     true;
 
-
   mistakesButton.textContent =
     "❤️ Chyby uloženy";
 }
 
 
-/* ========================================
-   BEZPEČNÝ TEXT
-======================================== */
+/* =====================================================
+   HISTORIE VÝSLEDKŮ
+===================================================== */
 
-function escapeHtml(text) {
+function saveTestHistory(
+  score,
+  percentage,
+  unanswered,
+  theory,
+  fishScore,
+  plantScore,
+  animalScore
+) {
 
-  const div =
-    document.createElement(
-      "div"
+  const history =
+    readArray(
+      HISTORY_KEY
     );
 
 
-  div.textContent =
-    String(text);
+  /*
+    Ochrana před dvojím uložením stejného
+    výsledku při opakovaném zavolání.
+  */
+
+  const sessionId =
+    Date.now() +
+    "-" +
+    Math.random()
+      .toString(36)
+      .slice(2);
 
 
-  return div.innerHTML;
+  history.unshift({
+
+    id:
+      sessionId,
+
+    date:
+      new Date().toISOString(),
+
+    score:
+      score,
+
+    max:
+      200,
+
+    percentage:
+      percentage,
+
+    unanswered:
+      unanswered,
+
+    theory:
+      theory,
+
+    fish:
+      fishScore,
+
+    plants:
+      plantScore,
+
+    animals:
+      animalScore
+
+  });
+
+
+  /*
+    Necháme posledních 50 testů.
+  */
+
+  localStorage.setItem(
+    HISTORY_KEY,
+    JSON.stringify(
+      history.slice(0, 50)
+    )
+  );
 }
 
 
-/* ========================================
-   KONTROLA TEORETICKÝCH OTÁZEK
-======================================== */
+function showHistory() {
 
-function checkSectionCounts() {
+  lastView =
+    resultBox.style.display === "block"
+      ? "result"
+      : "start";
+
+
+  startBox.style.display =
+    "none";
+
+  resultBox.style.display =
+    "none";
+
+  testCard.classList.add(
+    "hidden"
+  );
+
+  historyBox.style.display =
+    "block";
+
+
+  const history =
+    readArray(
+      HISTORY_KEY
+    );
+
+
+  historyList.innerHTML =
+    "";
+
+
+  if (!history.length) {
+
+    historyList.innerHTML =
+      '<div class="history-empty">' +
+      "Zatím tu není žádný dokončený zkušební test." +
+      "</div>";
+
+    return;
+  }
+
+
+  history.forEach(
+    function(item) {
+
+      const box =
+        document.createElement("div");
+
+      box.className =
+        "history-item";
+
+
+      const date =
+        new Date(item.date);
+
+
+      const formattedDate =
+        date.toLocaleDateString(
+          "cs-CZ"
+        ) +
+        " " +
+        date.toLocaleTimeString(
+          "cs-CZ",
+          {
+            hour: "2-digit",
+            minute: "2-digit"
+          }
+        );
+
+
+      box.innerHTML =
+
+        '<div class="history-date">' +
+          escapeHtml(
+            formattedDate
+          ) +
+        "</div>" +
+
+        '<div class="history-score">' +
+          item.score +
+          " / 200 bodů • " +
+          item.percentage +
+          " %" +
+        "</div>" +
+
+        '<div class="history-detail">' +
+
+          "🧠 Teorie: " +
+          item.theory.score +
+          " / " +
+          item.theory.max +
+          "<br>" +
+
+          "🐟 Ryby: " +
+          item.fish.score +
+          " / " +
+          item.fish.max +
+          "<br>" +
+
+          "🌿 Rostliny: " +
+          item.plants.score +
+          " / " +
+          item.plants.max +
+          "<br>" +
+
+          "🦆 Živočichové: " +
+          item.animals.score +
+          " / " +
+          item.animals.max +
+
+          (
+            item.unanswered
+              ? "<br>⚪ Nezodpovězeno: " +
+                item.unanswered
+              : ""
+          ) +
+
+        "</div>";
+
+
+      historyList.appendChild(
+        box
+      );
+    }
+  );
+
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+}
+
+
+function closeHistory() {
+
+  historyBox.style.display =
+    "none";
+
+
+  if (lastView === "result") {
+
+    resultBox.style.display =
+      "block";
+
+  } else {
+
+    startBox.style.display =
+      "block";
+
+    updateResumeBox();
+  }
+}
+
+
+/* =====================================================
+   KONTROLA DAT
+===================================================== */
+
+function checkData() {
 
   const errors = [];
 
@@ -3023,30 +3155,23 @@ function checkSectionCounts() {
       const section =
         Number(key);
 
-
       const required =
-        TEST_CONFIG
-          .theorySections[
-            section
-          ];
-
+        TEST_CONFIG.theorySections[
+          section
+        ];
 
       const available =
-        questions.filter(
-          function(item) {
-
+        theoryDatabase.filter(
+          function(q) {
             return (
-              item.section ===
+              q.section ===
               section
             );
           }
         ).length;
 
 
-      if (
-        available <
-        required
-      ) {
+      if (available < required) {
 
         errors.push(
           "Okruh " +
@@ -3061,130 +3186,70 @@ function checkSectionCounts() {
   );
 
 
-  return errors;
+  if (
+    typeof fish === "undefined" ||
+    !Array.isArray(fish) ||
+    getUniqueRecognitionItems(fish)
+      .length <
+      TEST_CONFIG.fish
+  ) {
+    errors.push(
+      "Není dost ryb."
+    );
+  }
+
+
+  if (
+    typeof plants === "undefined" ||
+    !Array.isArray(plants) ||
+    getUniqueRecognitionItems(plants)
+      .length <
+      TEST_CONFIG.plants
+  ) {
+    errors.push(
+      "Není dost rostlin."
+    );
+  }
+
+
+  if (
+    typeof animals === "undefined" ||
+    !Array.isArray(animals) ||
+    getUniqueRecognitionItems(animals)
+      .length <
+      TEST_CONFIG.animals
+  ) {
+    errors.push(
+      "Není dost živočichů."
+    );
+  }
+
+
+  if (errors.length) {
+
+    startBox.innerHTML =
+      "<h2>⚠️ Test nelze spustit</h2>" +
+      "<p>" +
+      errors.join("<br>") +
+      "</p>";
+
+    return false;
+  }
+
+
+  return true;
 }
 
 
-/* ========================================
-   KONTROLA DAT
-======================================== */
+/* =====================================================
+   START STRÁNKY
+===================================================== */
 
-(function checkData() {
+if (checkData()) {
 
-  const problems = [];
+  updateResumeBox();
 
-
-  if (
-    typeof questions ===
-      "undefined" ||
-    !Array.isArray(
-      questions
-    ) ||
-    questions.length === 0
-  ) {
-
-    problems.push(
-      "otázky"
-    );
-  }
-
-
-  if (
-    typeof fish ===
-      "undefined" ||
-    !Array.isArray(
-      fish
-    ) ||
-    getUniqueRecognitionItems(
-      fish
-    ).length <
-      TEST_CONFIG.fish
-  ) {
-
-    problems.push(
-      "ryby"
-    );
-  }
-
-
-  if (
-    typeof plants ===
-      "undefined" ||
-    !Array.isArray(
-      plants
-    ) ||
-    getUniqueRecognitionItems(
-      plants
-    ).length <
-      TEST_CONFIG.plants
-  ) {
-
-    problems.push(
-      "rostliny"
-    );
-  }
-
-
-  if (
-    typeof animals ===
-      "undefined" ||
-    !Array.isArray(
-      animals
-    ) ||
-    getUniqueRecognitionItems(
-      animals
-    ).length <
-      TEST_CONFIG.animals
-  ) {
-
-    problems.push(
-      "živočichy"
-    );
-  }
-
-
-  if (
-    problems.length
-  ) {
-
-    startBox.innerHTML =
-      "<h2>⚠️ Chybí data</h2>" +
-      "<p>Nepodařilo se správně načíst: " +
-      problems.join(", ") +
-      ".</p>";
-
-    return;
-  }
-
-
-  const sectionErrors =
-    checkSectionCounts();
-
-
-  if (
-    sectionErrors.length
-  ) {
-
-    startBox.innerHTML =
-      "<h2>⚠️ Nedostatek otázek</h2>" +
-      "<p>" +
-      sectionErrors.join("<br>") +
-      "</p>";
-
-    return;
-  }
-
-
-  console.log(
-    "Zkušební test připraven:"
-  );
-
-
-  console.log(
-    "50 teorie + 20 ryb + 15 rostlin + 15 živočichů = 100 položek / 200 bodů"
-  );
-
-})();
+}
 
 </script>
 
