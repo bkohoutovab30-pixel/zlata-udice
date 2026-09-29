@@ -129,10 +129,6 @@
       color: #dce8f2;
     }
 
-    /* =========================================
-       ZKUŠEBNÍ TEST
-    ========================================= */
-
     .exam {
       background: white;
       color: #17324d;
@@ -143,7 +139,7 @@
     }
 
     /* =========================================
-       INSTALACE APLIKACE
+       INSTALACE
     ========================================= */
 
     .install-box {
@@ -253,6 +249,16 @@
       color: #789;
     }
 
+    .offline-detail {
+      margin-top: 12px;
+      padding: 12px;
+      background: #f3f8fa;
+      border-radius: 12px;
+      font-size: 13px;
+      line-height: 1.6;
+      display: none;
+    }
+
     .missing-box {
       display: none;
       margin-top: 15px;
@@ -263,11 +269,6 @@
       font-size: 13px;
       line-height: 1.6;
       overflow-wrap: anywhere;
-    }
-
-    .missing-box strong {
-      display: block;
-      margin-bottom: 5px;
     }
   </style>
 </head>
@@ -377,8 +378,6 @@
     </a>
 
 
-    <!-- ZKUŠEBNÍ TEST -->
-
     <a
       class="card exam"
       href="zkusebni-test.html">
@@ -396,7 +395,7 @@
   </div>
 
 
-  <!-- INSTALACE NA PLOCHU -->
+  <!-- INSTALACE -->
 
   <div
     class="install-box"
@@ -432,17 +431,18 @@
     </h2>
 
     <p>
-      Stáhni si zvuky ryb, rostlin a živočichů,
-      aby fungovaly i bez internetu.
+      Stáhni si zvuky a fotografie,
+      aby učení, procvičování i zkušební test
+      fungovaly také bez internetu.
     </p>
 
     <button
       class="offline-button"
       id="offlineButton"
       type="button"
-      onclick="downloadOfflineSounds()">
+      onclick="downloadOfflineContent()">
 
-      📥 Stáhnout zvuky pro offline použití
+      📥 Stáhnout obsah pro offline použití
 
     </button>
 
@@ -466,12 +466,19 @@
 
 
     <div
+      class="offline-detail"
+      id="offlineDetail">
+    </div>
+
+
+    <div
       class="missing-box"
       id="missingBox">
     </div>
 
 
     <div class="offline-groups">
+      🔊 Zvuky &nbsp;•&nbsp;
       🐟 Ryby &nbsp;•&nbsp;
       🌿 Rostliny &nbsp;•&nbsp;
       🦆 Živočichové
@@ -579,10 +586,10 @@ function loadActivePlayer() {
 
 
 /* =========================================
-   TEXT -> MP3
+   NÁZEV -> NÁZEV SOUBORU
 ========================================= */
 
-function soundFileName(text) {
+function createFileName(text) {
 
   return String(text)
 
@@ -604,6 +611,57 @@ function soundFileName(text) {
       /^-+|-+$/g,
       ""
     );
+
+}
+
+
+/* =========================================
+   NÁZEV OBRÁZKU RYBY
+
+   Ryby mají speciální pravidlo
+   pro formy pstruha.
+========================================= */
+
+function createFishImageName(name) {
+
+  return String(name)
+
+    .normalize("NFD")
+
+    .replace(
+      /[\u0300-\u036f]/g,
+      ""
+    )
+
+    .toLowerCase()
+
+    .replace(
+      /\s*-\s*f\.\s*.*$/,
+      ""
+    )
+
+    .replace(
+      /[^a-z0-9]+/g,
+      "-"
+    )
+
+    .replace(
+      /^-+|-+$/g,
+      ""
+    );
+
+}
+
+
+/* =========================================
+   TEXT -> MP3
+========================================= */
+
+function soundFileName(text) {
+
+  return createFileName(
+    text
+  );
 
 }
 
@@ -705,10 +763,253 @@ function createOfflineSoundList() {
 
 
 /* =========================================
-   STAŽENÍ OFFLINE ZVUKŮ
+   MOŽNÉ OBRÁZKY
 ========================================= */
 
-async function downloadOfflineSounds() {
+function createImageCandidates(
+  item,
+  type
+) {
+
+  const result = [];
+
+
+  /*
+    Pokud je obrázek zadaný přímo
+    v datovém souboru, zkusíme ho
+    jako první.
+  */
+
+  if (
+    item &&
+    item.image
+  ) {
+
+    result.push(
+      item.image
+    );
+
+  }
+
+
+  if (
+    !item ||
+    !item.name
+  ) {
+
+    return result;
+
+  }
+
+
+  let baseName;
+
+
+  if (
+    type === "fish"
+  ) {
+
+    baseName =
+      createFishImageName(
+        item.name
+      );
+
+  }
+
+  else {
+
+    baseName =
+      createFileName(
+        item.name
+      );
+
+  }
+
+
+  result.push(
+
+    baseName + ".webp",
+    baseName + "-2.webp",
+    baseName + "-3.webp",
+
+    baseName + ".jpg",
+    baseName + "-2.jpg",
+    baseName + "-3.jpg",
+
+    baseName + ".jpeg",
+    baseName + "-2.jpeg",
+
+    baseName + ".png",
+    baseName + "-2.png"
+
+  );
+
+
+  return [
+    ...new Set(result)
+  ];
+
+}
+
+
+/* =========================================
+   ZJIŠTĚNÍ EXISTUJÍCÍCH OBRÁZKŮ
+
+   Neexistující varianty nejsou chyba.
+   Aplikace je zkouší pouze proto,
+   aby našla skutečné fotografie.
+========================================= */
+
+async function findExistingImages(
+  item,
+  type
+) {
+
+  const candidates =
+    createImageCandidates(
+      item,
+      type
+    );
+
+
+  const existing = [];
+
+
+  for (
+    const file of candidates
+  ) {
+
+    try {
+
+      const response =
+        await fetch(
+          file,
+          {
+            method: "GET",
+            cache: "reload"
+          }
+        );
+
+
+      if (
+        response.ok &&
+        response.headers
+          .get("content-type")
+          ?.toLowerCase()
+          .startsWith("image/")
+      ) {
+
+        existing.push(
+          file
+        );
+
+      }
+
+    }
+
+    catch (error) {
+
+      /*
+        Neexistující varianta fotografie
+        se ignoruje.
+      */
+
+    }
+
+  }
+
+
+  return existing;
+
+}
+
+
+/* =========================================
+   STAŽENÍ JEDNÉHO ZVUKU
+========================================= */
+
+async function downloadSound(
+  file
+) {
+
+  try {
+
+    const separator =
+      file.includes("?")
+        ? "&"
+        : "?";
+
+
+    const response =
+      await fetch(
+        file +
+        separator +
+        "offline=1",
+        {
+          cache: "reload"
+        }
+      );
+
+
+    return response.ok;
+
+  }
+
+  catch (error) {
+
+    return false;
+
+  }
+
+}
+
+
+/* =========================================
+   STAŽENÍ JEDNOHO OBRÁZKU
+
+   Service worker ho při načtení
+   automaticky uloží do IMAGE_CACHE.
+========================================= */
+
+async function downloadImage(
+  file
+) {
+
+  try {
+
+    const response =
+      await fetch(
+        file,
+        {
+          cache: "reload"
+        }
+      );
+
+
+    return (
+      response.ok &&
+      response.headers
+        .get("content-type")
+        ?.toLowerCase()
+        .startsWith("image/")
+    );
+
+  }
+
+  catch (error) {
+
+    return false;
+
+  }
+
+}
+
+
+/* =========================================
+   KOMPLETNÍ OFFLINE STAŽENÍ
+========================================= */
+
+async function downloadOfflineContent() {
 
   const button =
     document.getElementById(
@@ -730,6 +1031,11 @@ async function downloadOfflineSounds() {
       "progressFill"
     );
 
+  const detail =
+    document.getElementById(
+      "offlineDetail"
+    );
+
   const missingBox =
     document.getElementById(
       "missingBox"
@@ -739,121 +1045,331 @@ async function downloadOfflineSounds() {
   if (!navigator.onLine) {
 
     status.textContent =
-      "⚠️ Pro první stažení musí být zařízení připojené k internetu.";
+      "⚠️ Pro stažení nebo aktualizaci musí být zařízení připojené k internetu.";
 
     return;
   }
 
 
-  button.disabled = true;
+  button.disabled =
+    true;
+
 
   progressBar.style.display =
     "block";
 
+
   progressFill.style.width =
     "0%";
 
+
+  detail.style.display =
+    "block";
+
+
   missingBox.style.display =
     "none";
+
 
   missingBox.innerHTML =
     "";
 
 
-  const files =
+  const soundFiles =
     createOfflineSoundList();
 
 
-  if (files.length === 0) {
-
-    status.textContent =
-      "⚠️ Seznam zvuků je prázdný.";
-
-    button.disabled =
-      false;
-
-    return;
-  }
+  const totalItems =
+    soundFiles.length +
+    fish.length +
+    plants.length +
+    animals.length;
 
 
-  let saved = 0;
+  let processedItems = 0;
 
-  let failed = 0;
+  let soundsSaved = 0;
 
-  const missingFiles = [];
+  let soundsFailed = 0;
+
+  let imagesSaved = 0;
+
+  let itemsWithImages = 0;
+
+  const missingSounds = [];
 
 
-  for (
-    let i = 0;
-    i < files.length;
-    i++
+  function updateProgress(
+    text
   ) {
 
-    const cleanName =
-      files[i]
-        .split("/")
-        .pop();
-
-
-    status.textContent =
-      "📥 Stahuji zvuk " +
-      (i + 1) +
-      " / " +
-      files.length +
-      "…";
-
-
-    try {
-
-      const response =
-        await fetch(
-          files[i],
-          {
-            cache: "reload"
-          }
-        );
-
-
-      if (response.ok) {
-
-        saved++;
-
-      }
-
-      else {
-
-        failed++;
-
-        missingFiles.push(
-          cleanName
-        );
-
-      }
-
-    }
-
-    catch (error) {
-
-      failed++;
-
-      missingFiles.push(
-        cleanName
-      );
-
-    }
+    processedItems++;
 
 
     const percentage =
       Math.round(
         (
-          (i + 1) /
-          files.length
+          processedItems /
+          totalItems
         ) * 100
       );
 
 
     progressFill.style.width =
       percentage + "%";
+
+
+    status.textContent =
+      text;
+
+
+    detail.innerHTML =
+      "🔊 Zvuky: <strong>" +
+      soundsSaved +
+      "</strong> uloženo" +
+      (
+        soundsFailed > 0
+          ? ", " +
+            soundsFailed +
+            " chybí"
+          : ""
+      ) +
+      "<br>" +
+      "🖼️ Fotografie: <strong>" +
+      imagesSaved +
+      "</strong> uloženo";
+
+  }
+
+
+  /* =====================================
+     ZVUKY
+  ===================================== */
+
+  for (
+    let i = 0;
+    i < soundFiles.length;
+    i++
+  ) {
+
+    status.textContent =
+      "🔊 Stahuji zvuk " +
+      (i + 1) +
+      " / " +
+      soundFiles.length +
+      "…";
+
+
+    const ok =
+      await downloadSound(
+        soundFiles[i]
+      );
+
+
+    if (ok) {
+
+      soundsSaved++;
+
+    }
+
+    else {
+
+      soundsFailed++;
+
+      missingSounds.push(
+        soundFiles[i]
+          .split("/")
+          .pop()
+      );
+
+    }
+
+
+    updateProgress(
+      "🔊 Stahuji zvuky…"
+    );
+
+  }
+
+
+  /* =====================================
+     RYBY
+  ===================================== */
+
+  for (
+    let i = 0;
+    i < fish.length;
+    i++
+  ) {
+
+    status.textContent =
+      "🐟 Hledám fotografie ryb " +
+      (i + 1) +
+      " / " +
+      fish.length +
+      "…";
+
+
+    const files =
+      await findExistingImages(
+        fish[i],
+        "fish"
+      );
+
+
+    if (
+      files.length > 0
+    ) {
+
+      itemsWithImages++;
+
+    }
+
+
+    /*
+      findExistingImages už obrázky načetlo
+      přes service worker a tím je zároveň
+      uložilo do IMAGE_CACHE.
+
+      Přesto je ještě jednou ověříme.
+    */
+
+    for (
+      const file of files
+    ) {
+
+      if (
+        await downloadImage(
+          file
+        )
+      ) {
+
+        imagesSaved++;
+
+      }
+
+    }
+
+
+    updateProgress(
+      "🐟 Připravuji fotografie ryb…"
+    );
+
+  }
+
+
+  /* =====================================
+     ROSTLINY
+  ===================================== */
+
+  for (
+    let i = 0;
+    i < plants.length;
+    i++
+  ) {
+
+    status.textContent =
+      "🌿 Hledám fotografie rostlin " +
+      (i + 1) +
+      " / " +
+      plants.length +
+      "…";
+
+
+    const files =
+      await findExistingImages(
+        plants[i],
+        "plant"
+      );
+
+
+    if (
+      files.length > 0
+    ) {
+
+      itemsWithImages++;
+
+    }
+
+
+    for (
+      const file of files
+    ) {
+
+      if (
+        await downloadImage(
+          file
+        )
+      ) {
+
+        imagesSaved++;
+
+      }
+
+    }
+
+
+    updateProgress(
+      "🌿 Připravuji fotografie rostlin…"
+    );
+
+  }
+
+
+  /* =====================================
+     ŽIVOČICHOVÉ
+  ===================================== */
+
+  for (
+    let i = 0;
+    i < animals.length;
+    i++
+  ) {
+
+    status.textContent =
+      "🦆 Hledám fotografie živočichů " +
+      (i + 1) +
+      " / " +
+      animals.length +
+      "…";
+
+
+    const files =
+      await findExistingImages(
+        animals[i],
+        "animal"
+      );
+
+
+    if (
+      files.length > 0
+    ) {
+
+      itemsWithImages++;
+
+    }
+
+
+    for (
+      const file of files
+    ) {
+
+      if (
+        await downloadImage(
+          file
+        )
+      ) {
+
+        imagesSaved++;
+
+      }
+
+    }
+
+
+    updateProgress(
+      "🦆 Připravuji fotografie živočichů…"
+    );
 
   }
 
@@ -862,68 +1378,105 @@ async function downloadOfflineSounds() {
     "100%";
 
 
-  if (failed === 0) {
+  status.innerHTML =
+    "✅ <strong>Offline obsah je připraven.</strong>";
 
-    status.innerHTML =
-      "✅ Hotovo!<br>" +
-      "<strong>" +
-      saved +
-      " zvuků</strong> je připraveno pro offline použití.";
 
-  }
+  detail.innerHTML =
+    "🔊 Zvuky: <strong>" +
+    soundsSaved +
+    " / " +
+    soundFiles.length +
+    "</strong><br>" +
 
-  else {
+    "🖼️ Fotografie: <strong>" +
+    imagesSaved +
+    "</strong> souborů<br>" +
 
-    status.innerHTML =
-      "✅ Uloženo: <strong>" +
-      saved +
-      "</strong><br>" +
-      "⚠️ Nenalezeno: <strong>" +
-      failed +
-      "</strong>";
+    "🐟🌿🦆 Položek s fotografií: <strong>" +
+    itemsWithImages +
+    "</strong>";
 
+
+  if (
+    missingSounds.length > 0
+  ) {
 
     missingBox.style.display =
       "block";
 
 
     missingBox.innerHTML =
-      "<strong>Chybějící zvuky:</strong>" +
-      missingFiles.join("<br>");
+      "<strong>⚠️ Chybějící zvuky:</strong>" +
+      missingSounds.join(
+        "<br>"
+      );
 
   }
 
 
-  if (saved > 0) {
+  localStorage.setItem(
+    "zlataUdiceOfflineContent",
+    JSON.stringify({
 
-    localStorage.setItem(
-      "zlataUdiceOfflineSounds",
-      JSON.stringify({
+      date:
+        new Date()
+          .toISOString(),
 
-        date:
-          new Date()
-            .toISOString(),
+      soundsSaved:
+        soundsSaved,
 
-        saved:
-          saved,
+      soundsFailed:
+        soundsFailed,
 
-        failed:
-          failed,
+      soundsTotal:
+        soundFiles.length,
 
-        total:
-          files.length,
+      imagesSaved:
+        imagesSaved,
 
-        missing:
-          missingFiles
+      itemsWithImages:
+        itemsWithImages,
 
-      })
-    );
+      missingSounds:
+        missingSounds
+
+    })
+  );
 
 
-    button.textContent =
-      "🔄 Aktualizovat offline zvuky";
+  /*
+    Zachováme i původní informaci
+    o offline zvucích pro případ,
+    že ji používá jiná část aplikace.
+  */
 
-  }
+  localStorage.setItem(
+    "zlataUdiceOfflineSounds",
+    JSON.stringify({
+
+      date:
+        new Date()
+          .toISOString(),
+
+      saved:
+        soundsSaved,
+
+      failed:
+        soundsFailed,
+
+      total:
+        soundFiles.length,
+
+      missing:
+        missingSounds
+
+    })
+  );
+
+
+  button.textContent =
+    "🔄 Aktualizovat offline obsah";
 
 
   button.disabled =
@@ -940,12 +1493,43 @@ function showOfflineStatus() {
 
   const saved =
     localStorage.getItem(
-      "zlataUdiceOfflineSounds"
+      "zlataUdiceOfflineContent"
     );
 
 
   if (!saved) {
+
+    /*
+      Pokud existuje pouze starý balíček
+      zvuků, nabídneme aktualizaci
+      na kompletní offline obsah.
+    */
+
+    const oldSounds =
+      localStorage.getItem(
+        "zlataUdiceOfflineSounds"
+      );
+
+
+    if (oldSounds) {
+
+      document.getElementById(
+        "offlineStatus"
+      ).innerHTML =
+        "🔊 Zvuky už máš stažené.<br>" +
+        "Teď můžeš doplnit také fotografie.";
+
+
+      document.getElementById(
+        "offlineButton"
+      ).textContent =
+        "📥 Doplnit fotografie pro offline použití";
+
+    }
+
+
     return;
+
   }
 
 
@@ -979,6 +1563,12 @@ function showOfflineStatus() {
       );
 
 
+    const detail =
+      document.getElementById(
+        "offlineDetail"
+      );
+
+
     const missingBox =
       document.getElementById(
         "missingBox"
@@ -986,7 +1576,7 @@ function showOfflineStatus() {
 
 
     button.textContent =
-      "🔄 Aktualizovat offline zvuky";
+      "🔄 Aktualizovat offline obsah";
 
 
     progressBar.style.display =
@@ -997,35 +1587,35 @@ function showOfflineStatus() {
       "100%";
 
 
-    if (
-      !info.failed ||
-      info.failed === 0
-    ) {
+    status.innerHTML =
+      "✅ <strong>Offline obsah je připraven.</strong>";
 
-      status.innerHTML =
-        "✅ Hotovo!<br>" +
-        "<strong>" +
-        (info.saved || 0) +
-        " zvuků</strong> je připraveno pro offline použití.";
 
-    }
+    detail.style.display =
+      "block";
 
-    else {
 
-      status.innerHTML =
-        "✅ Uloženo: <strong>" +
-        (info.saved || 0) +
-        "</strong><br>" +
-        "⚠️ Nenalezeno: <strong>" +
-        info.failed +
-        "</strong>";
+    detail.innerHTML =
+      "🔊 Zvuky: <strong>" +
+      (info.soundsSaved || 0) +
+      " / " +
+      (info.soundsTotal || 0) +
+      "</strong><br>" +
 
-    }
+      "🖼️ Fotografie: <strong>" +
+      (info.imagesSaved || 0) +
+      "</strong> souborů<br>" +
+
+      "🐟🌿🦆 Položek s fotografií: <strong>" +
+      (info.itemsWithImages || 0) +
+      "</strong>";
 
 
     if (
-      Array.isArray(info.missing) &&
-      info.missing.length > 0
+      Array.isArray(
+        info.missingSounds
+      ) &&
+      info.missingSounds.length > 0
     ) {
 
       missingBox.style.display =
@@ -1033,15 +1623,10 @@ function showOfflineStatus() {
 
 
       missingBox.innerHTML =
-        "<strong>Chybějící zvuky:</strong>" +
-        info.missing.join("<br>");
-
-    }
-
-    else {
-
-      missingBox.style.display =
-        "none";
+        "<strong>⚠️ Chybějící zvuky:</strong>" +
+        info.missingSounds.join(
+          "<br>"
+        );
 
     }
 
@@ -1050,7 +1635,7 @@ function showOfflineStatus() {
   catch (error) {
 
     console.log(
-      "Nepodařilo se načíst stav offline balíčku.",
+      "Nepodařilo se načíst stav offline obsahu.",
       error
     );
 
@@ -1147,11 +1732,6 @@ window.addEventListener(
 
     installBox.style.display =
       "none";
-
-
-    console.log(
-      "Zlatá udice byla nainstalována."
-    );
 
   }
 );
