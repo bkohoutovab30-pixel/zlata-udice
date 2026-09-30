@@ -1,6 +1,6 @@
 /* =========================================================
    ZLATÁ UDICE 2026
-   SERVICE WORKER – OFFLINE REŽIM v7
+   SERVICE WORKER – OFFLINE REŽIM v8
 
    - HTML: NETWORK FIRST
      -> při internetu vždy zkusí nejnovější verzi
@@ -10,17 +10,33 @@
 
    - AUDIO: CACHE FIRST
      -> stažené zvuky fungují offline
+     -> cache zvuků se při aktualizaci aplikace nemaže
 
    - OBRÁZKY: CACHE FIRST
-     -> jednou načtené obrázky zůstávají offline
+     -> jednou stažené obrázky zůstávají offline
+     -> cache obrázků se při aktualizaci aplikace nemaže
+
+   - ?offline=1
+     -> umožňuje vynutit aktualizaci zvuku nebo obrázku
+     -> do cache se vždy uloží čistá adresa bez parametru
 
    - ZKUŠEBNÍ TEST:
      -> je součástí offline aplikace
 ========================================================= */
 
 
+/*
+  Aplikační cache má novou verzi.
+
+  Audio a obrázky záměrně ponecháváme
+  ve stejné cache jako ve verzi v7.
+
+  Díky tomu se již stažené soubory
+  při aktualizaci aplikace nesmažou.
+*/
+
 const APP_CACHE =
-  "zlata-udice-app-v7";
+  "zlata-udice-app-v8";
 
 const AUDIO_CACHE =
   "zlata-udice-audio-v7";
@@ -107,7 +123,7 @@ self.addEventListener(
   event => {
 
     console.log(
-      "Zlatá udice: instaluji offline režim v7."
+      "Zlatá udice: instaluji offline režim v8."
     );
 
 
@@ -122,9 +138,9 @@ self.addEventListener(
             /*
               Soubory ukládáme jednotlivě.
 
-              Když by náhodou jeden soubor
-              neexistoval, nespadne kvůli tomu
-              instalace celého workeru.
+              Když jeden soubor neexistuje,
+              instalace celého service workeru
+              kvůli tomu nespadne.
             */
 
             for (
@@ -157,7 +173,7 @@ self.addEventListener(
 
 
     /*
-      Nový worker nemusí čekat,
+      Nový service worker nemusí čekat,
       až zmizí starý.
     */
 
@@ -176,9 +192,21 @@ self.addEventListener(
   event => {
 
     console.log(
-      "Zlatá udice: aktivuji offline režim v7."
+      "Zlatá udice: aktivuji offline režim v8."
     );
 
+
+    /*
+      DŮLEŽITÉ:
+
+      Zachováváme:
+      - novou aplikační cache v8
+      - původní audio cache v7
+      - původní image cache v7
+
+      Staré aplikační cache se smažou,
+      ale stažené zvuky a fotografie zůstanou.
+    */
 
     const allowedCaches = [
 
@@ -209,7 +237,7 @@ self.addEventListener(
                   ) {
 
                     console.log(
-                      "Mažu starou cache:",
+                      "Mažu starou aplikační cache:",
                       cacheName
                     );
 
@@ -250,11 +278,10 @@ self.addEventListener(
 /* =========================================================
    POMOCNÁ FUNKCE
 
-   Odstraní pomocný parametr ?offline=1,
-   který používáme při stahování zvuků.
+   Odstraní pomocný parametr ?offline=1.
 
-   Díky tomu se stejný MP3 soubor
-   neukládá pod dvěma různými adresami.
+   Díky tomu se soubor v cache uloží
+   pod normální adresou.
 ========================================================= */
 
 function cleanRequest(
@@ -281,6 +308,29 @@ function cleanRequest(
       credentials: request.credentials,
       redirect: request.redirect
     }
+  );
+
+}
+
+
+/* =========================================================
+   JE VYNUCENÁ OFFLINE AKTUALIZACE?
+========================================================= */
+
+function isOfflineUpdate(
+  request
+) {
+
+  const url =
+    new URL(
+      request.url
+    );
+
+
+  return (
+    url.searchParams.get(
+      "offline"
+    ) === "1"
   );
 
 }
@@ -463,7 +513,18 @@ function isUpdateableAppFile(
 
 /* =========================================================
    AUDIO
+
+   Normální použití:
    CACHE FIRST
+
+   ?offline=1:
+   NETWORK FIRST + přepsání cache
+
+   To znamená:
+   - běžné přehrávání je rychlé
+   - funguje offline
+   - tlačítko Aktualizovat offline obsah
+     může stáhnout novou verzi MP3
 ========================================================= */
 
 async function handleAudio(
@@ -476,26 +537,93 @@ async function handleAudio(
     );
 
 
-  /*
-    Odstraníme ?offline=1,
-    aby byl zvuk uložen pod normální adresou.
-  */
-
   const clean =
     cleanRequest(
       request
     );
 
 
+  /*
+    Pokud přišel parametr ?offline=1,
+    chceme soubor skutečně aktualizovat.
+  */
+
+  if (
+    isOfflineUpdate(
+      request
+    )
+  ) {
+
+    try {
+
+      const response =
+        await fetch(
+          clean
+        );
+
+
+      if (
+        response &&
+        response.ok
+      ) {
+
+        await cache.put(
+          clean,
+          response.clone()
+        );
+
+      }
+
+
+      return response;
+
+    }
+
+    catch (error) {
+
+      /*
+        Pokud aktualizace selže,
+        použijeme alespoň starou
+        offline verzi.
+      */
+
+      const cached =
+        await cache.match(
+          clean
+        );
+
+
+      if (cached) {
+
+        return cached;
+
+      }
+
+
+      return new Response(
+        "",
+        {
+          status: 503,
+          statusText:
+            "Audio není dostupné offline"
+        }
+      );
+
+    }
+
+  }
+
+
+  /*
+    Normální použití:
+    nejdříve cache.
+  */
+
   const cached =
     await cache.match(
       clean
     );
 
-
-  /*
-    Zvuk už máme uložený.
-  */
 
   if (cached) {
 
@@ -505,8 +633,7 @@ async function handleAudio(
 
 
   /*
-    Nemáme ho.
-
+    V cache není.
     Zkusíme internet.
   */
 
@@ -559,7 +686,12 @@ async function handleAudio(
 
 /* =========================================================
    OBRÁZKY
+
+   Normální použití:
    CACHE FIRST
+
+   ?offline=1:
+   NETWORK FIRST + přepsání cache
 ========================================================= */
 
 async function handleImage(
@@ -572,15 +704,86 @@ async function handleImage(
     );
 
 
-  const cached =
-    await cache.match(
+  const clean =
+    cleanRequest(
       request
     );
 
 
   /*
-    Obrázek už máme.
+    Vynucená aktualizace obrázku.
   */
+
+  if (
+    isOfflineUpdate(
+      request
+    )
+  ) {
+
+    try {
+
+      const response =
+        await fetch(
+          clean
+        );
+
+
+      if (
+        response &&
+        response.ok
+      ) {
+
+        await cache.put(
+          clean,
+          response.clone()
+        );
+
+      }
+
+
+      return response;
+
+    }
+
+    catch (error) {
+
+      const cached =
+        await cache.match(
+          clean
+        );
+
+
+      if (cached) {
+
+        return cached;
+
+      }
+
+
+      return new Response(
+        "",
+        {
+          status: 503,
+          statusText:
+            "Obrázek není dostupný offline"
+        }
+      );
+
+    }
+
+  }
+
+
+  /*
+    Normální použití:
+    nejdříve cache.
+  */
+
+  const cached =
+    await cache.match(
+      clean
+    );
+
 
   if (cached) {
 
@@ -590,8 +793,7 @@ async function handleImage(
 
 
   /*
-    Nemáme ho.
-
+    Obrázek v cache není.
     Zkusíme internet.
   */
 
@@ -599,7 +801,7 @@ async function handleImage(
 
     const response =
       await fetch(
-        request
+        clean
       );
 
 
@@ -609,7 +811,7 @@ async function handleImage(
     ) {
 
       await cache.put(
-        request,
+        clean,
         response.clone()
       );
 
@@ -624,7 +826,7 @@ async function handleImage(
 
     console.warn(
       "Obrázek není dostupný:",
-      request.url
+      clean.url
     );
 
 
@@ -665,10 +867,6 @@ async function handleNetworkFirst(
 
   try {
 
-    /*
-      Zkusíme internet jako první.
-    */
-
     const response =
       await fetch(
         request
@@ -679,11 +877,6 @@ async function handleNetworkFirst(
       response &&
       response.ok
     ) {
-
-      /*
-        Novou verzi rovnou uložíme
-        pro příští offline použití.
-      */
 
       await cache.put(
         request,
@@ -699,12 +892,6 @@ async function handleNetworkFirst(
 
   catch (error) {
 
-    /*
-      Internet není dostupný.
-
-      Zkusíme cache.
-    */
-
     const cached =
       await cache.match(
         request
@@ -719,8 +906,8 @@ async function handleNetworkFirst(
 
 
     /*
-      U navigace zkusíme ještě
-      hlavní stránku.
+      U navigace zkusíme jako poslední
+      možnost hlavní stránku.
     */
 
     if (
@@ -804,8 +991,8 @@ async function handleCacheFirst(
 
 
       /*
-        Ukládáme jen soubory
-        z naší vlastní stránky.
+        Ukládáme pouze soubory
+        z vlastní aplikace.
       */
 
       if (
@@ -867,7 +1054,7 @@ self.addEventListener(
 
 
     /*
-      Řešíme pouze GET.
+      Řešíme pouze GET požadavky.
     */
 
     if (
@@ -955,7 +1142,7 @@ self.addEventListener(
 
     /* =====================================================
        HTML
-       VŽDY INTERNET PRVNÍ
+       INTERNET PRVNÍ
     ===================================================== */
 
     if (
@@ -980,7 +1167,7 @@ self.addEventListener(
 
     /* =====================================================
        JS + JSON
-       TAKÉ INTERNET PRVNÍ
+       INTERNET PRVNÍ
     ===================================================== */
 
     if (
