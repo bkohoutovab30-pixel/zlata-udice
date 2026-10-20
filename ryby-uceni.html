@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="cs">
 <head>
@@ -515,6 +516,14 @@ function showPhoto(item) {
     baseName + "-2.png"
 
   ];
+
+
+  // Fotografie hledáme pouze ve složce "ryby 1".
+  possibleImages.splice(
+    0,
+    possibleImages.length,
+    ...possibleImages.map(file => "ryby%201/" + file)
+  );
 
 
   let attempt = 0;
