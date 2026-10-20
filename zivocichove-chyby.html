@@ -1088,6 +1088,14 @@ function showPhoto(item) {
       item.image
     );
 
+
+  // Fotografie živočichů jsou v adresáři „živočichové 2“.
+  for (let i = 0; i < possibleImages.length; i++) {
+    const file = String(possibleImages[i]).replace(/^\.\//, "");
+    possibleImages[i] = file.startsWith("živočichové 2/")
+      ? file : "živočichové 2/" + file;
+  }
+
   }
 
 
