@@ -650,6 +650,13 @@ function createImageCandidates(item, type) {
     ];
   }
 
+  if (type === "animal") {
+    return [...new Set(result.map(function(file) {
+      const normalized = String(file).replace(/^\.\//, "");
+      return normalized.startsWith("živočichové 2/") ? normalized : "živočichové 2/" + normalized;
+    }))];
+  }
+
   if (type === "plant") {
     return [...new Set(result.map(function(file) {
       const normalized = String(file).replace(/^\.\//, "");
