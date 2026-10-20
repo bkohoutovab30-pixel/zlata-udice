@@ -647,6 +647,13 @@ function showPhoto(item) {
 
   );
 
+  // Soubory jsou uložené ve složce rostliny/.
+  for (let i = 0; i < possibleImages.length; i++) {
+    const file = String(possibleImages[i]).replace(/^\.\//, "");
+    possibleImages[i] = file.startsWith("rostliny/") ? file : "rostliny/" + file;
+  }
+
+
 
   const uniqueImages =
     [...new Set(
