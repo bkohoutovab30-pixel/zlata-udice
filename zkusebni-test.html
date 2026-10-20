@@ -1825,90 +1825,43 @@ function showRecognitionQuestion(item) {
 ===================================================== */
 
 function getImageCandidates(testItem) {
+  const item = testItem.item;
+  const baseName = (testItem.type === "fish" && item.imageName)
+    ? item.imageName
+    : createFileName(item.name);
 
-  const item =
-    testItem.item;
+  const fileNames = [
+    baseName + ".webp", baseName + "-2.webp", baseName + "-3.webp",
+    baseName + ".jpg", baseName + "-2.jpg", baseName + "-3.jpg",
+    baseName + ".jpeg", baseName + "-2.jpeg", baseName + "-3.jpeg",
+    baseName + ".png", baseName + "-2.png", baseName + "-3.png"
+  ];
 
-  let baseName;
-
-  if (
-    testItem.type === "fish" &&
-    item.imageName
-  ) {
-    baseName =
-      item.imageName;
-  } else {
-    baseName =
-      createFileName(item.name);
-  }
+  const folder = testItem.type === "fish" ? "ryby%201/"
+    : testItem.type === "plant" ? "rostliny/"
+    : "zivocichove/";
 
   const candidates = [];
-
   if (item.image) {
+    const direct = String(item.image).replace(/^\.\//, "");
     candidates.push(
-      item.image
+      direct.startsWith(folder) ? direct : folder + direct
     );
   }
 
-  const fileNames = [
-    baseName + ".webp",
-    baseName + "-2.webp",
-    baseName + "-3.webp",
-    baseName + ".jpg",
-    baseName + "-2.jpg",
-    baseName + "-3.jpg",
-    baseName + ".jpeg",
-    baseName + "-2.jpeg",
-    baseName + "-3.jpeg",
-    baseName + ".png",
-    baseName + "-2.png",
-    baseName + "-3.png"
-  ];
-
-  let folders = [""];
-
-  if (testItem.type === "fish") {
-    folders = [
-      "",
-      "ryby/",
-      "images/ryby/",
-      "obrazky/ryby/"
-    ];
-  }
-
-  if (testItem.type === "plant") {
-    folders = [
-      "",
-      "rostliny/",
-      "images/rostliny/",
-      "obrazky/rostliny/"
-    ];
-  }
-
-  if (testItem.type === "animal") {
-    folders = [
-      "",
-      "zivocichove/",
-      "images/zivocichove/",
-      "obrazky/zivocichove/"
-    ];
-  }
-
-  folders.forEach(function(folder) {
-
-    fileNames.forEach(function(file) {
-      candidates.push(
-        folder + file
-      );
+  // Obě formy pstruha mají vlastní fotografie.
+  if (testItem.type === "fish" && item.soundName &&
+      item.soundName.startsWith("pstruh-obecny-f-")) {
+    ["webp", "jpg", "jpeg", "png"].forEach(function(ext) {
+      candidates.push(folder + item.soundName + "." + ext);
     });
+  }
 
+  fileNames.forEach(function(file) {
+    candidates.push(folder + file);
   });
-
-  return [
-    ...new Set(candidates)
-  ];
+  return [...new Set(candidates)];
 }
-
 
 /* =====================================================
    NÁHODNÁ FOTOGRAFIE BEZ OPAKOVÁNÍ
