@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="cs">
 
@@ -652,6 +653,14 @@ function showPhoto(item) {
   ];
 
 
+  // Fotografie načítáme pouze ze složky "ryby 1".
+  possibleImages.splice(
+    0,
+    possibleImages.length,
+    ...possibleImages.map(file => "ryby%201/" + file)
+  );
+
+
   let attempt = 0;
 
 
@@ -704,7 +713,6 @@ function showPhoto(item) {
 
         attempt++;
 
-       
         tryNextImage();
 
       };
