@@ -1,4 +1,4 @@
-```html
+
 <!DOCTYPE html>
 <html lang="cs">
 
@@ -18,13 +18,11 @@
 
   <title>Co mi nejde – Ryby | Zlatá udice</title>
 
-
   <style>
 
     * {
       box-sizing: border-box;
     }
-
 
     body {
       margin: 0;
@@ -33,14 +31,12 @@
       color: #17324d;
     }
 
-
     .app {
       max-width: 600px;
       margin: auto;
       min-height: 100vh;
       padding: 20px;
     }
-
 
     .topbar {
       display: flex;
@@ -49,13 +45,11 @@
       margin-bottom: 16px;
     }
 
-
     .back {
       color: #567;
       text-decoration: none;
       font-weight: bold;
     }
-
 
     .player {
       font-size: 14px;
@@ -63,29 +57,24 @@
       color: #567;
     }
 
-
     .header {
       text-align: center;
       margin-bottom: 20px;
     }
 
-
     .header-icon {
       font-size: 42px;
     }
-
 
     .header h1 {
       margin: 5px 0;
       font-size: 28px;
     }
 
-
     .header p {
       margin: 0;
       color: #678;
     }
-
 
     .mistake-count {
       background: white;
@@ -96,17 +85,14 @@
       box-shadow: 0 3px 10px rgba(0,0,0,0.05);
     }
 
-
     .mistake-count strong {
       font-size: 22px;
       margin-right: 5px;
     }
 
-
     .mistake-count span {
       color: #678;
     }
-
 
     .fish-card {
       background: white;
@@ -115,7 +101,6 @@
       box-shadow: 0 4px 15px rgba(0,0,0,0.08);
       text-align: center;
     }
-
 
     .photo {
       width: 100%;
@@ -133,7 +118,6 @@
       overflow: hidden;
     }
 
-
     .photo img {
       display: block;
       width: 100%;
@@ -142,19 +126,16 @@
       border-radius: 14px;
     }
 
-
     .photo-icon {
       font-size: 60px;
       margin-bottom: 10px;
     }
-
 
     .question {
       font-size: 20px;
       font-weight: bold;
       margin: 5px 0 18px;
     }
-
 
     .show-name {
       border: none;
@@ -167,17 +148,14 @@
       cursor: pointer;
     }
 
-
     .answer {
       display: none;
     }
-
 
     .fish-name {
       font-size: 30px;
       margin: 5px 0 14px;
     }
-
 
     .sound-button {
       border: none;
@@ -191,24 +169,20 @@
       margin-bottom: 22px;
     }
 
-
     .sound-button:active {
       transform: scale(0.97);
     }
-
 
     .answer-question {
       color: #678;
       margin-bottom: 12px;
     }
 
-
     .answer-buttons {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 12px;
     }
-
 
     .answer-button {
       border: none;
@@ -219,18 +193,15 @@
       cursor: pointer;
     }
 
-
     .wrong {
       background: #fde8e8;
       color: #9b2929;
     }
 
-
     .correct {
       background: #e2f4e8;
       color: #27683a;
     }
-
 
     .empty {
       display: none;
@@ -241,25 +212,21 @@
       box-shadow: 0 4px 15px rgba(0,0,0,0.08);
     }
 
-
     .empty-icon {
       font-size: 60px;
       margin-bottom: 10px;
     }
-
 
     .empty h2 {
       margin: 5px 0 10px;
       font-size: 26px;
     }
 
-
     .empty p {
       color: #678;
       line-height: 1.5;
       margin-bottom: 22px;
     }
-
 
     .practice-link {
       display: inline-block;
@@ -270,7 +237,6 @@
       border-radius: 14px;
       font-weight: bold;
     }
-
 
     .info {
       margin-top: 18px;
@@ -284,12 +250,9 @@
 
 </head>
 
-
 <body>
 
-
 <main class="app">
-
 
   <div class="topbar">
 
@@ -308,7 +271,6 @@
 
   </div>
 
-
   <div class="header">
 
     <div class="header-icon">
@@ -325,7 +287,6 @@
 
   </div>
 
-
   <div
     class="mistake-count"
     id="mistakeCountBox"
@@ -341,19 +302,15 @@
 
   </div>
 
-
   <div id="practiceArea">
 
-
     <div class="fish-card">
-
 
       <div
         class="photo"
         id="photoArea"
       >
       </div>
-
 
       <div id="questionArea">
 
@@ -370,7 +327,6 @@
 
       </div>
 
-
       <div
         class="answer"
         id="answerArea"
@@ -382,7 +338,6 @@
         >
         </h2>
 
-
         <button
           class="sound-button"
           onclick="playName()"
@@ -390,11 +345,9 @@
           🔊 Přehrát název
         </button>
 
-
         <div class="answer-question">
           Jak to tentokrát dopadlo?
         </div>
-
 
         <div class="answer-buttons">
 
@@ -416,9 +369,7 @@
 
       </div>
 
-
     </div>
-
 
     <div class="info">
 
@@ -427,9 +378,7 @@
 
     </div>
 
-
   </div>
-
 
   <div
     class="empty"
@@ -458,31 +407,24 @@
 
   </div>
 
-
 </main>
-
 
 <!-- ========================================
      SPOLEČNÝ SYSTÉM ZVUKU
 ======================================== -->
 
-
 <script src="zvuk.js"></script>
-
 
 <script>
 
-
 /* =========================================
    PROFIL
-========================================= */
-
+======================================== */
 
 const activeProfileId =
   localStorage.getItem(
     "zlataUdiceActiveProfile"
   );
-
 
 if (!activeProfileId) {
 
@@ -491,22 +433,18 @@ if (!activeProfileId) {
 
 }
 
-
 function getProfiles() {
-
 
   const saved =
     localStorage.getItem(
       "zlataUdiceProfiles"
     );
 
-
   if (!saved) {
 
     return [];
 
   }
-
 
   try {
 
@@ -524,7 +462,6 @@ function getProfiles() {
 
 }
 
-
 const activePlayer =
   getProfiles().find(
     profile =>
@@ -532,14 +469,11 @@ const activePlayer =
       activeProfileId
   );
 
-
 if (!activePlayer) {
-
 
   localStorage.removeItem(
     "zlataUdiceActiveProfile"
   );
-
 
   window.location.href =
     "profily.html";
@@ -547,7 +481,6 @@ if (!activePlayer) {
 }
 
 else {
-
 
   document
     .getElementById(
@@ -560,90 +493,74 @@ else {
 
 }
 
-
 /* =========================================
    DATA HRÁČE
-========================================= */
-
+======================================== */
 
 const mistakesKey =
   "zlataUdiceFishMistakes_" +
   activeProfileId;
-
 
 let mistakes = [];
 
 let currentFish = null;
 let previousCard = null;
 
-
 const practiceArea =
   document.getElementById(
     "practiceArea"
   );
-
 
 const emptyArea =
   document.getElementById(
     "emptyArea"
   );
 
-
 const mistakeCount =
   document.getElementById(
     "mistakeCount"
   );
-
 
 const mistakeCountText =
   document.getElementById(
     "mistakeCountText"
   );
 
-
 const mistakeCountBox =
   document.getElementById(
     "mistakeCountBox"
   );
-
 
 const questionArea =
   document.getElementById(
     "questionArea"
   );
 
-
 const answerArea =
   document.getElementById(
     "answerArea"
   );
-
 
 const fishName =
   document.getElementById(
     "fishName"
   );
 
-
 const photoArea =
   document.getElementById(
     "photoArea"
   );
 
-
 /* =========================================
    NAČTENÍ CHYB
-========================================= */
-
+======================================== */
 
 function loadMistakes() {
-
 
   const saved =
     localStorage.getItem(
       mistakesKey
     );
-
 
   if (!saved) {
 
@@ -653,15 +570,12 @@ function loadMistakes() {
 
   }
 
-
   try {
-
 
     const parsed =
       JSON.parse(
         saved
       );
-
 
     mistakes =
       Array.isArray(
@@ -680,14 +594,11 @@ function loadMistakes() {
 
 }
 
-
 /* =========================================
    ULOŽENÍ
-========================================= */
-
+======================================== */
 
 function saveMistakes() {
-
 
   localStorage.setItem(
     mistakesKey,
@@ -698,22 +609,17 @@ function saveMistakes() {
 
 }
 
-
 /* =========================================
    POČÍTADLO
-========================================= */
-
+======================================== */
 
 function updateCount() {
-
 
   const count =
     mistakes.length;
 
-
   mistakeCount.textContent =
     count;
-
 
   if (count === 1) {
 
@@ -741,14 +647,11 @@ function updateCount() {
 
 }
 
-
 /* =========================================
    NÁZEV SOUBORU PRO OBRÁZEK
-========================================= */
-
+======================================== */
 
 function createImageName(name) {
-
 
   return name
 
@@ -784,14 +687,11 @@ function createImageName(name) {
 
 }
 
-
 /* =========================================
    PLACEHOLDER
-========================================= */
-
+======================================== */
 
 function showPlaceholder() {
-
 
   photoArea.innerHTML = `
 
@@ -811,23 +711,18 @@ function showPlaceholder() {
 
 }
 
-
 /* =========================================
    FOTOGRAFIE
-========================================= */
-
+======================================== */
 
 function showPhoto(item) {
 
-
   showPlaceholder();
-
 
   const baseName =
     createImageName(
       item.name
     );
-
 
   const possibleImages = [
 
@@ -847,12 +742,16 @@ function showPhoto(item) {
 
   ];
 
+  // Fotografie hledáme pouze ve složce "ryby 1".
+  possibleImages.splice(
+    0,
+    possibleImages.length,
+    ...possibleImages.map(file => "ryby%201/" + file)
+  );
 
   let attempt = 0;
 
-
   function tryNextImage() {
-
 
     if (
       attempt >=
@@ -863,13 +762,10 @@ function showPhoto(item) {
 
     }
 
-
     const img =
       new Image();
 
-
     img.onload = function() {
-
 
       if (
         !currentFish ||
@@ -881,14 +777,11 @@ function showPhoto(item) {
 
       }
 
-
       img.alt =
         item.name;
 
-
       photoArea.innerHTML =
         "";
-
 
       photoArea.appendChild(
         img
@@ -896,65 +789,50 @@ function showPhoto(item) {
 
     };
 
-
     img.onerror = function() {
 
-
       attempt++;
-
 
       tryNextImage();
 
     };
-
 
     img.src =
       possibleImages[attempt];
 
   }
 
-
   tryNextImage();
 
 }
 
-
 /* =========================================
    VÝBĚR RYBY
-========================================= */
-
+======================================== */
 
 function chooseFish() {
-
 
   /*
     Zastaví předchozí MP3
     i případný záložní hlas.
   */
 
-
   stopSound();
 
-
   updateCount();
-
 
   if (
     mistakes.length === 0
   ) {
 
-
     practiceArea.style.display =
       "none";
-
 
     mistakeCountBox.style.display =
       "none";
 
-
     emptyArea.style.display =
       "block";
-
 
     document
       .getElementById(
@@ -965,33 +843,26 @@ function chooseFish() {
         " teď nemá žádnou rybu, " +
         "kterou by bylo potřeba znovu procvičit. 🎉";
 
-
     return;
 
   }
 
-
   practiceArea.style.display =
     "block";
-
 
   mistakeCountBox.style.display =
     "block";
 
-
   emptyArea.style.display =
     "none";
 
-
   let possibleFish =
     mistakes;
-
 
   if (
     mistakes.length > 1 &&
     previousCard !== null
   ) {
-
 
     const filtered =
       mistakes.filter(
@@ -999,7 +870,6 @@ function chooseFish() {
           item.card !==
           previousCard
       );
-
 
     if (
       filtered.length > 0
@@ -1012,75 +882,60 @@ function chooseFish() {
 
   }
 
-
   const randomIndex =
     Math.floor(
       Math.random() *
       possibleFish.length
     );
 
-
   currentFish =
     possibleFish[
       randomIndex
     ];
 
-
   previousCard =
     currentFish.card;
 
-
   fishName.textContent =
     currentFish.name;
-
 
   showPhoto(
     currentFish
   );
 
-
   questionArea.style.display =
     "block";
-
 
   answerArea.style.display =
     "none";
 
 }
-
 
 /* =========================================
    ODHALENÍ
-========================================= */
-
+======================================== */
 
 function showAnswer() {
 
-
   questionArea.style.display =
     "none";
-
 
   answerArea.style.display =
     "block";
 
 }
 
-
 /* =========================================
    ZVUK
-========================================= */
-
+======================================== */
 
 function playName() {
-
 
   if (!currentFish) {
 
     return;
 
   }
-
 
   /*
     Použijeme stejné české MP3
@@ -1093,7 +948,6 @@ function playName() {
     zvuk.js použije záložní hlas.
   */
 
-
   playNamedSound(
     currentFish.name,
     "audio/ryby"
@@ -1101,36 +955,28 @@ function playName() {
 
 }
 
-
 /* =========================================
    JEŠTĚ NEVÍM
-========================================= */
-
+======================================== */
 
 function stillDontKnow() {
 
-
   stopSound();
-
 
   /*
     Nic nemažeme.
     Ryba zůstává v Co mi nejde.
   */
 
-
   chooseFish();
 
 }
 
-
 /* =========================================
    UŽ UMÍM
-========================================= */
-
+======================================== */
 
 function nowIKnow() {
-
 
   if (!currentFish) {
 
@@ -1138,9 +984,7 @@ function nowIKnow() {
 
   }
 
-
   stopSound();
-
 
   mistakes =
     mistakes.filter(
@@ -1149,29 +993,22 @@ function nowIKnow() {
         currentFish.card
     );
 
-
   saveMistakes();
-
 
   chooseFish();
 
 }
 
-
 /* =========================================
    START
-========================================= */
-
+======================================== */
 
 loadMistakes();
 
 chooseFish();
 
-
 </script>
-
 
 </body>
 
 </html>
-```
