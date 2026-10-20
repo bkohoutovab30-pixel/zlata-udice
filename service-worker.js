@@ -1,6 +1,6 @@
 /* =========================================================
    ZLATÁ UDICE 2026
-   SERVICE WORKER – OFFLINE REŽIM v8
+   SERVICE WORKER – OFFLINE REŽIM v9
 
    - HTML: NETWORK FIRST
      -> při internetu vždy zkusí nejnovější verzi
@@ -36,7 +36,7 @@
 */
 
 const APP_CACHE =
-  "zlata-udice-app-v8";
+  "zlata-udice-app-v9";
 
 const AUDIO_CACHE =
   "zlata-udice-audio-v7";
@@ -123,7 +123,7 @@ self.addEventListener(
   event => {
 
     console.log(
-      "Zlatá udice: instaluji offline režim v8."
+      "Zlatá udice: instaluji offline režim v9."
     );
 
 
@@ -192,7 +192,7 @@ self.addEventListener(
   event => {
 
     console.log(
-      "Zlatá udice: aktivuji offline režim v8."
+      "Zlatá udice: aktivuji offline režim v9."
     );
 
 
