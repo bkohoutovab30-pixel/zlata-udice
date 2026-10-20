@@ -650,6 +650,13 @@ function createImageCandidates(item, type) {
     ];
   }
 
+  if (type === "plant") {
+    return [...new Set(result.map(function(file) {
+      const normalized = String(file).replace(/^\.\//, "");
+      return normalized.startsWith("rostliny/") ? normalized : "rostliny/" + normalized;
+    }))];
+  }
+
   return [...new Set(result)];
 }
 
